@@ -26,6 +26,7 @@ public class AbstractFactoryApp {
 		}
 	}}
 
+//-------------------------------abstract products----------------------------------
 interface Mouse{
 	void click();
 	void dblclick();
@@ -39,11 +40,7 @@ interface Touchpad{
 	void track(int deltaX, int deltaY);
 }
 
-interface DeviceFactory{
-	Mouse getMouse();
-	Keyboard getKeyboard();
-	Touchpad getTouchpad();
-}
+//-------------------------------concrete products 1----------------------------------
 class RuMouse implements Mouse{
 	public void click() {System.out.println("Щелчок мышью");}
 	public void dblclick() {System.out.println("Двойной щелчок мышью");}
@@ -66,6 +63,8 @@ class RuTouchpad implements Touchpad{
 		System.out.println("Передвинулись на " + s + " пикселей");
 	}
 }
+
+//-------------------------------concrete products 2----------------------------------
 class EnMouse implements Mouse{
 	public void click() {System.out.println("Mouse click");}
 	public void dblclick() {System.out.println("Mouse double click");}
@@ -89,6 +88,14 @@ class EnTouchpad implements Touchpad{
 	}
 }
 
+//-------------------------------abstract factory----------------------------------
+interface DeviceFactory{
+	Mouse getMouse();
+	Keyboard getKeyboard();
+	Touchpad getTouchpad();
+}
+
+//-------------------------------concrete factories----------------------------------
 class EnDeviceFactory implements DeviceFactory{
 	public Mouse getMouse() {
 		return new EnMouse();

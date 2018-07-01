@@ -2,8 +2,8 @@ package ru.unlimit.javapro.patterns;
 public class CommandApp {
 	public static void main(String[] args) {
 
-		Comp c = new Comp();
-		User u = new User(new StartCommand(c), new StopCommand(c), new ResetCommand(c));
+		Comp comp = new Comp();
+		User u = new User(new StartCommand(comp), new StopCommand(comp), new ResetCommand(comp));
 		
 		u.startComputer();
 		u.stopComputer();
@@ -12,9 +12,6 @@ public class CommandApp {
 	}
 }
 
-interface Command{
-	void execute();
-}
 //Reciver
 class Comp{
 	void start(){
@@ -27,28 +24,31 @@ class Comp{
 		System.out.println("Reset");
 	}
 }
-//ConcreteCommand
-class StartCommand implements Command{
+//Command
+abstract class Command{
 	Comp computer;
-	public StartCommand(Comp computer) {this.computer = computer;}
+	public Command(Comp computer) {this.computer = computer;}
+	abstract void execute();
+}
+//ConcreteCommand
+class StartCommand extends Command{
+	public StartCommand(Comp computer) {super(computer);}
 	@Override
 	public void execute() {
 		computer.start();
 	}
 }
 //ConcreteCommand
-class StopCommand implements Command{
-	Comp computer;
-	public StopCommand(Comp computer) {this.computer = computer;}
+class StopCommand extends Command{
+	public StopCommand(Comp computer) {super(computer);}
 	@Override
 	public void execute() {
 		computer.stop();
 	}
 }
 //ConcreteCommand
-class ResetCommand implements Command{
-	Comp computer;
-	public ResetCommand(Comp computer) {this.computer = computer;}
+class ResetCommand extends Command{
+	public ResetCommand(Comp computer) {super(computer);}
 	@Override
 	public void execute() {
 		computer.reset();

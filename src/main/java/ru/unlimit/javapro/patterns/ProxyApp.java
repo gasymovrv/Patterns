@@ -2,8 +2,9 @@ package ru.unlimit.javapro.patterns;
 public class ProxyApp {
 
 	public static void main(String[] args) {
-		
+		//с пмощью прокси реализуем ленивую загрузку изображения
 		Image image = new ProxyImage("D:/images/my.jpg");
+		//объект RealImage создается только когда вызывается метод display()
 		image.display();
 	}
 }

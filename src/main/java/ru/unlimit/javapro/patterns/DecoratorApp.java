@@ -2,11 +2,15 @@ package ru.unlimit.javapro.patterns;
 public class DecoratorApp {
 	public static void main(String[] args) {
 		PrinterInterface printer = new Printer("Hello");
-		//PrinterInterface printer = new QuotesDecorator(new QuotesDecorator(new Printer("Hello")));
-		
-		//PrinterInterface printer = new QuotesDecorator(new RightBracketDecorator(new LeftBracketDecorator(new Printer("Hello"))));
+		PrinterInterface printerDecor1 = new QuotesDecorator(new QuotesDecorator(printer));
+		PrinterInterface printerDecor2 = new QuotesDecorator(new RightBracketDecorator(new LeftBracketDecorator(printer)));
+
 		printer.print();
-		
+		System.out.println();
+		printerDecor1.print();
+		System.out.println();
+		printerDecor2.print();
+
 	}
 }
 

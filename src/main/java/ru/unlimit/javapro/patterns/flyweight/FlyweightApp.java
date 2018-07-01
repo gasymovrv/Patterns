@@ -25,6 +25,7 @@ public class FlyweightApp {
 		for(Shape shape : shapes){
 			int x = rand.nextInt(100);
 			int y = rand.nextInt(100);
+			System.out.print("Объект(хэш): "+shape.getClass().getSimpleName() + "(" + shape.hashCode()+")\t\tdraw: ");
 			shape.draw(x,y);
 		}
 
