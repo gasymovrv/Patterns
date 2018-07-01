@@ -11,23 +11,27 @@ public class IteratorApp {
 	}
 }
 
+//Iterator
 interface Iterator{
 	boolean hasNext();
 	Object next();
 }
 
+//Aggregate
 interface Container{
 	Iterator getIterator();
 }
 
+//ConcreteAggregate
 class Tasks implements Container{
-	String[] tasks = {"Построить дом", "Родить сына", "Посадить дерево"};
+	private String[] tasks = {"Построить дом", "Вырастить сына", "Посадить дерево"};
 
 	@Override
 	public Iterator getIterator() {
 		return new TaskIterator();
 	}
-	
+
+	//ConcreteIterator (у стандартных коллекций также реализовано внутренним классом)
 	private class TaskIterator implements Iterator{
 
 		int index = 0;
