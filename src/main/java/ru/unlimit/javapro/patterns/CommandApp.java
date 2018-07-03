@@ -12,7 +12,7 @@ public class CommandApp {
 	}
 }
 
-//Reciver
+//Reciver (Получатель)
 class Comp{
 	void start(){
 		System.out.println("Start");
@@ -54,7 +54,7 @@ class ResetCommand extends Command{
 		computer.reset();
 	}
 }
-//Invoker
+//Invoker (Вызыватель)
 class User{
 	Command start;
 	Command stop;

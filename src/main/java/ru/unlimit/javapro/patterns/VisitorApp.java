@@ -10,21 +10,15 @@ public class VisitorApp {
 //		engine.accept(mechanic);		
 
       Element car = new CarElement();
+      System.out.println("HooliganVisitor:");
       car.accept(new HooliganVisitor());
       
       System.out.println();
+      System.out.println("MechanicVisitor:");
       car.accept(new MechanicVisitor());
 		
 		
 	}
-}
-
-//Посетитель (Visitor)
-interface Visitor {
-  void visit(EngineElement engine);
-  void visit(BodyElement body);
-  void visit(CarElement car);
-  void visit(WheelElement wheel);
 }
 
 //Элемент - Автозапчасть
@@ -45,6 +39,7 @@ class EngineElement implements Element {
       visitor.visit(this);
   }
 }
+
 //Колесо
 class WheelElement implements Element {
 	private String name;
@@ -56,9 +51,10 @@ class WheelElement implements Element {
 	    visitor.visit(this);
 	}
 }
-//Автомобиль
+
+//Автомобиль (реализован по шаблону Компоновщик)
 class CarElement implements Element {
-  Element[] elements;
+  private Element[] elements;
 
   public CarElement() {
       this.elements = new Element[] { new WheelElement("переднее левое"),
@@ -72,6 +68,15 @@ class CarElement implements Element {
       }
       visitor.visit(this);    
   }
+}
+
+
+//Посетитель (Visitor)
+interface Visitor {
+    void visit(EngineElement engine);
+    void visit(BodyElement body);
+    void visit(CarElement car);
+    void visit(WheelElement wheel);
 }
 
 class HooliganVisitor implements Visitor {
