@@ -14,25 +14,25 @@ public class TemplateMethodApp {
 abstract class C{
 	final void templateMethod(){
 		System.out.print("1");
-		differ();
+		subMethod1();
 		System.out.print("3");
-		differ2();
+		subMethod2();
 	}
-	abstract void differ();
-	abstract void differ2();
+	abstract void subMethod1();
+	abstract void subMethod2();
 }
 
 class A extends C{
-	void differ(){
+	void subMethod1(){
 		System.out.print("2");
 	}
-	void differ2() {
+	void subMethod2() {
 		System.out.print("5");
 	}
 }
 class B extends C{
-	void differ(){
+	void subMethod1(){
 		System.out.print("4");
 	}
-	void differ2() {}
+	void subMethod2() {}
 }
