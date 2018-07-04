@@ -12,7 +12,30 @@ public class CommandApp {
 	}
 }
 
-//Reciver (Получатель)
+
+//Invoker (Вызыватель)
+class User{
+	private Command start;
+	private Command stop;
+	private Command reset;
+	public User(Command start, Command stop, Command reset) {
+		this.start = start;
+		this.stop = stop;
+		this.reset = reset;
+	}
+	void startComputer(){
+		start.execute();
+	}
+	void stopComputer(){
+		stop.execute();
+	}
+	void resetComputer(){
+		reset.execute();
+	}
+}
+
+
+//Reciver (Получатель - объект, к которому и будут обращаться все команды)
 class Comp{
 	void start(){
 		System.out.println("Start");
@@ -24,6 +47,8 @@ class Comp{
 		System.out.println("Reset");
 	}
 }
+
+
 //Command
 abstract class Command{
 	Comp computer;
@@ -52,25 +77,5 @@ class ResetCommand extends Command{
 	@Override
 	public void execute() {
 		computer.reset();
-	}
-}
-//Invoker (Вызыватель)
-class User{
-	Command start;
-	Command stop;
-	Command reset;
-	public User(Command start, Command stop, Command reset) {
-		this.start = start;
-		this.stop = stop;
-		this.reset = reset;
-	}
-	void startComputer(){
-		start.execute();
-	}
-	void stopComputer(){
-		stop.execute();
-	}
-	void resetComputer(){
-		reset.execute();
 	}
 }
