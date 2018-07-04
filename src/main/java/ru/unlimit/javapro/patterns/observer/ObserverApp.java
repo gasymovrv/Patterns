@@ -31,11 +31,11 @@ interface Subject {
 class MeteoStation implements Subject {
 	//subjectState
 	private int temperature;//1.Наблюдаемый имеет и меняет свое состояние и посылает это изменение своим подписчикам,
-	private int pressure;//а медиатор нет
+	private int pressure;//а посредник(медиатор) нет
 
 	List<Observer> observers = new ArrayList<>();//2. имеет коллекцию подписчиков и не делает различий между ними
 	
-	public void setMeasurements(int t, int p){//3. Наблюдаемый тупо рассылает свое изменившееся состояние подписчикам
+	public void setMeasurements(int t, int p){//3. Издательство тупо рассылает свое изменившееся состояние подписчикам
 		temperature = t;
 		pressure = p;
 		notifyObservers();
