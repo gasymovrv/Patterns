@@ -1,0 +1,47 @@
+package ru.unlimit.javapro.patterns.builder;
+
+/**
+ * Реализация строителя без директора
+ */
+public class BuilderApp2 {
+
+	public static void main(String[] args) {
+ 		Car car = new CarBuilder()
+					.buildMake("Mercedes")
+					.buildTransmission(Transmission.AUTO)
+					.buildMaxSpeed(280)
+					.build();
+		System.out.println(car);
+	}
+}
+
+//ConcreteBuilder
+class CarBuilder{
+
+	private String m = "Default";
+	private Transmission t = Transmission.MANUAL;
+	private int s = 120;
+	//buildPart
+	CarBuilder buildMake(String m){
+		this.m = m;
+		return this;
+	}
+	//buildPart
+	CarBuilder buildTransmission(Transmission t){
+		this.t = t;
+		return this;
+	}
+	//buildPart
+	CarBuilder buildMaxSpeed(int s){
+		this.s = s;
+		return this;
+	}
+	//getResult
+	Car build(){
+		Car car = new Car();
+		car.setMake(m);
+		car.setTransmission(t);
+		car.setMaxSpeed(s);
+		return car;
+	}
+}
