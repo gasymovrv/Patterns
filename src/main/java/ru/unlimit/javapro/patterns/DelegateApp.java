@@ -3,11 +3,8 @@ package ru.unlimit.javapro.patterns;
 public class DelegateApp {
 
 	public static void main(String[] args) {
-
-//		A a = new A();
-//		a.f();
-		
 		Painter painter = new Painter();
+
 		painter.setGraphics(new Square());
 		painter.draw();
 		
@@ -15,26 +12,6 @@ public class DelegateApp {
 		painter.draw();
 	}
 }
-
-//class A{
-//	void f(){
-//		System.out.println("f()");
-//		/*
-//		 * 
-//		 * 
-//		 * 
-//		 * 
-//		 * 
-//		 */
-//	}
-//}
-//
-//class B{
-//	A a = new A();
-//	void f(){
-//		a.f();
-//	}
-//}
 
 
 interface Graphics{
@@ -51,12 +28,8 @@ class Square implements Graphics{
 		System.out.println("Рисуем квадрат");
 	}
 }
-class Circle implements Graphics{
-	public void draw() {
-		System.out.println("Рисуем круг");
-	}
-}
 
+//Delegate
 class Painter{
 	Graphics graphics;
 	void setGraphics(Graphics g){
