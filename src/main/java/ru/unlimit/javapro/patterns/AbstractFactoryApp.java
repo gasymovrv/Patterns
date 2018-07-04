@@ -2,35 +2,23 @@ package ru.unlimit.javapro.patterns;
 
 public class AbstractFactoryApp {
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
+		DeviceFactory factory = DeviceFactory.getFactoryByCountryCode("RU");
 
-		DeviceFactory factory = getFactoryByCountryCode("RU");
-		Mouse 		m = factory.getMouse();
-		Keyboard 	k = factory.getKeyboard();
-		Touchpad 	t = factory.getTouchpad();
-		
+		Mouse m = factory.getMouse();
+		Keyboard k = factory.getKeyboard();
+		Touchpad t = factory.getTouchpad();
+
 		m.click();
 		k.print();
 		k.println();
 		t.track(10, 35);
 	}
-	
-	private static DeviceFactory getFactoryByCountryCode(String lang){
-		switch(lang){
-			case "RU":
-				return new RuDeviceFactory();
-			case "EN":
-				return new EnDeviceFactory();
-			default:
-				throw new RuntimeException("Unsupported Country Code: " + lang);
-		}
-	}}
+}
 
 //-------------------------------abstract products----------------------------------
 interface Mouse{
 	void click();
-	void dblclick();
-	void scroll(int direction);
 }
 interface Keyboard{
 	void print();
@@ -43,15 +31,6 @@ interface Touchpad{
 //-------------------------------concrete products 1----------------------------------
 class RuMouse implements Mouse{
 	public void click() {System.out.println("Щелчок мышью");}
-	public void dblclick() {System.out.println("Двойной щелчок мышью");}
-	public void scroll(int direction) {
-		if(direction>0)
-			System.out.println("Скроллим верх");
-		else if(direction<0)
-			System.out.println("Скроллим вниз");
-		else
-			System.out.println("Не скроллим");
-	}
 }
 class RuKeyboard implements Keyboard{
 	public void print() {System.out.print("Печатаем строку");}
@@ -67,15 +46,6 @@ class RuTouchpad implements Touchpad{
 //-------------------------------concrete products 2----------------------------------
 class EnMouse implements Mouse{
 	public void click() {System.out.println("Mouse click");}
-	public void dblclick() {System.out.println("Mouse double click");}
-	public void scroll(int direction) {
-		if(direction>0)
-			System.out.println("Scroll Up");
-		else if(direction<0)
-			System.out.println("Scroll Down");
-		else
-			System.out.println("No scrolling");
-	}
 }
 class EnKeyboard implements Keyboard{
 	public void print() {System.out.print("Print");}
@@ -93,6 +63,16 @@ interface DeviceFactory{
 	Mouse getMouse();
 	Keyboard getKeyboard();
 	Touchpad getTouchpad();
+	static DeviceFactory getFactoryByCountryCode(String lang){
+		switch(lang){
+			case "RU":
+				return new RuDeviceFactory();
+			case "EN":
+				return new EnDeviceFactory();
+			default:
+				throw new RuntimeException("Unsupported Country Code: " + lang);
+		}
+	}
 }
 
 //-------------------------------concrete factories----------------------------------
