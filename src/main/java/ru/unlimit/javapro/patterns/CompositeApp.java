@@ -31,32 +31,42 @@ public class CompositeApp {
 		composit.addComponent(composit1);
 		composit.addComponent(composit2);
 		composit.addComponent(new Triaangle());
-		
+
+		//Работаем со всем деревом как с одним объектом
 		composit.draw();
-
 	}
-
 }
+
+//-------------------------------Components----------------------------------
+
+//Component
 interface Shape{
+	//operation
 	void draw();
 }
 
+//ConcreteComponent 1
 class Squuare implements Shape{
 	public void draw() {
 		System.out.println("Привет, я Квадрат.");
 	}
 }
+
+//ConcreteComponent 2
 class Triaangle implements Shape{
 	public void draw() {
 		System.out.println("Привет, я Треугольник.");
 	}
 }
+
+//ConcreteComponent 3
 class Cicrle implements Shape{
 	public void draw() {
 		System.out.println("Привет, я Круг.");
 	}
 }
 
+//-------------------------------Composite----------------------------------
 class Composite implements Shape{
 	private List<Shape> components = new ArrayList<>();
 	
@@ -66,7 +76,8 @@ class Composite implements Shape{
 	public void removeComponent(Shape component){
 		components.remove(component);
 	}
-	
+
+	//operation
 	public void draw() {
 		for(Shape component: components){
 			component.draw();
