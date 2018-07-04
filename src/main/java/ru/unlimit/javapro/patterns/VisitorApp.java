@@ -1,14 +1,6 @@
 package ru.unlimit.javapro.patterns;
 public class VisitorApp {
 	public static void main(String[] args) {
-		
-//		Element body = new BodyElement();
-//		Element engine = new EngineElement();
-//		Visitor mechanic = new MechanicVisitor();
-//		
-//		body.accept(mechanic);
-//		engine.accept(mechanic);		
-
       Element car = new CarElement();
       System.out.println("HooliganVisitor:");
       car.accept(new HooliganVisitor());
@@ -16,31 +8,30 @@ public class VisitorApp {
       System.out.println();
       System.out.println("MechanicVisitor:");
       car.accept(new MechanicVisitor());
-		
-		
 	}
 }
 
-//Элемент - Автозапчасть
+//-----------------------------------------------Elements------------------------------------------------
+//Element
 interface Element {
   void accept(Visitor visitor);
 }
 
-//Кузов
+//ConcreteElement 1 - Кузов
 class BodyElement implements Element {
 	public void accept(Visitor visitor) {
 	    visitor.visit(this);
 	}
 }
 
-//Двигатель
+//ConcreteElement 2 - Двигатель
 class EngineElement implements Element {
   public void accept(Visitor visitor) {
       visitor.visit(this);
   }
 }
 
-//Колесо
+//ConcreteElement 3 - Колесо
 class WheelElement implements Element {
 	private String name;
 	
@@ -52,7 +43,7 @@ class WheelElement implements Element {
 	}
 }
 
-//Автомобиль (реализован по шаблону Компоновщик)
+//ConcreteElement 4 - Автомобиль (реализован по шаблону Компоновщик)
 class CarElement implements Element {
   private Element[] elements;
 
@@ -70,7 +61,7 @@ class CarElement implements Element {
   }
 }
 
-
+//-----------------------------------------------Visitors------------------------------------------------
 //Посетитель (Visitor)
 interface Visitor {
     void visit(EngineElement engine);
@@ -79,6 +70,7 @@ interface Visitor {
     void visit(WheelElement wheel);
 }
 
+//ConcreteVisitor 1
 class HooliganVisitor implements Visitor {
     public void visit(WheelElement wheel) {      
         System.out.println("Пнул " + wheel.getName() + " колесо");
@@ -97,6 +89,7 @@ class HooliganVisitor implements Visitor {
     }
 }
 
+//ConcreteVisitor 2
 class MechanicVisitor implements Visitor {
     public void visit(WheelElement wheel) {
         System.out.println("Подкачал " + wheel.getName() + " колесо");
