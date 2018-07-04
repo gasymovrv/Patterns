@@ -8,7 +8,7 @@ public class MediatorApp {
 
 		TextChat chat = new TextChat();
 		
-		User admin = new Admin(chat, "Администратор");
+		User admin = new Admin(chat, "Руслан");
 		User u1 = new SimpleUser(chat,"Ваня");
 		User u2 = new SimpleUser(chat, "Вова");
 		User u3 = new SimpleUser(chat, "Ахмед");
@@ -18,13 +18,13 @@ public class MediatorApp {
 		chat.addUser(u2);
 		chat.addUser(u3);
 		
-		admin.sendMessage("Привет");
+		admin.outbox("Привет");
 		System.out.println();
-		u1.sendMessage("Хай");
+		u1.outbox("Хай");
 		System.out.println();
-		u2.sendMessage("Прив");
+		u2.outbox("Прив");
 		System.out.println();
-		u3.sendMessage("Салам");
+		u3.outbox("Салам");
 	}
 }
 
@@ -39,24 +39,19 @@ abstract class User{
 	
 	public String getName() {return name;}
 
-	//компонент отправил сообщение посреднику
-	public void sendMessage(String message) {
+	//компонент отправляет сообщение посреднику
+	public void outbox(String message) {
 		chat.sendMessage(message, this);
 	}
-	//компонент получил сообщение от посредника
-	abstract void getMessage(String message);
-
-	@Override
-	public String toString() {
-		return "User [name=" + name + "]";
-	}
+	//компонент получает сообщение от посредника
+	abstract void inbox(String message);
 }
 
 //ConcreteComponent или ConcreteColleague
 class Admin extends User{
 	public Admin(Chat chat, String name) {super(chat,name);}
 	
-	public void getMessage(String message) {
+	public void inbox(String message) {
 		System.out.println("Администратор " + getName()+" получает сообщение '"+ message + "'");
 	}
 }
@@ -65,7 +60,7 @@ class Admin extends User{
 class SimpleUser extends User{
 	public SimpleUser(Chat chat, String name) {super(chat, name);}
 	
-	public void getMessage(String message) {
+	public void inbox(String message) {
 		System.out.println("Пользователь " + getName()+" получает сообщение '"+ message + "'");
 	}
 }
@@ -99,15 +94,15 @@ class TextChat implements Chat{
 		//транслируем сообщения от user всем кроме user
 		if(user instanceof Admin){
 			for(User u :  users){
-				u.getMessage(user.getName()+": "+message);
+				u.inbox(user.getName()+"(Админ): "+message);
 			}			
 		}
 		if(user instanceof SimpleUser){
 			for(User u :  users){
 				if(u!=user)
-					u.getMessage(user.getName()+": "+message);
+					u.inbox(user.getName()+": "+message);
 			}
-			admin.getMessage(user.getName()+": "+message);
+			admin.inbox(user.getName()+": "+message);
 		}
 	}
 	
