@@ -9,10 +9,15 @@ public class ProxyApp {
 	}
 }
 
+//-------------------------------Subjects----------------------------------
+
+//Subject
 interface Image{
+	//request
 	void display();
 }
 
+//ConcreteSubject
 class RealImage implements Image{
 
 	String file;
@@ -31,6 +36,7 @@ class RealImage implements Image{
 	}
 }
 
+//-------------------------------Proxy----------------------------------
 class ProxyImage implements Image{
 
 	String file;
