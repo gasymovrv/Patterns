@@ -33,32 +33,36 @@ public class FlyweightApp {
 	}
 }
 
+//-------------------------------Flyweights----------------------------------
 //Flyweight
 interface Shape {
+	//operation
 	void draw(int x, int y);
 }
 
-//Point Flyweight
+//ConcreteFlyweight 1
 class Point implements Shape {
 	public void draw(int x, int y) {System.out.println("("+x+","+y+"): рисуем точку ");}
 }
 
-//Cicrle Flyweight
+//ConcreteFlyweight 2
 class Circle implements Shape {
-	int r = 5;
+	private int r = 5;
 	public void draw(int x, int y) {System.out.println("("+x+","+y+"): рисуем круг радиусом "+r);}
 }
 
-//Square Flyweight
+//ConcreteFlyweight 3
 class Square implements Shape {
-	int a=10;
+	private int a=10;
 	public void draw(int x, int y) {System.out.println("("+x+","+y+"): рисуем квадрат со стороной "+a);}
 }
 
+//-------------------------------FlyweightFactory----------------------------------
 class ShapeFactory{
 	private static final Map<String, Shape> shapes = new HashMap<>();
+
+	//getFlyweight(in key)
 	public Shape getShape(String shapeName){
-		
 		Shape shape = shapes.get(shapeName);
 		if(shape==null){
 			switch(shapeName){
