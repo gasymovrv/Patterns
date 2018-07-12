@@ -84,7 +84,7 @@ WHERE code+1 <= ASCII('Z')
 SELECT letter FROM Letters;
 
 
-#Procedure
+# ------------------------------------------------Procedure-------------------------------------------------------------
 DELIMITER //
 CREATE PROCEDURE `p2`()
 LANGUAGE SQL
@@ -175,3 +175,58 @@ CREATE PROCEDURE `proc_CURSOR`(OUT param1 INT, OUT max_hd DOUBLE)
 
 CALL proc_CURSOR(@sum, @max_hd);
 SELECT @sum, @max_hd;
+
+
+
+# ------------------------------------------------TRIGGER---------------------------------------------------------------
+USE sql_ex_computer;
+
+DELIMITER //
+ CREATE TRIGGER test_insertPC_trigger BEFORE INSERT ON PC
+ FOR EACH ROW
+ BEGIN
+  SET NEW.cd = LEFT(NEW.cd,3);
+  SET NEW.price = NEW.price/65;
+ END//
+INSERT INTO Product VALUES ('NEW', '6324','PC');
+INSERT INTO PC VALUES (13, '6324', 500, 64, 40, '50xdfkgj', 85000);
+
+DELIMITER //
+CREATE TRIGGER test_updatePC_trigger BEFORE UPDATE ON PC
+  FOR EACH ROW
+  BEGIN
+    SET NEW.cd = LEFT(NEW.cd,3);
+    SET NEW.price = NEW.price/65;
+  END//
+UPDATE PC SET cd = '50xdfkgj', price = 85000 WHERE code = 13;
+
+DELIMITER //
+CREATE TRIGGER test_deletePC_trigger1 BEFORE DELETE ON PC
+  FOR EACH ROW
+  BEGIN
+    INSERT INTO Product VALUES ('trig', '9999','PC');-- просто вставляем какую-то ерунду при удалении
+  END//
+
+CREATE TRIGGER test_deletePC_trigger2 AFTER DELETE ON PC
+  FOR EACH ROW
+  BEGIN
+    DELETE FROM Product WHERE model = OLD.model;-- вместо каскада
+  END//
+DELETE FROM PC WHERE code = 13;
+
+-- триггер обновляющий суммарные просмотры книг у авторов при обновлении книги
+-- можно было использовать вместо логики в джава-методе BookService.update
+USE aplib;
+DELIMITER //
+CREATE TRIGGER update_book_trigger BEFORE UPDATE ON book
+  FOR EACH ROW
+  BEGIN
+    IF OLD.author_id != NEW.author_id THEN
+    -- обновляем просмотры старых авторов обновляемой книги
+    UPDATE author SET views = views - (SELECT b.views FROM book b WHERE b.id = OLD.id) WHERE id = OLD.author_id;
+    -- обновляем просмотры новых авторов обновляемой книги
+    UPDATE author SET views = views + (SELECT b.views FROM book b WHERE b.id = OLD.id) WHERE id = NEW.author_id;
+    END IF;
+  END//
+
+UPDATE book SET author_id=140 WHERE id=48;
