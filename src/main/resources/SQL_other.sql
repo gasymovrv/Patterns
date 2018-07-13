@@ -250,4 +250,27 @@ SELECT * FROM book ORDER BY name;
 
 SHOW PROFILES;
 
-EXPLAIN SELECT * FROM book ORDER BY name;
+
+
+USE sql_ex_computer;
+DELIMITER //
+CREATE PROCEDURE `rows_generator`(IN min INT, IN max INT)
+  BEGIN
+    DECLARE stop INT DEFAULT min;
+
+    WHILE stop < max DO
+      INSERT INTO Product VALUES ('B', stop, 'PC');
+      INSERT INTO PC(model, speed, ram, hd, cd, price) VALUES (stop,500,64,5,'12x',600);
+      SET stop = stop + 1;
+    END WHILE;
+  END//
+
+CALL rows_generator(3000, 4999);
+
+EXPLAIN SELECT * FROM Product, PC WHERE PC.cd LIKE '%12%' ORDER BY PC.cd;
+
+CREATE INDEX index_pc_cd ON PC(cd);
+
+SELECT * FROM Product, PC WHERE PC.cd LIKE '%12%' ORDER BY PC.cd;
+SELECT * FROM Product, PC WHERE PC.model = Product.model ORDER BY PC.cd;
+SELECT * FROM Product JOIN PC ON PC.model=Product.model ORDER BY PC.cd;

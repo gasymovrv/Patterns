@@ -16,7 +16,7 @@ CREATE TABLE Laptop (
 ); 
 
 CREATE TABLE PC (
-	code int NOT NULL ,
+	code int NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 	model varchar (50) NOT NULL ,
 	speed smallint NOT NULL ,
 	ram smallint NOT NULL ,
@@ -46,14 +46,7 @@ ALTER TABLE Laptop ADD
 	CONSTRAINT PK_Laptop PRIMARY KEY 
 	(
 		code
-	);   
-
-
-ALTER TABLE PC ADD 
-	CONSTRAINT PK_pc PRIMARY KEY 
-	(
-		code
-	);   
+	);
 
 
 ALTER TABLE Product ADD 
