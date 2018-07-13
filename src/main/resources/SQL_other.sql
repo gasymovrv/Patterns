@@ -230,3 +230,24 @@ CREATE TRIGGER update_book_trigger BEFORE UPDATE ON book
   END//
 
 UPDATE book SET author_id=140 WHERE id=48;
+
+
+
+
+
+# ------------------------------------------------EXPLAIN,PROFILE---------------------------------------------------------------
+
+SET profiling = 0;
+SET profiling_history_size = 0;
+SET profiling_history_size = 100;
+SET profiling = 1;
+SHOW PROFILE FOR QUERY 402;
+
+SELECT * FROM book WHERE name='Посмертные записки Пиквикского клуба';
+SELECT * FROM book ORDER BY name;
+CREATE INDEX index1 ON book(name);
+SELECT * FROM book ORDER BY name;
+
+SHOW PROFILES;
+
+EXPLAIN SELECT * FROM book ORDER BY name;
