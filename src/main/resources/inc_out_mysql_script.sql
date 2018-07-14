@@ -1,3 +1,6 @@
+CREATE SCHEMA sql_ex_inc_out;
+USE sql_ex_inc_out;
+
 CREATE TABLE Income (
 	code int NOT NULL ,
 	point tinyint NOT NULL ,
