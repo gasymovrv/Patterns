@@ -4,7 +4,7 @@ drop table pc;
 drop table printer;
 drop table product;
 */
-CREATE SCHEMA sql_ex_computer;
+CREATE SCHEMA IF NOT EXISTS sql_ex_computer;
 USE sql_ex_computer;
 
 CREATE TABLE Laptop (

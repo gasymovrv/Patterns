@@ -1,4 +1,4 @@
-CREATE SCHEMA sql_ex_inc_out;
+CREATE SCHEMA IF NOT EXISTS sql_ex_inc_out;
 USE sql_ex_inc_out;
 
 CREATE TABLE Income (

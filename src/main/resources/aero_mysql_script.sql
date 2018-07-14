@@ -5,7 +5,7 @@ drop table  trip;
 drop table  company;
 
 */
-CREATE SCHEMA sql_ex_aero;
+CREATE SCHEMA IF NOT EXISTS sql_ex_aero;
 USE sql_ex_aero;
 
 CREATE TABLE Company (

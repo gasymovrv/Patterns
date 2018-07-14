@@ -1,4 +1,4 @@
-CREATE SCHEMA 	sql_ex_painting;
+CREATE SCHEMA IF NOT EXISTS sql_ex_painting;
 USE sql_ex_painting;
 
 CREATE TABLE utB (
