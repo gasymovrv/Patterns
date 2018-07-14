@@ -309,3 +309,31 @@ SHOW PROFILES;
 # 10079	    0.00278550	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
 # 10080	    0.00199400	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
 # 10081	    0.00243475	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+
+
+
+
+
+# ----------------------------------------Пользователи и права доступа--------------------------------------------------
+# Авторизация в MySQL:
+# sudo mysql --user=root --password=4
+# Для выхода:
+# exit
+CREATE USER 'owner' IDENTIFIED BY '4';
+CREATE USER 'aplib_owner' IDENTIFIED BY '4';
+CREATE USER 'user_only_select' IDENTIFIED BY '4';
+CREATE USER 'user_dml_select' IDENTIFIED BY '12345';
+
+#GRANT [тип прав] ON [имя базы данных].[имя таблицы] TO ‘non-root’@'localhost’;
+GRANT ALL PRIVILEGES ON *.* TO 'owner';
+GRANT ALL PRIVILEGES ON aplib.* TO 'aplib_owner';
+GRANT SELECT ON *.* TO 'user_only_select';
+GRANT SELECT, INSERT, UPDATE, DELETE ON *.* TO 'user_dml_select';
+FLUSH PRIVILEGES;
+
+# user_dml_select
+USE sql_ex_computer;
+SELECT * FROM PC WHERE PC.cd ='12x' ORDER BY PC.cd; # Ok
+INSERT INTO Product VALUES ('B', '9999', 'PC'); # Ok
+ALTER TABLE PC CHANGE model model_1 VARCHAR(50) NOT NULL; # - ALTER command denied to user 'user_dml_select'
+
