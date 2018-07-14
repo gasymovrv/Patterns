@@ -235,7 +235,7 @@ UPDATE book SET author_id=140 WHERE id=48;
 
 
 
-# ------------------------------------------------EXPLAIN,PROFILE---------------------------------------------------------------
+# ------------------------------------------------EXPLAIN,PROFILE + index---------------------------------------------------------------
 
 SET profiling = 0;
 SET profiling_history_size = 0;
@@ -256,12 +256,12 @@ USE sql_ex_computer;
 DELIMITER //
 CREATE PROCEDURE `rows_generator`(IN min INT, IN max INT)
   BEGIN
-    DECLARE stop INT DEFAULT min;
+    DECLARE `index` INT DEFAULT min;
 
-    WHILE stop < max DO
-      INSERT INTO Product VALUES ('B', stop, 'PC');
-      INSERT INTO PC(model, speed, ram, hd, cd, price) VALUES (stop,500,64,5,'12x',600);
-      SET stop = stop + 1;
+    WHILE `index` < max DO
+      INSERT INTO Product VALUES ('B', `index`, 'PC');
+      INSERT INTO PC(model, speed, ram, hd, cd, price) VALUES (`index`,500,64,5,concat('12x',`index`),600);
+      SET `index` = `index` + 1;
     END WHILE;
   END//
 
@@ -271,6 +271,41 @@ EXPLAIN SELECT * FROM Product, PC WHERE PC.cd LIKE '%12%' ORDER BY PC.cd;
 
 CREATE INDEX index_pc_cd ON PC(cd);
 
-SELECT * FROM Product, PC WHERE PC.cd LIKE '%12%' ORDER BY PC.cd;
-SELECT * FROM Product, PC WHERE PC.model = Product.model ORDER BY PC.cd;
-SELECT * FROM Product JOIN PC ON PC.model=Product.model ORDER BY PC.cd;
+SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd;
+SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd;
+SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd;
+SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd;
+SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd;
+SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd;
+SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd;
+SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd;
+SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd;
+
+SHOW PROFILES;
+
+-- при большом количестве не повторяющихся записей (около 8000 строк) 
+-- разница в выборке с индексом и без него почти 10-кратная:
+
+# с индексом (CREATE INDEX index_pc_cd ON PC(cd)):
+# query_id    duration      query
+# 10061	    0.00048825	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10062	    0.00036650	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10063	    0.00023600	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10064	    0.00025250	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10065	    0.00026275	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10066	    0.00023075	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10067	    0.00024250	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10068	    0.00043200	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10069	    0.00026600	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10070	    0.00023450	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# после удаления индекса:
+# query_id    duration      query
+# 10073	    0.00426150	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10074	    0.00294475	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10075	    0.00193200	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10076	    0.00198300	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10077	    0.00195475	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10078	    0.00200175	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10079	    0.00278550	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10080	    0.00199400	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+# 10081	    0.00243475	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
