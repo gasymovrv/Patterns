@@ -10,8 +10,36 @@
 #    sql_ex_ships
 
 
+# -------------------------------------------Ранжирующие, аналитические, агрегатные----------------------------------------------------------
+# ROW_NUMBER
+SELECT ROW_NUMBER() OVER(ORDER BY ORDER_TYPE) as num, NOTICE_ID, ORDER_ID, ORDER_NAME,ORDER_TYPE,STATUS FROM NOTIF_Z.NOTICE;
+SELECT ROW_NUMBER() OVER(ORDER BY ORDER_ID) as num, NOTICE_ID, ORDER_ID, ORDER_NAME,ORDER_TYPE,STATUS FROM NOTIF_Z.NOTICE;
+SELECT ROW_NUMBER() OVER(PARTITION BY (ORDER_TYPE) ORDER BY ORDER_ID) as num, NOTICE_ID, ORDER_ID, ORDER_NAME,ORDER_TYPE,STATUS FROM NOTIF_Z.NOTICE;
 
-# -------------------------------------------различные примеры----------------------------------------------------------
+# RANK
+SELECT RANK() OVER(ORDER BY ORDER_TYPE) as num, NOTICE_ID, ORDER_ID, ORDER_NAME,ORDER_TYPE,STATUS FROM NOTIF_Z.NOTICE;
+SELECT DENSE_RANK() OVER(ORDER BY ORDER_TYPE) as num, NOTICE_ID, ORDER_ID, ORDER_NAME,ORDER_TYPE,STATUS FROM NOTIF_Z.NOTICE;
+
+# NTILE
+SELECT NTILE(4) OVER(ORDER BY ORDER_TYPE) as num, NOTICE_ID, ORDER_ID, ORDER_NAME,ORDER_TYPE,STATUS FROM NOTIF_Z.NOTICE;
+SELECT NTILE(4) OVER(PARTITION BY  (ORDER_TYPE) ORDER BY ORDER_TYPE) as num, NOTICE_ID, ORDER_ID, ORDER_NAME,ORDER_TYPE,STATUS FROM NOTIF_Z.NOTICE;
+-- выводим все 4ые группы:
+SELECT * FROM (SELECT NTILE(4) OVER(PARTITION BY  (ORDER_TYPE) ORDER BY ORDER_TYPE) as num, NOTICE_ID, ORDER_ID, ORDER_NAME,ORDER_TYPE,STATUS FROM NOTIF_Z.NOTICE)
+WHERE num=4;
+
+# LAG
+SELECT LAG(NOTICE_ID) OVER (ORDER BY NOTICE_ID) as LAG, NOTICE_ID, ORDER_ID, ORDER_NAME,ORDER_TYPE,STATUS FROM NOTIF_Z.NOTICE;
+SELECT LEAD(NOTICE_ID) OVER (ORDER BY NOTICE_ID) as LAG, NOTICE_ID, ORDER_ID, ORDER_NAME,ORDER_TYPE,STATUS FROM NOTIF_Z.NOTICE;
+-- группировка по ORDER_TYPE, внутри каждой группы сортировка по NOTICE_ID. LAG в начале новой группы берет не значение из предыдущей, а null:
+SELECT LAG(NOTICE_ID) OVER (PARTITION BY (ORDER_TYPE) ORDER BY NOTICE_ID) as LAG, NOTICE_ID, ORDER_ID, ORDER_NAME,ORDER_TYPE,STATUS FROM NOTIF_Z.NOTICE;
+
+#COUNT
+UPDATE Product p SET p.maker = NULL WHERE p.type = 'Laptop';
+SELECT count(         maker) FROM Product;#выдаст кол-во не-NULL значений данного столбца
+SELECT count(DISTINCT maker) FROM Product;#выдаст кол-во уникальных не-NULL значений данного столбца
+
+
+# -------------------------------------------DDL, DML, NULL, Рекурсия----------------------------------------------------------
 USE sql_ex_computer;
 
 #DDL
@@ -28,11 +56,17 @@ ALTER TABLE Product
 
 DROP TABLE Product;
 
+#UPDATE + JOIN
+UPDATE PC pc
+  JOIN Product prod ON prod.model=pc.model
+SET pc.cd = '!!!!'
+WHERE prod.maker = 'A';
+#или без джойна:
+UPDATE PC pc SET pc.cd = 'EEE'
+WHERE pc.model IN (SELECT model FROM Product WHERE maker = 'E');
 
-#COUNT
-UPDATE Product p SET p.maker = NULL WHERE p.type = 'Laptop';
-SELECT count(         maker) FROM Product;#выдаст кол-во не-NULL значений данного столбца
-SELECT count(DISTINCT maker) FROM Product;#выдаст кол-во уникальных не-NULL значений данного столбца
+#DELETE
+DELETE FROM Product WHERE cast(model as DECIMAL(16))>2000;
 
 #Сравнение с NULL
 #Операторы сравнения дают в результате величину 1 (истина, TRUE), 0 (ложь, FALSE) или NULL.
@@ -61,24 +95,21 @@ SELECT * FROM Printer WHERE Printer.price = 270;
 SELECT * FROM Printer WHERE Printer.price > 0;
 SELECT * FROM Printer WHERE Printer.price IS NULL ;
 
-#UPDATE + JOIN
-UPDATE PC pc
-JOIN Product prod ON prod.model=pc.model
-SET pc.cd = '!!!!'
-WHERE prod.maker = 'A';
-#или без джойна:
-UPDATE PC pc SET pc.cd = 'EEE'
-WHERE pc.model IN (SELECT model FROM Product WHERE maker = 'E');
 
-#DELETE
-DELETE FROM Product WHERE cast(model as DECIMAL(16))>2000;
-
-
-#Рекурсия (для MSSQL)
+#Рекурсия - вывод алфавита (для MSSQL)
 WITH Letters AS(
 SELECT ASCII('A') code, CHAR(ASCII('A')) letter
 UNION ALL
 SELECT code+1, CHAR(code+1) FROM Letters
+WHERE code+1 <= ASCII('Z')
+)
+SELECT letter FROM Letters;
+
+#Рекурсия - вывод алфавита (для Oracle)
+WITH Letters(code,letter) AS(
+SELECT ASCII('A') code, CHR(ASCII('A')) letter from DUAL
+UNION ALL
+SELECT code+1, CHR(code+1) FROM Letters
 WHERE code+1 <= ASCII('Z')
 )
 SELECT letter FROM Letters;
@@ -326,14 +357,26 @@ CREATE USER 'user_dml_select' IDENTIFIED BY '12345';
 
 #GRANT [тип прав] ON [имя базы данных].[имя таблицы] TO ‘non-root’@'localhost’;
 GRANT ALL PRIVILEGES ON *.* TO 'owner';
+GRANT GRANT OPTION ON *.* TO 'owner';
 GRANT ALL PRIVILEGES ON aplib.* TO 'aplib_owner';
 GRANT SELECT ON *.* TO 'user_only_select';
 GRANT SELECT, INSERT, UPDATE, DELETE ON *.* TO 'user_dml_select';
 FLUSH PRIVILEGES;
 
-# user_dml_select
+# user_dml_select до REVOKE
 USE sql_ex_computer;
 SELECT * FROM PC WHERE PC.cd ='12x' ORDER BY PC.cd; # Ok
 INSERT INTO Product VALUES ('B', '9999', 'PC'); # Ok
 ALTER TABLE PC CHANGE model model_1 VARCHAR(50) NOT NULL; # - ALTER command denied to user 'user_dml_select'
 
+# REVOKE
+REVOKE SELECT ON *.* FROM 'user_dml_select';
+FLUSH PRIVILEGES;
+
+# user_dml_select после REVOKE
+INSERT INTO Product VALUES ('B', '19991', 'PC'); # - ok
+SELECT * FROM PC WHERE PC.cd ='12x' ORDER BY PC.cd; # - SELECT command denied to user 'user_dml_select'
+
+SELECT User,Host FROM mysql.user;
+SHOW GRANTS FOR user_dml_select;
+SHOW GRANTS FOR 'owner';
