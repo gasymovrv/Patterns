@@ -5,6 +5,9 @@ drop table  trip;
 drop table  company;
 
 */
+CREATE SCHEMA IF NOT EXISTS sql_ex_aero;
+USE sql_ex_aero;
+
 CREATE TABLE Company (
 	ID_comp int NOT NULL ,
 	name char (10) NOT NULL 

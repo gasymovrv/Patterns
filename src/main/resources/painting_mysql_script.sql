@@ -1,3 +1,6 @@
+CREATE SCHEMA IF NOT EXISTS sql_ex_painting;
+USE sql_ex_painting;
+
 CREATE TABLE utB (
 	B_DATETIME datetime NOT NULL ,
 	B_Q_ID int NOT NULL ,
