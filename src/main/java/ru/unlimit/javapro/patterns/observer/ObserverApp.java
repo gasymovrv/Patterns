@@ -17,11 +17,11 @@ public class ObserverApp {
 		station.setMeasurements(25, 760);
 		System.out.println();
 		station.setMeasurements(-5, 745);
-		
+
 	}
 }
 
-//Subject (Издательство)
+//--------------------------------Subject (Издательство)--------------------------------
 interface Subject {
 	void addObserver(Observer o);
 	void removeObserver(Observer o);
@@ -32,29 +32,29 @@ class MeteoStation implements Subject {
 	//subjectState
 	private int temperature;//1.Наблюдаемый имеет и меняет свое состояние и посылает это изменение своим подписчикам,
 	private int pressure;//а посредник(медиатор) нет
+	private List<Observer> observers = new ArrayList<>();//2. имеет коллекцию подписчиков и не делает различий между ними
 
-	List<Observer> observers = new ArrayList<>();//2. имеет коллекцию подписчиков и не делает различий между ними
-	
-	public void setMeasurements(int t, int p){//3. Издательство тупо рассылает свое изменившееся состояние подписчикам
-		temperature = t;
-		pressure = p;
-		notifyObservers();
-	}
-	
 	public void addObserver(Observer o) {
 		observers.add(o);
 	}
 	public void removeObserver(Observer o) {
 		observers.remove(o);
 	}
+
 	public void notifyObservers() {
 		for(Observer o: observers){
 			o.update(temperature, pressure);
-		}	
+		}
+	}
+	
+	public void setMeasurements(int t, int p){//3. Издательство тупо рассылает свое изменившееся состояние подписчикам
+		temperature = t;
+		pressure = p;
+		notifyObservers();
 	}
 }
 
-//Observer (Подписчик)
+//----------------------------------Observer (Подписчик)----------------------------------
 interface Observer{
 	void update(int temp, int presser);//4. Наблюдатели только получают сообщения, отправлять не могут
 }

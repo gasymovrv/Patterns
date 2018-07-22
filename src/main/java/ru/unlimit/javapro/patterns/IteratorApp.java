@@ -33,15 +33,11 @@ class Tasks implements Container{
 
 	//ConcreteIterator (у стандартных коллекций также реализовано внутренним классом)
 	private class TaskIterator implements Iterator{
-
 		int index = 0;
 		
 		@Override
 		public boolean hasNext() {
-			if(index<tasks.length){
-				return true;
-			}
-			return false;
+			return index < tasks.length;
 		}
 
 		@Override

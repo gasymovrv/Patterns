@@ -30,14 +30,14 @@ interface Activity{
 	//handle
 	void doSomething(Human human);
 }
-//ConcreteState
+//ConcreteState 1
 class Work implements Activity{
 	public void doSomething(Human context) {
 		System.out.println("Работаем!!!");
 		context.setState(new WeekEnd());
 	}
 }
-//ConcreteState
+//ConcreteState 2
 class WeekEnd implements Activity{
 	private int count = 0;
 	public void doSomething(Human context) {

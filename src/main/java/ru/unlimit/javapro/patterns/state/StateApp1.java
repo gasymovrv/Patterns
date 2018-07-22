@@ -42,15 +42,15 @@ interface Station{
 	//handle
 	void play();
 }
-//ConcreteState
+//ConcreteState 1
 class RadioEurope implements Station{
 	public void play() {System.out.println("Радио \"Европа+\"...");}
 }
-//ConcreteState
+//ConcreteState 2
 class RadioRecord implements Station{
 	public void play() {System.out.println("Радио \"Record\"...");}
 }
-//ConcreteState
+//ConcreteState 3
 class RadioVestiFM implements Station{
 	public void play() {System.out.println("Радио \"Вести FM\"...");}
 }

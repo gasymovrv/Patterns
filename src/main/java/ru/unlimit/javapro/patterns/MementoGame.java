@@ -36,7 +36,7 @@ public class MementoGame {
 	}
 }
 
-//Originator
+//Originator (объект, состояние которого будем сохранять в Memento)
 class Game{
 	//state
 	private String level;

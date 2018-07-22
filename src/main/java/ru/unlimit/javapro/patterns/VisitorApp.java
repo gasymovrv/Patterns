@@ -14,7 +14,7 @@ public class VisitorApp {
 //-----------------------------------------------Elements------------------------------------------------
 //Element
 interface Element {
-  void accept(Visitor visitor);
+    void accept(Visitor visitor);
 }
 
 //ConcreteElement 1 - Кузов
@@ -26,9 +26,9 @@ class BodyElement implements Element {
 
 //ConcreteElement 2 - Двигатель
 class EngineElement implements Element {
-  public void accept(Visitor visitor) {
-      visitor.visit(this);
-  }
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
 }
 
 //ConcreteElement 3 - Колесо
@@ -45,20 +45,24 @@ class WheelElement implements Element {
 
 //ConcreteElement 4 - Автомобиль (реализован по шаблону Компоновщик)
 class CarElement implements Element {
-  private Element[] elements;
+    private Element[] elements;
 
-  public CarElement() {
-      this.elements = new Element[] { new WheelElement("переднее левое"),
-          new WheelElement("переднее правое"), new WheelElement("заднее левое") ,
-          new WheelElement("заднее правое"), new BodyElement(), new EngineElement() };
-  }
+    public CarElement() {
+        this.elements = new Element[]{
+                new WheelElement("переднее левое"),
+                new WheelElement("переднее правое"),
+                new WheelElement("заднее левое"),
+                new WheelElement("заднее правое"),
+                new BodyElement(),
+                new EngineElement()};
+    }
 
-  public void accept(Visitor visitor) {    
-      for(Element elem : elements) {
-          elem.accept(visitor);
-      }
-      visitor.visit(this);    
-  }
+    public void accept(Visitor visitor) {
+        for (Element elem : elements) {
+            elem.accept(visitor);
+        }
+        visitor.visit(this);
+    }
 }
 
 //-----------------------------------------------Visitors------------------------------------------------

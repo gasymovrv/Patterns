@@ -1,14 +1,12 @@
 package ru.unlimit.javapro.patterns;
 public class CommandApp {
 	public static void main(String[] args) {
-
 		Comp comp = new Comp();
 		User u = new User(new StartCommand(comp), new StopCommand(comp), new ResetCommand(comp));
 		
 		u.startComputer();
 		u.stopComputer();
 		u.resetComputer();
-		
 	}
 }
 
@@ -55,7 +53,7 @@ abstract class Command{
 	public Command(Comp computer) {this.computer = computer;}
 	abstract void execute();
 }
-//ConcreteCommand
+//ConcreteCommand 1
 class StartCommand extends Command{
 	public StartCommand(Comp computer) {super(computer);}
 	@Override
@@ -63,7 +61,7 @@ class StartCommand extends Command{
 		computer.start();
 	}
 }
-//ConcreteCommand
+//ConcreteCommand 2
 class StopCommand extends Command{
 	public StopCommand(Comp computer) {super(computer);}
 	@Override
@@ -71,7 +69,7 @@ class StopCommand extends Command{
 		computer.stop();
 	}
 }
-//ConcreteCommand
+//ConcreteCommand 3
 class ResetCommand extends Command{
 	public ResetCommand(Comp computer) {super(computer);}
 	@Override

@@ -3,26 +3,18 @@ package ru.unlimit.javapro.patterns;
 public class FacadeApp {
 
 	public static void main(String[] args) {
-		
-//		Power power = new Power();
-//		power.on();
-//		
-//		DVDRom dvd = new DVDRom();
-//		dvd.load();
-//		
-//		HDD hdd = new HDD();
-//		hdd.copyFromDVD(dvd);
-		
 		Computer computer = new Computer();
+		//один простой метод из фасада вместо вызова кучи разных сервисов в клиентском коде
 		computer.copy();
 	}
 }
 
+//--------------------------------------Фасад------------------------------------------------
 class Computer{
 	Power power = new Power();
 	DVDRom dvd = new DVDRom();
 	HDD hdd = new HDD();
-	
+
 	void copy(){
 		power.on();
 		dvd.load();
@@ -30,6 +22,7 @@ class Computer{
 	}
 }
 
+//----------------------------Внутренние сервисы фасада---------------------------------------
 class Power{
 	void on(){
 		System.out.println("Включение питания");

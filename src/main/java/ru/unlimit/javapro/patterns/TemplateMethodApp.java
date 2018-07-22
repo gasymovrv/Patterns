@@ -1,17 +1,18 @@
 package ru.unlimit.javapro.patterns;
 public class TemplateMethodApp {
 	public static void main(String[] args) {
-		C a = new A();
+		Abstr a = new A();
 		a.templateMethod();
 
 		System.out.println();
 		
-		C b = new B();
+		Abstr b = new B();
 		b.templateMethod();
 	}
 }
 
-abstract class C{
+//AbstractClass
+abstract class Abstr {
 	final void templateMethod(){
 		System.out.print("1");
 		subMethod1();
@@ -22,17 +23,20 @@ abstract class C{
 	abstract void subMethod2();
 }
 
-class A extends C{
+//ConcreteClass 1
+class A extends Abstr {
 	void subMethod1(){
 		System.out.print("2");
 	}
 	void subMethod2() {
-		System.out.print("5");
+		System.out.print("4");
 	}
 }
-class B extends C{
+
+//ConcreteClass 2
+class B extends Abstr {
 	void subMethod1(){
-		System.out.print("4");
+		System.out.print("-------");
 	}
 	void subMethod2() {}
 }
