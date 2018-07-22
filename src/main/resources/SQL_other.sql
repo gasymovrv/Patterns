@@ -340,8 +340,87 @@ SHOW PROFILES;
 # 10079	    0.00278550	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
 # 10080	    0.00199400	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
 # 10081	    0.00243475	  SELECT * FROM PC WHERE PC.cd ='12x4500' ORDER BY PC.cd
+USE sql_ex_computer;
+EXPLAIN SELECT * FROM PC; -- type = ALL
+EXPLAIN SELECT * FROM PC WHERE PC.price = 600; -- type = ALL
+EXPLAIN SELECT * FROM PC WHERE PC.cd = '12x4500'; -- type = ref (работает созданный мной индекс index_pc_cd)
+EXPLAIN SELECT * FROM Product WHERE maker = 'A'; -- type = ALL
+EXPLAIN SELECT * FROM Product WHERE model = '1232'; -- type = const (работает дефолтный индекс MySQL)
+use sql_ex_inc_out;
+EXPLAIN SELECT * FROM Income_o WHERE point = 1 AND  date < '2001-03-24'; -- type = range
 
 
+
+# ------------------------- План запроса ORACLE --------------------------------------
+-- сначало это
+EXPLAIN PLAN FOR
+SELECT ROW_NUMBER() OVER(ORDER BY ORDER_TYPE) as num, NOTICE_ID, ORDER_ID, ORDER_NAME,ORDER_TYPE,STATUS FROM NOTIF_Z.NOTICE;
+-- потом просмотр результатов
+SELECT*FROM TABLE(dbms_xplan.display(NULL,NULL,'basic'));-- вар 1
+SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());-- вар 2 - более информативный
+
+
+-- пример 1 (нет индекса на столбец-фильтр)
+EXPLAIN PLAN for
+SELECT * FROM NOTIF_Z.ORDERS o WHERE o.PLACER_ORG_ROLE = 'OA';
+SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());-- вар 2 - более информативный
+# ----------------------------------------------------------------------------
+# | Id  | Operation         | Name   | Rows  | Bytes | Cost (%CPU)| Time     |
+# ----------------------------------------------------------------------------
+# |   0 | SELECT STATEMENT  |        |    95 | 18430 |     5   (0)| 00:00:01 |
+# |*  1 |  TABLE ACCESS FULL| ORDERS |    95 | 18430 |     5   (0)| 00:00:01 | полный перебор всех строк таблицы
+# ----------------------------------------------------------------------------
+
+-- пример 2 (все данные из индекса)
+EXPLAIN PLAN for
+SELECT o.ORDER_ID FROM NOTIF_Z.ORDERS o;
+SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());-- вар 2 - более информативный
+# ------------------------------------------------------------------------------
+# | Id  | Operation        | Name      | Rows  | Bytes | Cost (%CPU)| Time     |
+# ------------------------------------------------------------------------------
+# |   0 | SELECT STATEMENT |           |   380 |  1900 |     1   (0)| 00:00:01 |
+# |   1 |  INDEX FULL SCAN | PK_ORDERS |   380 |  1900 |     1   (0)| 00:00:01 |
+# ------------------------------------------------------------------------------
+
+
+-- пример 3 (есть индекс на столбец-фильтр - не уникальный)
+EXPLAIN PLAN for
+SELECT * FROM NOTIF_Z.ORDERS o WHERE o.ORGANIZATION_ID = 11988;
+SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());-- вар 2 - более информативный
+# ----------------------------------------------------------------------------------------------------------
+# | Id  | Operation                   | Name                       | Rows  | Bytes | Cost (%CPU)| Time     |
+# ----------------------------------------------------------------------------------------------------------
+# |   0 | SELECT STATEMENT            |                            |     1 |   194 |     2   (0)| 00:00:01 |
+# |   1 |  TABLE ACCESS BY INDEX ROWID| ORDERS                     |     1 |   194 |     2   (0)| 00:00:01 |
+# |*  2 |   INDEX RANGE SCAN          | IDX_ORDERS_ORGANIZATION_ID |     1 |       |     1   (0)| 00:00:01 | поиск по индексу
+# ----------------------------------------------------------------------------------------------------------
+
+
+
+-- пример 4 (есть индекс на столбец-фильтр - уникальный)
+EXPLAIN PLAN for
+SELECT * FROM NOTIF_Z.ORDERS o WHERE o.ORDER_ID = 10281;
+SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());-- вар 2 - более информативный
+# -----------------------------------------------------------------------------------------
+# | Id  | Operation                   | Name      | Rows  | Bytes | Cost (%CPU)| Time     |
+# -----------------------------------------------------------------------------------------
+# |   0 | SELECT STATEMENT            |           |     1 |   194 |     1   (0)| 00:00:01 |
+# |   1 |  TABLE ACCESS BY INDEX ROWID| ORDERS    |     1 |   194 |     1   (0)| 00:00:01 |
+# |*  2 |   INDEX UNIQUE SCAN         | PK_ORDERS |     1 |       |     0   (0)| 00:00:01 | поиск по уникальному индексу
+# -----------------------------------------------------------------------------------------
+
+
+
+-- пример 5 (поиск напрямую по системному указателю ROWID)
+EXPLAIN PLAN for
+SELECT * FROM NOTIF_Z.ORDERS o WHERE o.ROWID = 'AABBRHAAKAAAAMSAAF';
+SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());-- вар 2 - более информативный
+# -------------------------------------------------------------------------------------
+# | Id  | Operation                  | Name   | Rows  | Bytes | Cost (%CPU)| Time     |
+# -------------------------------------------------------------------------------------
+# |   0 | SELECT STATEMENT           |        |     1 |   194 |     1   (0)| 00:00:01 |
+# |   1 |  TABLE ACCESS BY USER ROWID| ORDERS |     1 |   194 |     1   (0)| 00:00:01 | поиск по ROWID
+# -------------------------------------------------------------------------------------
 
 
 
