@@ -13,15 +13,10 @@ public class AdapterApp {
 		VectorGraphicsInterface g2 = new VectorAdapterFromRaster2(new RasterGraphics());
 		g2.drawLine();
 		g2.drawSquare();
-
-		
 	}
 }
 
-interface VectorGraphicsInterface{
-	void drawLine();
-	void drawSquare();
-}
+//--------------------------------Adaptee (интерфейс который будем адаптировать)---------------------------------------
 class RasterGraphics{
 	void drawRasterLine(){
 		System.out.println("Рисуем линию");
@@ -30,6 +25,14 @@ class RasterGraphics{
 		System.out.println("Рисуем квадрат");
 	}
 }
+
+//--------------------------------Adapter (интерфейс который будем использовать)---------------------------------------
+interface VectorGraphicsInterface{
+	void drawLine();
+	void drawSquare();
+}
+
+//ConcreteAdapter 1. Реализация через наследование
 class VectorAdapterFromRaster extends RasterGraphics implements VectorGraphicsInterface{
 	public void drawLine() {
 		drawRasterLine();
@@ -38,6 +41,8 @@ class VectorAdapterFromRaster extends RasterGraphics implements VectorGraphicsIn
 		drawRasterSquare();
 	}
 }
+
+//ConcreteAdapter 2. Реализация через композицию
 class VectorAdapterFromRaster2 implements VectorGraphicsInterface{
 	RasterGraphics raster = null;//new RasterGraphics();
 	
