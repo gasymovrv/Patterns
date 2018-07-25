@@ -11,9 +11,9 @@ public class FacadeApp {
 
 //--------------------------------------Фасад------------------------------------------------
 class Computer{
-	Power power = new Power();
-	DVDRom dvd = new DVDRom();
-	HDD hdd = new HDD();
+	private Power power = new Power();
+	private DVDRom dvd = new DVDRom();
+	private HDD hdd = new HDD();
 
 	void copy(){
 		power.on();

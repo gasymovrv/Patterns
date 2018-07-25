@@ -18,6 +18,7 @@ public class BuilderApp1 {
 
 
 //----------------------------Builder----------------------------------
+
 //AbstractBuilder
 abstract class AbstractCarBuilder {
 	Car car;
@@ -33,18 +34,22 @@ abstract class AbstractCarBuilder {
 	//getResult
 	Car getCar(){return car;}
 }
+
 //ConcreteBuilder 1
 class FordMondeoBuilder extends AbstractCarBuilder {
 	AbstractCarBuilder buildMake() {car.setMake("Ford Mondeo"); return this;}
 	AbstractCarBuilder buildTransmission() {car.setTransmission(Transmission.AUTO); return this;}
 	AbstractCarBuilder buildMaxSpeed() {car.setMaxSpeed(260); return this;}
 }
+
 //ConcreteBuilder 2
 class SubaruBuilder extends AbstractCarBuilder {
 	AbstractCarBuilder buildMake() {car.setMake("Subaru"); return this;}
 	AbstractCarBuilder buildTransmission() {car.setTransmission(Transmission.MANUAL); return this;}
 	AbstractCarBuilder buildMaxSpeed() {car.setMaxSpeed(320); return this;}
 }
+
+
 
 //----------------------------Director----------------------------------
 class Director{

@@ -17,16 +17,22 @@ public class StrategyApp {
 		c.executeStrategy(arr2);
 	}
 }
-//Context
+
+
+//-------------------------------Context-------------------------------
 class StrategyClient{
-	Sorting strategy;
+	private Sorting strategy;
 	public void setStrategy(Sorting strategy) {this.strategy = strategy;}
 	public void executeStrategy(int[] arr){strategy.sort(arr);}
 }
+
+
+//-------------------------------Strategies-------------------------------
 //Strategy
 interface Sorting{
 	void sort(int[] arr);
 }
+
 //Bubble sorting strategy (Сортировка пузырьком)
 class BubbleSort implements Sorting{
 	public void sort(int[] arr) {
@@ -44,6 +50,7 @@ class BubbleSort implements Sorting{
 		System.out.println("после:\t"+Arrays.toString(arr));
 	}
 }
+
 //Selection sorting strategy (Сортировка выборками)
 class SelectionSort implements Sorting{
 	public void sort(int[] arr) {
@@ -62,6 +69,7 @@ class SelectionSort implements Sorting{
 		System.out.println("после:\t"+Arrays.toString(arr));
 	}
 }
+
 //Inserting sorting strategy (Сортировка вставками)
 class InsertingSort implements Sorting{
 	public void sort(int[] arr) {

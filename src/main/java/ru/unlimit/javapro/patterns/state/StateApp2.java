@@ -15,7 +15,8 @@ public class StateApp2 {
 	}
 }
 
-//Context
+
+//-------------------------------Context-------------------------------
 class Human {
 	private Activity state;
 	public void setState(Activity s){this.state = s;}
@@ -25,11 +26,13 @@ class Human {
 	}
 }
 
-//State
+
+//-------------------------------States-------------------------------
 interface Activity{
 	//handle
 	void doSomething(Human human);
 }
+
 //ConcreteState 1
 class Work implements Activity{
 	public void doSomething(Human context) {
@@ -37,6 +40,7 @@ class Work implements Activity{
 		context.setState(new WeekEnd());
 	}
 }
+
 //ConcreteState 2
 class WeekEnd implements Activity{
 	private int count = 0;

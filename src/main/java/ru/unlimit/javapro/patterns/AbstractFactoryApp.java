@@ -11,7 +11,6 @@ public class AbstractFactoryApp {
 
 		m.click();
 		k.print();
-		k.println();
 		t.track(10, 35);
 	}
 }
@@ -22,7 +21,6 @@ interface Mouse{
 }
 interface Keyboard{
 	void print();
-	void println();
 }
 interface Touchpad{
 	void track(int deltaX, int deltaY);
@@ -34,7 +32,6 @@ class RuMouse implements Mouse{
 }
 class RuKeyboard implements Keyboard{
 	public void print() {System.out.print("Печатаем строку");}
-	public void println() {System.out.println("Печатаем строку с переводом строки");}	
 }
 class RuTouchpad implements Touchpad{
 	public void track(int deltaX, int deltaY) {
@@ -49,7 +46,6 @@ class EnMouse implements Mouse{
 }
 class EnKeyboard implements Keyboard{
 	public void print() {System.out.print("Print");}
-	public void println() {System.out.println("Print Line");}
 }
 class EnTouchpad implements Touchpad{
 	public void track(int deltaX, int deltaY) {

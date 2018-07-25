@@ -16,7 +16,8 @@ public class StateApp1 {
 	}
 }
 
-//Context
+
+//-------------------------------Context-------------------------------
 class Radio{
 	private Station station;
 	void setStation(Station st){station = st;}
@@ -37,19 +38,23 @@ class Radio{
 	}
 }
 
-//State
+
+//-------------------------------States-------------------------------
 interface Station{
 	//handle
 	void play();
 }
+
 //ConcreteState 1
 class RadioEurope implements Station{
 	public void play() {System.out.println("Радио \"Европа+\"...");}
 }
+
 //ConcreteState 2
 class RadioRecord implements Station{
 	public void play() {System.out.println("Радио \"Record\"...");}
 }
+
 //ConcreteState 3
 class RadioVestiFM implements Station{
 	public void play() {System.out.println("Радио \"Вести FM\"...");}
