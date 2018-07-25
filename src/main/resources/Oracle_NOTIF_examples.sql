@@ -9,7 +9,7 @@
 ALTER USER NOTIF_Z_RW IDENTIFIED BY "NOTIF_Z_RW";-- если пароль просрочился
 ALTER PROFILE DEFAULT LIMIT PASSWORD_LIFE_TIME UNLIMITED;-- чтобы пароль был вечным
 
---куча кода чтобы тупо создать схему
+--куча кода чтобы тупо создать схему (в оракл схема и юзер создаются одновременно)
 ----------------------------------------------begin-----------------------------------------
 --заходим через sys as sysdba, затем:
 CREATE TEMPORARY TABLESPACE tbs_temp_01 -- неведомая херня
