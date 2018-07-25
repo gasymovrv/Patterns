@@ -1,8 +1,8 @@
-PROMPT =========================================================================
-PROMPT TABLE DEFINITIONS
-PROMPT =========================================================================
+-- =========================================================================
+-- TABLE DEFINITIONS
+-- =========================================================================
 
-PROMPT CREATE TABLE BATTLES
+-- CREATE TABLE BATTLES
 CREATE TABLE BATTLES (
   NAME VARCHAR2(20) NOT NULL,
   "date" TIMESTAMP(6) NOT NULL
@@ -13,7 +13,7 @@ CREATE TABLE BATTLES (
 
 /
 
-PROMPT CREATE TABLE CLASSES
+-- CREATE TABLE CLASSES
 CREATE TABLE CLASSES (
   CLASS        VARCHAR2(50) NOT NULL,
   TYPE         VARCHAR2(2)  NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE CLASSES (
 
 
 
-PROMPT CREATE TABLE COMPANY
+-- CREATE TABLE COMPANY
 CREATE TABLE COMPANY (
   ID_COMP INTEGER  NOT NULL,
   NAME    CHAR(10) NOT NULL
@@ -41,7 +41,7 @@ CREATE TABLE COMPANY (
 
 
 
-PROMPT CREATE TABLE INCOME
+-- CREATE TABLE INCOME
 CREATE TABLE INCOME (
   CODE  INTEGER      NOT NULL,
   POINT INTEGER      NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE INCOME (
 
 
 
-PROMPT CREATE TABLE INCOME_O
+-- CREATE TABLE INCOME_O
 CREATE TABLE INCOME_O (
   POINT INTEGER      NOT NULL,
   "date"  TIMESTAMP(6) NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE INCOME_O (
 /
 
 
-PROMPT CREATE TABLE LAPTOP
+-- CREATE TABLE LAPTOP
 CREATE TABLE LAPTOP (
   CODE   INTEGER      NOT NULL,
   MODEL  VARCHAR2(50) NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE LAPTOP (
 /
 
 
-PROMPT CREATE TABLE OUTCOME
+-- CREATE TABLE OUTCOME
 CREATE TABLE OUTCOME (
   CODE  INTEGER      NOT NULL,
   POINT INTEGER      NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE OUTCOME (
 /
 
 
-PROMPT CREATE TABLE OUTCOME_O
+-- CREATE TABLE OUTCOME_O
 CREATE TABLE OUTCOME_O (
   POINT INTEGER      NOT NULL,
   "date"  TIMESTAMP(6) NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE OUTCOME_O (
 /
 
 
-PROMPT CREATE TABLE OUTCOMES
+-- CREATE TABLE OUTCOMES
 CREATE TABLE OUTCOMES (
   SHIP   VARCHAR2(50) NOT NULL,
   BATTLE VARCHAR2(20) NOT NULL,
@@ -120,7 +120,7 @@ CREATE TABLE OUTCOMES (
 /
 
 
-PROMPT CREATE TABLE PASS_IN_TRIP
+-- CREATE TABLE PASS_IN_TRIP
 CREATE TABLE PASS_IN_TRIP (
   TRIP_NO INTEGER      NOT NULL,
   "date"    TIMESTAMP(6) NOT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE PASS_IN_TRIP (
 /
 
 
-PROMPT CREATE TABLE PASSENGER
+-- CREATE TABLE PASSENGER
 CREATE TABLE PASSENGER (
   ID_PSG INTEGER  NOT NULL,
   NAME   CHAR(20) NOT NULL
@@ -144,7 +144,7 @@ CREATE TABLE PASSENGER (
 /
 
 
-PROMPT CREATE TABLE PC
+-- CREATE TABLE PC
 CREATE TABLE PC (
   CODE  INTEGER      NOT NULL,
   MODEL VARCHAR2(50) NOT NULL,
@@ -160,7 +160,7 @@ CREATE TABLE PC (
 /
 
 
-PROMPT CREATE TABLE PRINTER
+-- CREATE TABLE PRINTER
 CREATE TABLE PRINTER (
   CODE  INTEGER      NOT NULL,
   MODEL VARCHAR2(50) NOT NULL,
@@ -174,7 +174,7 @@ CREATE TABLE PRINTER (
 /
 
 
-PROMPT CREATE TABLE PRODUCT
+-- CREATE TABLE PRODUCT
 CREATE TABLE PRODUCT (
   MAKER VARCHAR2(10) NOT NULL,
   MODEL VARCHAR2(50) NOT NULL,
@@ -186,7 +186,7 @@ CREATE TABLE PRODUCT (
 /
 
 
-PROMPT CREATE TABLE SHIPS
+-- CREATE TABLE SHIPS
 CREATE TABLE SHIPS (
   NAME     VARCHAR2(50) NOT NULL,
   CLASS    VARCHAR2(50) NOT NULL,
@@ -198,7 +198,7 @@ CREATE TABLE SHIPS (
 /
 
 
-PROMPT CREATE TABLE TRIP
+-- CREATE TABLE TRIP
 CREATE TABLE TRIP (
   TRIP_NO   INTEGER      NOT NULL,
   ID_COMP   INTEGER      NOT NULL,
@@ -214,7 +214,7 @@ CREATE TABLE TRIP (
 /
 
 
-PROMPT CREATE TABLE UTB
+-- CREATE TABLE UTB
 CREATE TABLE UTB (
   B_DATETIME TIMESTAMP(6) NOT NULL,
   B_Q_ID     INTEGER      NOT NULL,
@@ -227,7 +227,7 @@ CREATE TABLE UTB (
 /
 
 
-PROMPT CREATE TABLE UTQ
+-- CREATE TABLE UTQ
 CREATE TABLE UTQ (
   Q_ID   INTEGER      NOT NULL,
   Q_NAME VARCHAR2(35) NOT NULL
@@ -238,7 +238,7 @@ CREATE TABLE UTQ (
 /
 
 
-PROMPT CREATE TABLE UTV
+-- CREATE TABLE UTV
 CREATE TABLE UTV (
   V_ID    INTEGER      NOT NULL,
   V_NAME  VARCHAR2(35) NOT NULL,
@@ -249,11 +249,11 @@ CREATE TABLE UTV (
   )
 /
 
-PROMPT =========================================================================
-PROMPT PRIMARY AND UNIQUE CONSTRAINTS
-PROMPT =========================================================================
+-- =========================================================================
+-- PRIMARY AND UNIQUE CONSTRAINTS
+-- =========================================================================
 
-PROMPT ALTER TABLE BATTLES ADD CONSTRAINT PK_BATTLES PRIMARY KEY
+-- ALTER TABLE BATTLES ADD CONSTRAINT PK_BATTLES PRIMARY KEY
 ALTER TABLE BATTLES
   ADD CONSTRAINT PK_BATTLES PRIMARY KEY (
     NAME
@@ -264,7 +264,7 @@ ALTER TABLE BATTLES
     )
 /
 
-PROMPT ALTER TABLE CLASSES ADD CONSTRAINT PK_CLASSES PRIMARY KEY
+-- ALTER TABLE CLASSES ADD CONSTRAINT PK_CLASSES PRIMARY KEY
 ALTER TABLE CLASSES
   ADD CONSTRAINT PK_CLASSES PRIMARY KEY (
     CLASS
@@ -275,7 +275,7 @@ ALTER TABLE CLASSES
     )
 /
 
-PROMPT ALTER TABLE COMPANY ADD CONSTRAINT PK2 PRIMARY KEY
+-- ALTER TABLE COMPANY ADD CONSTRAINT PK2 PRIMARY KEY
 ALTER TABLE COMPANY
   ADD CONSTRAINT PK2 PRIMARY KEY (
     ID_COMP
@@ -286,7 +286,7 @@ ALTER TABLE COMPANY
     )
 /
 
-PROMPT ALTER TABLE INCOME ADD CONSTRAINT PK_INCOME PRIMARY KEY
+-- ALTER TABLE INCOME ADD CONSTRAINT PK_INCOME PRIMARY KEY
 ALTER TABLE INCOME
   ADD CONSTRAINT PK_INCOME PRIMARY KEY (
     CODE
@@ -297,7 +297,7 @@ ALTER TABLE INCOME
     )
 /
 
-PROMPT ALTER TABLE INCOME_O ADD CONSTRAINT PK_INCOME_O PRIMARY KEY
+-- ALTER TABLE INCOME_O ADD CONSTRAINT PK_INCOME_O PRIMARY KEY
 ALTER TABLE INCOME_O
   ADD CONSTRAINT PK_INCOME_O PRIMARY KEY (
     POINT,
@@ -309,7 +309,7 @@ ALTER TABLE INCOME_O
     )
 /
 
-PROMPT ALTER TABLE LAPTOP ADD CONSTRAINT PK_LAPTOP PRIMARY KEY
+-- ALTER TABLE LAPTOP ADD CONSTRAINT PK_LAPTOP PRIMARY KEY
 ALTER TABLE LAPTOP
   ADD CONSTRAINT PK_LAPTOP PRIMARY KEY (
     CODE
@@ -320,7 +320,7 @@ ALTER TABLE LAPTOP
     )
 /
 
-PROMPT ALTER TABLE OUTCOME ADD CONSTRAINT PK_OUTCOME PRIMARY KEY
+-- ALTER TABLE OUTCOME ADD CONSTRAINT PK_OUTCOME PRIMARY KEY
 ALTER TABLE OUTCOME
   ADD CONSTRAINT PK_OUTCOME PRIMARY KEY (
     CODE
@@ -331,7 +331,7 @@ ALTER TABLE OUTCOME
     )
 /
 
-PROMPT ALTER TABLE OUTCOME_O ADD CONSTRAINT PK_OUTCOME_O PRIMARY KEY
+-- ALTER TABLE OUTCOME_O ADD CONSTRAINT PK_OUTCOME_O PRIMARY KEY
 ALTER TABLE OUTCOME_O
   ADD CONSTRAINT PK_OUTCOME_O PRIMARY KEY (
     POINT,
@@ -343,7 +343,7 @@ ALTER TABLE OUTCOME_O
     )
 /
 
-PROMPT ALTER TABLE OUTCOMES ADD CONSTRAINT PK_OUTCOMES PRIMARY KEY
+-- ALTER TABLE OUTCOMES ADD CONSTRAINT PK_OUTCOMES PRIMARY KEY
 ALTER TABLE OUTCOMES
   ADD CONSTRAINT PK_OUTCOMES PRIMARY KEY (
     SHIP,
@@ -355,7 +355,7 @@ ALTER TABLE OUTCOMES
     )
 /
 
-PROMPT ALTER TABLE PASS_IN_TRIP ADD CONSTRAINT PK_PT PRIMARY KEY
+-- ALTER TABLE PASS_IN_TRIP ADD CONSTRAINT PK_PT PRIMARY KEY
 ALTER TABLE PASS_IN_TRIP
   ADD CONSTRAINT PK_PT PRIMARY KEY (
     TRIP_NO,
@@ -368,7 +368,7 @@ ALTER TABLE PASS_IN_TRIP
     )
 /
 
-PROMPT ALTER TABLE PASSENGER ADD CONSTRAINT PK_PSG PRIMARY KEY
+-- ALTER TABLE PASSENGER ADD CONSTRAINT PK_PSG PRIMARY KEY
 ALTER TABLE PASSENGER
   ADD CONSTRAINT PK_PSG PRIMARY KEY (
     ID_PSG
@@ -379,7 +379,7 @@ ALTER TABLE PASSENGER
     )
 /
 
-PROMPT ALTER TABLE PC ADD CONSTRAINT PK_PC PRIMARY KEY
+-- ALTER TABLE PC ADD CONSTRAINT PK_PC PRIMARY KEY
 ALTER TABLE PC
   ADD CONSTRAINT PK_PC PRIMARY KEY (
     CODE
@@ -390,7 +390,7 @@ ALTER TABLE PC
     )
 /
 
-PROMPT ALTER TABLE PRINTER ADD CONSTRAINT PK_PRINTER PRIMARY KEY
+-- ALTER TABLE PRINTER ADD CONSTRAINT PK_PRINTER PRIMARY KEY
 ALTER TABLE PRINTER
   ADD CONSTRAINT PK_PRINTER PRIMARY KEY (
     CODE
@@ -401,7 +401,7 @@ ALTER TABLE PRINTER
     )
 /
 
-PROMPT ALTER TABLE PRODUCT ADD CONSTRAINT PK_PRODUCT PRIMARY KEY
+-- ALTER TABLE PRODUCT ADD CONSTRAINT PK_PRODUCT PRIMARY KEY
 ALTER TABLE PRODUCT
   ADD CONSTRAINT PK_PRODUCT PRIMARY KEY (
     MODEL
@@ -412,7 +412,7 @@ ALTER TABLE PRODUCT
     )
 /
 
-PROMPT ALTER TABLE SHIPS ADD CONSTRAINT PK_SHIPS PRIMARY KEY
+-- ALTER TABLE SHIPS ADD CONSTRAINT PK_SHIPS PRIMARY KEY
 ALTER TABLE SHIPS
   ADD CONSTRAINT PK_SHIPS PRIMARY KEY (
     NAME
@@ -423,7 +423,7 @@ ALTER TABLE SHIPS
     )
 /
 
-PROMPT ALTER TABLE TRIP ADD CONSTRAINT PK_T PRIMARY KEY
+-- ALTER TABLE TRIP ADD CONSTRAINT PK_T PRIMARY KEY
 ALTER TABLE TRIP
   ADD CONSTRAINT PK_T PRIMARY KEY (
     TRIP_NO
@@ -434,7 +434,7 @@ ALTER TABLE TRIP
     )
 /
 
-PROMPT ALTER TABLE UTB ADD CONSTRAINT PK_UTB PRIMARY KEY
+-- ALTER TABLE UTB ADD CONSTRAINT PK_UTB PRIMARY KEY
 ALTER TABLE UTB
   ADD CONSTRAINT PK_UTB PRIMARY KEY (
     B_DATETIME,
@@ -447,7 +447,7 @@ ALTER TABLE UTB
     )
 /
 
-PROMPT ALTER TABLE UTQ ADD CONSTRAINT PK_UTQ PRIMARY KEY
+-- ALTER TABLE UTQ ADD CONSTRAINT PK_UTQ PRIMARY KEY
 ALTER TABLE UTQ
   ADD CONSTRAINT PK_UTQ PRIMARY KEY (
     Q_ID
@@ -458,7 +458,7 @@ ALTER TABLE UTQ
     )
 /
 
-PROMPT ALTER TABLE UTV ADD CONSTRAINT PK_UTV PRIMARY KEY
+-- ALTER TABLE UTV ADD CONSTRAINT PK_UTV PRIMARY KEY
 ALTER TABLE UTV
   ADD CONSTRAINT PK_UTV PRIMARY KEY (
     V_ID
@@ -469,11 +469,11 @@ ALTER TABLE UTV
     )
 /
 
-PROMPT =========================================================================
-PROMPT FOREIGN CONSTRAINTS
-PROMPT =========================================================================
+-- =========================================================================
+-- FOREIGN CONSTRAINTS
+-- =========================================================================
 
-PROMPT ALTER TABLE LAPTOP ADD CONSTRAINT FK_LAPTOP_PRODUCT FOREIGN KEY
+-- ALTER TABLE LAPTOP ADD CONSTRAINT FK_LAPTOP_PRODUCT FOREIGN KEY
 ALTER TABLE LAPTOP
   ADD CONSTRAINT FK_LAPTOP_PRODUCT FOREIGN KEY (
     MODEL
@@ -482,7 +482,7 @@ ALTER TABLE LAPTOP
   )
 /
 
-PROMPT ALTER TABLE OUTCOMES ADD CONSTRAINT FK_OUTCOMES_BATTLES FOREIGN KEY
+-- ALTER TABLE OUTCOMES ADD CONSTRAINT FK_OUTCOMES_BATTLES FOREIGN KEY
 ALTER TABLE OUTCOMES
   ADD CONSTRAINT FK_OUTCOMES_BATTLES FOREIGN KEY (
     BATTLE
@@ -491,7 +491,7 @@ ALTER TABLE OUTCOMES
   )
 /
 
-PROMPT ALTER TABLE PASS_IN_TRIP ADD CONSTRAINT FK_PASS_IN_TRIP_PASSENGER FOREIGN KEY
+-- ALTER TABLE PASS_IN_TRIP ADD CONSTRAINT FK_PASS_IN_TRIP_PASSENGER FOREIGN KEY
 ALTER TABLE PASS_IN_TRIP
   ADD CONSTRAINT FK_PASS_IN_TRIP_PASSENGER FOREIGN KEY (
     ID_PSG
@@ -500,7 +500,7 @@ ALTER TABLE PASS_IN_TRIP
   )
 /
 
-PROMPT ALTER TABLE PASS_IN_TRIP ADD CONSTRAINT FK_PASS_IN_TRIP_TRIP FOREIGN KEY
+-- ALTER TABLE PASS_IN_TRIP ADD CONSTRAINT FK_PASS_IN_TRIP_TRIP FOREIGN KEY
 ALTER TABLE PASS_IN_TRIP
   ADD CONSTRAINT FK_PASS_IN_TRIP_TRIP FOREIGN KEY (
     TRIP_NO
@@ -509,7 +509,7 @@ ALTER TABLE PASS_IN_TRIP
   )
 /
 
-PROMPT ALTER TABLE PC ADD CONSTRAINT FK_PC_PRODUCT FOREIGN KEY
+-- ALTER TABLE PC ADD CONSTRAINT FK_PC_PRODUCT FOREIGN KEY
 ALTER TABLE PC
   ADD CONSTRAINT FK_PC_PRODUCT FOREIGN KEY (
     MODEL
@@ -518,7 +518,7 @@ ALTER TABLE PC
   )
 /
 
-PROMPT ALTER TABLE PRINTER ADD CONSTRAINT FK_PRINTER_PRODUCT FOREIGN KEY
+-- ALTER TABLE PRINTER ADD CONSTRAINT FK_PRINTER_PRODUCT FOREIGN KEY
 ALTER TABLE PRINTER
   ADD CONSTRAINT FK_PRINTER_PRODUCT FOREIGN KEY (
     MODEL
@@ -527,7 +527,7 @@ ALTER TABLE PRINTER
   )
 /
 
-PROMPT ALTER TABLE SHIPS ADD CONSTRAINT FK_SHIPS_CLASSES FOREIGN KEY
+-- ALTER TABLE SHIPS ADD CONSTRAINT FK_SHIPS_CLASSES FOREIGN KEY
 ALTER TABLE SHIPS
   ADD CONSTRAINT FK_SHIPS_CLASSES FOREIGN KEY (
     CLASS
@@ -536,7 +536,7 @@ ALTER TABLE SHIPS
   )
 /
 
-PROMPT ALTER TABLE TRIP ADD CONSTRAINT FK_TRIP_COMPANY FOREIGN KEY
+-- ALTER TABLE TRIP ADD CONSTRAINT FK_TRIP_COMPANY FOREIGN KEY
 ALTER TABLE TRIP
   ADD CONSTRAINT FK_TRIP_COMPANY FOREIGN KEY (
     ID_COMP
@@ -545,7 +545,7 @@ ALTER TABLE TRIP
   )
 /
 
-PROMPT ALTER TABLE UTB ADD CONSTRAINT FK_UTB_UTQ FOREIGN KEY
+-- ALTER TABLE UTB ADD CONSTRAINT FK_UTB_UTQ FOREIGN KEY
 ALTER TABLE UTB
   ADD CONSTRAINT FK_UTB_UTQ FOREIGN KEY (
     B_Q_ID
@@ -554,7 +554,7 @@ ALTER TABLE UTB
   )
 /
 
-PROMPT ALTER TABLE UTB ADD CONSTRAINT FK_UTB_UTV FOREIGN KEY
+-- ALTER TABLE UTB ADD CONSTRAINT FK_UTB_UTV FOREIGN KEY
 ALTER TABLE UTB
   ADD CONSTRAINT FK_UTB_UTV FOREIGN KEY (
     B_V_ID
@@ -563,7 +563,7 @@ ALTER TABLE UTB
   )
 /
 
-PROMPT DATA battles
+-- DATA battles
 
 INSERT INTO battles (name, "date") VALUES ('Guadalcanal', timestamp'1942-11-15 00:00:00');
 INSERT INTO battles (name, "date") VALUES ('North Atlantic', timestamp'1941-05-25 00:00:00');
@@ -572,7 +572,7 @@ INSERT INTO battles (name, "date") VALUES ('Surigao Strait', timestamp'1944-10-2
 INSERT INTO battles (name, "date") VALUES ('#Cuba62a', timestamp'1962-10-20 00:00:00');
 INSERT INTO battles (name, "date") VALUES ('#Cuba62b', timestamp'1962-10-25 00:00:00');
 
-PROMPT DATA classes
+-- DATA classes
 
 INSERT INTO classes (class, type, country, numguns, bore, displacement) VALUES ('Bismarck', 'bb', 'Germany', 8, 15, 42000);
 INSERT INTO classes (class, type, country, numguns, bore, displacement) VALUES ('Iowa', 'bb', 'USA', 9, 16, 46000);
@@ -583,7 +583,7 @@ INSERT INTO classes (class, type, country, numguns, bore, displacement) VALUES (
 INSERT INTO classes (class, type, country, numguns, bore, displacement) VALUES ('Tennessee', 'bb', 'USA', 12, 14, 32000);
 INSERT INTO classes (class, type, country, numguns, bore, displacement) VALUES ('Yamato', 'bb', 'Japan', 9, 18, 65000);
 
-PROMPT DATA company
+-- DATA company
 
 INSERT INTO company (id_comp, name) VALUES (1, 'Don_avia  ');
 INSERT INTO company (id_comp, name) VALUES (2, 'Aeroflot  ');
@@ -592,7 +592,7 @@ INSERT INTO company (id_comp, name) VALUES (4, 'air_France');
 INSERT INTO company (id_comp, name) VALUES (5, 'British_AW');
 
 
-PROMPT DATA income
+-- DATA income
 
 INSERT INTO income (code, point, "date", inc) VALUES (1, 1, timestamp'2001-03-22 00:00:00', 15000.00);
 INSERT INTO income (code, point, "date", inc) VALUES (2, 1, timestamp'2001-03-23 00:00:00', 15000.00);
@@ -609,7 +609,7 @@ INSERT INTO income (code, point, "date", inc) VALUES (12, 3, timestamp'2001-09-1
 INSERT INTO income (code, point, "date", inc) VALUES (13, 3, timestamp'2001-09-13 00:00:00', 1750.00);
 
 
-PROMPT DATA income_o
+-- DATA income_o
 
 INSERT INTO income_o (point, "date", inc) VALUES (1, timestamp'2001-03-22 00:00:00', 15000.00);
 INSERT INTO income_o (point, "date", inc) VALUES (1, timestamp'2001-03-23 00:00:00', 15000.00);
@@ -622,7 +622,7 @@ INSERT INTO income_o (point, "date", inc) VALUES (3, timestamp'2001-09-13 00:00:
 INSERT INTO income_o (point, "date", inc) VALUES (3, timestamp'2001-10-02 00:00:00', 18000.00);
 
 
-PROMPT DATA product
+-- DATA product
 
 INSERT INTO product (maker, model, type) VALUES ('B', '1121', 'PC');
 INSERT INTO product (maker, model, type) VALUES ('A', '1232', 'PC');
@@ -641,7 +641,7 @@ INSERT INTO product (maker, model, type) VALUES ('A', '1752', 'Laptop');
 INSERT INTO product (maker, model, type) VALUES ('E', '2113', 'PC');
 INSERT INTO product (maker, model, type) VALUES ('E', '2112', 'PC');
 
-PROMPT DATA laptop
+-- DATA laptop
 
 INSERT INTO laptop (code, model, speed, ram, hd, price, screen) VALUES (1, '1298', 350, 32, 4, 700.00, 11);
 INSERT INTO laptop (code, model, speed, ram, hd, price, screen) VALUES (2, '1321', 500, 64, 8, 970.00, 12);
@@ -651,7 +651,7 @@ INSERT INTO laptop (code, model, speed, ram, hd, price, screen) VALUES (5, '1752
 INSERT INTO laptop (code, model, speed, ram, hd, price, screen) VALUES (6, '1298', 450, 64, 10, 950.00, 12);
 
 
-PROMPT DATA outcome
+-- DATA outcome
 
 INSERT INTO outcome (code, point, "date", "out") VALUES (1, 1, timestamp'2001-03-14 00:00:00', 15348.00);
 INSERT INTO outcome (code, point, "date", "out") VALUES (2, 1, timestamp'2001-03-24 00:00:00', 3663.00);
@@ -673,7 +673,7 @@ INSERT INTO outcome (code, point, "date", "out") VALUES (17, 3, timestamp'2001-0
 INSERT INTO outcome (code, point, "date", "out") VALUES (18, 3, timestamp'2001-09-14 00:00:00', 1150.00);
 
 
-PROMPT DATA outcome_o
+-- DATA outcome_o
 
 INSERT INTO outcome_o (point, "date", "out") VALUES (1, timestamp'2001-03-14 00:00:00', 15348.00);
 INSERT INTO outcome_o (point, "date", "out") VALUES (1, timestamp'2001-03-24 00:00:00', 3663.00);
@@ -692,7 +692,7 @@ INSERT INTO outcome_o (point, "date", "out") VALUES (3, timestamp'2001-09-14 00:
 INSERT INTO outcome_o (point, "date", "out") VALUES (3, timestamp'2002-09-16 00:00:00', 2150.00);
 
 
-PROMPT DATA outcomes
+-- DATA outcomes
 
 INSERT INTO outcomes (ship, battle, result) VALUES ('Bismarck', 'North Atlantic', 'sunk');
 INSERT INTO outcomes (ship, battle, result) VALUES ('California', 'Surigao Strait', 'OK');
@@ -711,7 +711,7 @@ INSERT INTO outcomes (ship, battle, result) VALUES ('West Virginia', 'Surigao St
 INSERT INTO outcomes (ship, battle, result) VALUES ('Yamashiro', 'Surigao Strait', 'sunk');
 INSERT INTO outcomes (ship, battle, result) VALUES ('California', 'Guadalcanal', 'damaged');
 
-PROMPT DATA trip
+-- DATA trip
 
 INSERT INTO trip (trip_no, id_comp, plane, town_from, town_to, time_out, time_in) VALUES (1100, 4, 'Boeing    ', 'Rostov                   ', 'Paris                    ', timestamp'1900-01-01 14:30:00', timestamp'1900-01-01 17:50:00');
 INSERT INTO trip (trip_no, id_comp, plane, town_from, town_to, time_out, time_in) VALUES (1101, 4, 'Boeing    ', 'Paris                    ', 'Rostov                   ', timestamp'1900-01-01 08:12:00', timestamp'1900-01-01 11:45:00');
@@ -736,7 +736,7 @@ INSERT INTO trip (trip_no, id_comp, plane, town_from, town_to, time_out, time_in
 INSERT INTO trip (trip_no, id_comp, plane, town_from, town_to, time_out, time_in) VALUES (8881, 5, 'Boeing    ', 'London                   ', 'Paris                    ', timestamp'1900-01-01 03:00:00', timestamp'1900-01-01 04:00:00');
 INSERT INTO trip (trip_no, id_comp, plane, town_from, town_to, time_out, time_in) VALUES (8882, 5, 'Boeing    ', 'Paris                    ', 'London                   ', timestamp'1900-01-01 22:00:00', timestamp'1900-01-01 23:00:00');
 
-PROMPT DATA passenger
+-- DATA passenger
 
 INSERT INTO passenger (id_psg, name) VALUES (1, 'Bruce Willis        ');
 INSERT INTO passenger (id_psg, name) VALUES (2, 'George Clooney      ');
@@ -771,7 +771,7 @@ INSERT INTO passenger (id_psg, name) VALUES (30, 'Sean Connery        ');
 INSERT INTO passenger (id_psg, name) VALUES (31, 'Bruce Willis        ');
 INSERT INTO passenger (id_psg, name) VALUES (37, 'Mullah Omar         ');
 
-PROMPT DATA pass_in_trip
+-- DATA pass_in_trip
 
 INSERT INTO pass_in_trip (trip_no, "date", id_psg, place) VALUES (1100, timestamp'2003-04-29 00:00:00', 1, '1a        ');
 INSERT INTO pass_in_trip (trip_no, "date", id_psg, place) VALUES (1123, timestamp'2003-04-05 00:00:00', 3, '2a        ');
@@ -807,7 +807,7 @@ INSERT INTO pass_in_trip (trip_no, "date", id_psg, place) VALUES (7771, timestam
 INSERT INTO pass_in_trip (trip_no, "date", id_psg, place) VALUES (7772, timestamp'2005-11-29 00:00:00', 14, '1c        ');
 
 
-PROMPT DATA pc
+-- DATA pc
 
 INSERT INTO pc (code, model, speed, ram, hd, cd, price) VALUES (1, '1232', 500, 64, 5, '12x', 600.00);
 INSERT INTO pc (code, model, speed, ram, hd, cd, price) VALUES (2, '1121', 750, 128, 14, '40x', 850.00);
@@ -822,7 +822,7 @@ INSERT INTO pc (code, model, speed, ram, hd, cd, price) VALUES (10, '1260', 500,
 INSERT INTO pc (code, model, speed, ram, hd, cd, price) VALUES (11, '1233', 900, 128, 40, '40x', 980.00);
 INSERT INTO pc (code, model, speed, ram, hd, cd, price) VALUES (12, '1233', 800, 128, 20, '50x', 970.00);
 
-PROMPT DATA printer
+-- DATA printer
 
 INSERT INTO printer (code, model, color, type, price) VALUES (1, '1276', 'n', 'Laser', 400.00);
 INSERT INTO printer (code, model, color, type, price) VALUES (2, '1433', 'y', 'Jet', 270.00);
@@ -832,7 +832,7 @@ INSERT INTO printer (code, model, color, type, price) VALUES (5, '1408', 'n', 'M
 INSERT INTO printer (code, model, color, type, price) VALUES (6, '1288', 'n', 'Laser', 400.00);
 
 
-PROMPT DATA ships
+-- DATA ships
 
 INSERT INTO ships (name, class, launched) VALUES ('California', 'Tennessee', 1921);
 INSERT INTO ships (name, class, launched) VALUES ('Haruna', 'Kongo', 1916);
@@ -858,7 +858,7 @@ INSERT INTO ships (name, class, launched) VALUES ('Yamato', 'Yamato', 1941);
 INSERT INTO ships (name, class, launched) VALUES ('South Dakota', 'North Carolina', 1941);
 
 
-PROMPT DATA utq
+-- DATA utq
 
 INSERT INTO utq (q_id, q_name) VALUES (1, 'Square # 01');
 INSERT INTO utq (q_id, q_name) VALUES (2, 'Square # 02');
@@ -885,7 +885,7 @@ INSERT INTO utq (q_id, q_name) VALUES (22, 'Square # 22');
 INSERT INTO utq (q_id, q_name) VALUES (23, 'Square # 23');
 INSERT INTO utq (q_id, q_name) VALUES (25, 'Square # 25');
 
-PROMPT DATA utv
+-- DATA utv
 
 INSERT INTO utv (v_id, v_name, v_color) VALUES (1, 'Balloon # 01', 'R');
 INSERT INTO utv (v_id, v_name, v_color) VALUES (2, 'Balloon # 02', 'R');
@@ -942,7 +942,7 @@ INSERT INTO utv (v_id, v_name, v_color) VALUES (52, 'Balloon # 52', 'R');
 INSERT INTO utv (v_id, v_name, v_color) VALUES (53, 'Balloon # 53', 'G');
 INSERT INTO utv (v_id, v_name, v_color) VALUES (54, 'Balloon # 54', 'B');
 
-PROMPT DATA utb
+-- DATA utb
 
 INSERT INTO utb (b_datetime, b_q_id, b_v_id, b_vol) VALUES (timestamp'2003-01-01 01:12:01', 1, 1, 155);
 INSERT INTO utb (b_datetime, b_q_id, b_v_id, b_vol) VALUES (timestamp'2003-06-23 01:12:02', 1, 1, 100);

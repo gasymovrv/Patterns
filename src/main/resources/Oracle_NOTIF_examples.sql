@@ -1,7 +1,10 @@
 -- Локальная БД DEV 8.0.0
 -- URL: jdbc:oracle:thin:@192.168.56.217:1521:XE
--- login: NOTIF_Z_RW
--- pass: NOTIF_Z_RW
+-- login: NOTIF_Z
+-- pass: NOTIF_Z
+--или
+-- login: smithj
+-- pass: pwd4smithj
 
 ALTER USER NOTIF_Z_RW IDENTIFIED BY "NOTIF_Z_RW";-- если пароль просрочился
 ALTER PROFILE DEFAULT LIMIT PASSWORD_LIFE_TIME UNLIMITED;-- чтобы пароль был вечным
@@ -36,7 +39,7 @@ GRANT create synonym TO smithj;
 
 alter session set current_schema = smithj; -- так и не понял нужна эта хрень или нет
 
--- теперь нужно зайти через smithj, затем это:
+-- теперь нужно зайти через smithj, затем сто:
 CREATE SCHEMA AUTHORIZATION smithj
   CREATE TABLE products -- просто создать схему нельзя, нужно обязательно что-то создавать
   ( product_id number(10) not null,
@@ -152,7 +155,7 @@ SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());-- вар 2 - боле
 
 
 
--- пример 5 (поиск напрямую по системному указателю ROWID)
+-- пример 5 (поиск напрсмую по системному указателю ROWID)
 EXPLAIN PLAN for
 SELECT ROWID FROM NOTIF_Z.ORDERS o WHERE o.ORDER_ID = 114;
 SELECT * FROM NOTIF_Z.ORDERS o WHERE o.ROWID = 'AAAE8sAAJAAAAEzAAF';
@@ -171,42 +174,186 @@ SELECT PLAN_TABLE_OUTPUT FROM TABLE(DBMS_XPLAN.DISPLAY());-- вар 2 - боле
 
 ---------------------------------------------------Процедуры-------------------------------------------------
 
-CREATE OR REPLACE Procedure UpdateCourse( name_in IN varchar2 )
-IS
-  cnumber number;
+--включение консоли
+set serveroutput on;
 
-  cursor c1 is
-    SELECT course_number
-    FROM courses_tbl
-    WHERE course_name = name_in;
+-- создание процедуры
+CREATE OR REPLACE PROCEDURE simpleProc(m in VARCHAR)
+IS
+  BEGIN
+    -- DBMS_OUTPUT.enable;
+    DBMS_OUTPUT.put_line('Печатаем из процедуры:' || m);-- в идее сначала нужно нажать желтый квадратик у окна Database Console
+  END;
+/
+
+-- анонимный блок с вызовом процедуры (простой select тут не работает)
+BEGIN
+  simpleProc('12314155');
+END;
+/
+
+
+
+-- создание процедуры
+CREATE OR REPLACE PROCEDURE TESTOUT(model_ IN VARCHAR2, maker_ OUT VARCHAR2)
+IS
+  BEGIN
+    SELECT p.maker INTO maker_ FROM product p WHERE p.model = model_;
+  END TESTOUT;
+/
+
+-- анонимный блок с переменными и вызовом процедуры  (простой select тут не работает)
+DECLARE
+  model_ VARCHAR2(50) DEFAULT '1121';
+  maker_ VARCHAR2(10);
+BEGIN
+  TESTOUT(model_, maker_);
+  DBMS_OUTPUT.put_line('model: '|| model_);
+  DBMS_OUTPUT.put_line('maker: '|| maker_);
+END;
+/
+
+
+
+
+-- создание процедуры (пример неизменяемости IN-параметра)
+CREATE OR REPLACE PROCEDURE TESTOUT2(model_ IN VARCHAR2, maker_ OUT VARCHAR2)
+IS
+  BEGIN
+    model_:='1288';-- ошибка
+    SELECT p.maker INTO maker_ FROM product p WHERE p.model = model_;
+  END TESTOUT2;
+/
+
+
+
+
+-- создание процедуры с доп. переменными и обр. исключений (если строк больше 1)
+CREATE OR REPLACE PROCEDURE write_from_cd(model_ IN PC.model%TYPE, code_ IN PC.code%TYPE) -- берем типы из полей
+IS
+  cd_ pc.cd%TYPE;
+  BEGIN
+    SELECT p.cd INTO cd_ FROM PC p WHERE p.model = model_;
+    DBMS_OUTPUT.put_line('model: ' || model_);
+    DBMS_OUTPUT.put_line('cd: ' || cd_);
+  EXCEPTION
+    WHEN TOO_MANY_ROWS THEN
+      SELECT p.cd INTO cd_ FROM PC p WHERE p.code = code_;
+      DBMS_OUTPUT.put_line('code: ' || code_);
+      DBMS_OUTPUT.put_line('cd: ' || cd_);
+      -- DBMS_OUTPUT.put_line('EXCEPTION!!! TOO_MANY_ROWS!');
+    WHEN OTHERS THEN
+      DBMS_OUTPUT.put_line('EXCEPTION!!!');
+  END;
+/
+BEGIN
+  DBMS_OUTPUT.put_line('----1121 несколько, поэтому ищем по коду:-------');
+  write_from_cd('1121', 4);
+  DBMS_OUTPUT.put_line('----1260 такая одна, поэтому ищем по модели:-------');
+  write_from_cd('1260', 4);
+END;
+/
+
+
+
+
+-- удаление процедур
+DROP PROCEDURE SIMPLEPROC;
+DROP PROCEDURE TESTOUT;
+DROP PROCEDURE TESTOUT2;
+DROP PROCEDURE write_from_cd;
+
+
+
+---------------------------------------------------Курсоры------------------------------------------------
+
+-- Создаем простой курсор в анонимном блоке
+DECLARE
+  CURSOR c1 IS
+    SELECT * FROM PRODUCT p;
+BEGIN
+  FOR item IN c1 -- item - это строка из результирующего набора
+  LOOP
+    DBMS_OUTPUT.put_line('maker: ' || item.MAKER || ', model: ' || item.MODEL || ', type: ' || item.TYPE);
+  END LOOP;
+END;
+/
+
+
+
+
+
+-- создание процедуры с курсором
+CREATE OR REPLACE PROCEDURE write_from_cd_cur(model_ IN PC.model%TYPE) -- берем типы из полей
+IS
+  CURSOR c1 IS
+    SELECT p.cd FROM PC p WHERE p.model = model_;
 
   BEGIN
-
-    open c1;
-    fetch c1 into cnumber;
-
-    if c1%notfound then
-      cnumber := 9999;
-    end if;
-
-    INSERT INTO student_courses
-    ( course_name,
-      course_number )
-    VALUES
-      ( name_in,
-        cnumber );
-
-    commit;
-
-    close c1;
+    FOR item IN c1 -- item - это строка из результирующего набора
+    LOOP
+      DBMS_OUTPUT.put_line('model: ' || model_ || ', cd: ' || item.CD);
+    END LOOP;
 
     EXCEPTION
     WHEN OTHERS THEN
-    raise_application_error(-20001,'An error was encountered - '||SQLCODE||' -ERROR- '||SQLERRM);
+      DBMS_OUTPUT.put_line('EXCEPTION!!!');
   END;
+/
+BEGIN
+  DBMS_OUTPUT.put_line('----1121:-------');
+  write_from_cd_cur('1121');
+  DBMS_OUTPUT.put_line('----1233:-------');
+  write_from_cd_cur('1233');
+END;
+/
 
 
 
+---------------------------------------------------Триггеры------------------------------------------------
 
+-- операторный триггер
+CREATE OR REPLACE TRIGGER BFINS_Prod BEFORE INSERT ON PRODUCT
+  DECLARE
+  BEGIN
+    DBMS_OUTPUT.put_line('before insert PRODUCT!');
+  END BFINS_Prod;
+/
 
+-- операторный триггер
+CREATE OR REPLACE TRIGGER AFINS_Prod AFTER INSERT ON PRODUCT
+  DECLARE
+  BEGIN
+    DBMS_OUTPUT.put_line('after insert PRODUCT!');
+  END AFINS_Prod;
+/
 
+-- строковый триггер, для каждой добавленной строки делает свое действие
+CREATE OR REPLACE TRIGGER AFINS_Prod_fer AFTER INSERT ON PRODUCT
+  FOR EACH ROW
+  DECLARE
+  BEGIN
+    DBMS_OUTPUT.put_line('Вставлена запись: maker: ' || :new.MAKER || ', model: ' || :new.MODEL || ', type: ' || :new.TYPE);
+  END AFINS_Prod_fer;
+/
+
+--тестируем 3 предыдущих триггера
+INSERT INTO Product VALUES ('NEW', '6324','PC');
+DELETE FROM PRODUCT WHERE MODEL = '6324';
+
+ALTER TRIGGER AFINS_Prod_fer  DISABLE;-- отключаем триггер
+
+--триггер на обновление
+CREATE OR REPLACE TRIGGER BFUP_Prod BEFORE UPDATE ON PRODUCT
+  FOR EACH ROW
+  DECLARE
+  BEGIN
+    DBMS_OUTPUT.put_line('Старая запись: maker: ' || :old.MAKER || ', model: ' || :old.MODEL || ', type: ' || :old.TYPE);
+    DBMS_OUTPUT.put_line('Обновленная запись: maker: ' || :new.MAKER || ', model: ' || :new.MODEL || ', type: ' || :new.TYPE);
+  END BFUP_Prod;
+/
+
+INSERT INTO Product VALUES ('NEW', '6324','PC');
+--тестируем триггер обновления
+UPDATE Product SET MAKER = 'ABCD', TYPE ='GAME' WHERE MODEL='6324';
+DELETE FROM PRODUCT WHERE MODEL = '6324';
