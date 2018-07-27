@@ -416,3 +416,11 @@ INSERT INTO Product VALUES ('NEW', '6324','PC');
 --тестируем триггер обновления
 UPDATE Product SET MAKER = 'ABCD', TYPE ='GAME' WHERE MODEL='6324';
 DELETE FROM PRODUCT WHERE MODEL = '6324';
+
+----------------------------------------------Разное--------------------------------------------------------------------
+--апдейт внутри которого поле задается через селект
+UPDATE laptop l
+SET
+  screen = screen + 1,
+  price  = (SELECT avg(p.price) FROM laptop p)
+;
