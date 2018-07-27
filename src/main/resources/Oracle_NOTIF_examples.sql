@@ -257,11 +257,44 @@ END;
 
 
 
+-- процедура возвращающая ResultSet
+CREATE OR REPLACE PROCEDURE result_set_procedure(retval OUT SYS_REFCURSOR) IS
+  BEGIN
+    OPEN retval FOR
+     SELECT p.CODE,p.MODEL,p.SPEED,p.RAM,p.HD,p.CD,p.PRICE,prod.MAKER FROM PC p
+       JOIN PRODUCT prod ON p.MODEL = prod.MODEL;
+  END result_set_procedure;
+/
+
+
+DECLARE
+  myrefcur  SYS_REFCURSOR;
+  code_    PC.CODE%TYPE;
+  model_    PC.MODEL%TYPE;
+  speed_    PC.SPEED%TYPE;
+  ram_    PC.RAM%TYPE;
+  hd_    PC.HD%TYPE;
+  cd_    PC.CD%TYPE;
+  price_    PC.PRICE%TYPE;
+  maker_    PRODUCT.MAKER%TYPE;
+  pc_    PC%ROWTYPE;
+BEGIN
+  result_set_procedure(myrefcur);
+  LOOP
+    FETCH myrefcur INTO code_,model_,speed_,ram_,hd_,cd_,price_,maker_;
+    EXIT WHEN myrefcur%NOTFOUND;
+    dbms_output.put_line( code_ || ', ' || model_ || ', ' || speed_ || ', ' || ram_ || ', ' || hd_ || ', ' || cd_ || ', ' || price_ || ', ' || maker_);
+  END LOOP;
+  CLOSE myrefcur;
+END;
+
+
 -- удаление процедур
 DROP PROCEDURE SIMPLEPROC;
 DROP PROCEDURE TESTOUT;
 DROP PROCEDURE TESTOUT2;
 DROP PROCEDURE write_from_cd;
+DROP PROCEDURE result_set_procedure;
 
 
 
