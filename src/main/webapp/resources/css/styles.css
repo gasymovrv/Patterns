@@ -1,0 +1,20 @@
+a:link {
+    font-size: larger;
+    color: black;
+    text-decoration: none; /* Убирает подчеркивание для ссылок */
+}
+
+a:visited {
+    color: black;
+    text-decoration: none;
+}
+
+a:active {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline; /* Делает ссылку подчеркнутой при наведении на нее курсора */
+    color: cornflowerblue; /* Цвет ссылки */
+}
