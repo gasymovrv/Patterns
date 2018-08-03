@@ -376,3 +376,214 @@ var result = arr.reduce(function(sum, current) {
 alert( result ); // 15
 
 //Метод arr.reduceRight работает аналогично, но идёт по массиву справа-налево.
+
+
+//--------------------Псевдомассив аргументов "arguments"----------------------
+function sayHi() {
+    for (var i = 0; i < arguments.length; i++) {
+        alert( "Привет, " + arguments[i] );
+    }
+}
+sayHi("Винни", "Пятачок"); // 'Привет, Винни', 'Привет, Пятачок'
+
+
+//Пример использования arguments
+// copy(dst, src1, src2…)
+//Копирует свойства из объектов src1, src2,... в объект dst. Возвращает получившийся объект.
+function copy(dst) {
+    // остальные аргументы остаются безымянными
+    for (var i = 1; i < arguments.length; i++) {
+        var arg = arguments[i];
+        for (var key in arg) {
+            dst[key] = arg[key];
+        }
+    }
+    return dst;
+}
+
+var vasya = {
+    age: 21,
+    name: 'Вася',
+    surname: 'Петров'
+};
+var user = {
+    isAdmin: false,
+    isEmailConfirmed: true
+};
+
+var student = {
+    university: 'My university'
+};
+
+// добавить к vasya свойства из user и student
+copy(vasya, user, student);
+
+alert(vasya.isAdmin); // false
+alert(vasya.university); // My university
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------Дата и Время----------------------------------------------
+
+// new Date()
+// Создает объект Date с текущей датой и временем:
+var now = new Date();
+alert(now);
+
+// new Date(datestring)
+// 24 часа после 01.01.1970 GMT+0:
+var Jan02_1970 = new Date(3600 * 24 * 1000);
+alert(Jan02_1970);
+
+//new Date(year, month, date, hours, minutes, seconds, ms)
+var d = new Date(2011, 0, 1, 0, 0, 0, 0); // // 1 января 2011, 00:00:00
+var d2 = new Date(2011, 0, 1); // то же самое, часы/секунды по умолчанию равны 0
+alert(d);
+
+
+//Для доступа к компонентам даты-времени объекта Date используются следующие методы:
+//
+// getFullYear()//Получить год (из 4 цифр)
+//
+// getMonth()//Получить месяц, от 0 до 11.
+//
+// getDate()//Получить число месяца, от 1 до 31.
+//
+// getHours(), getMinutes(), getSeconds(), getMilliseconds()//Получить соответствующие компоненты.
+//
+// getDay()//получить день недели (числом от 0(воскресенье) до 6(суббота))
+//
+// getTime()//Возвращает число миллисекунд, прошедших с 1 января 1970 года GMT+0,
+// то есть того же вида, который используется в конструкторе new Date(milliseconds).
+//
+// getTimezoneOffset()//Возвращает разницу между местным и UTC-временем, в минутах.
+
+// Следующие методы позволяют устанавливать компоненты даты и времени:
+//
+// setFullYear(year [, month, date])
+// setMonth(month [, date])
+// setDate(date)
+// setHours(hour [, min, sec, ms])
+// setMinutes(min [, sec, ms])
+// setSeconds(sec [, ms])
+// setMilliseconds(ms)
+// setTime(milliseconds) (устанавливает всю дату по миллисекундам с 01.01.1970 UTC)
+
+
+//Неправильные компоненты даты автоматически распределяются по остальным.
+//Например, нужно увеличить на 2 дня дату «28 февраля 2011». Может быть так, что это будет 2 марта,
+// а может быть и 1 марта, если год високосный.
+// Но нам обо всем этом думать не нужно. Просто прибавляем два дня. Остальное сделает Date:
+var d = new Date(2011, 1, 28);
+d.setDate(d.getDate() + 2);
+alert(d); // 2 марта, 2011
+
+var d = new Date();
+d.setSeconds(d.getSeconds() + 70);
+alert(d); // выведет корректную дату
+
+//Можно установить и нулевые, и даже отрицательные компоненты. Например:
+var d = new Date;
+d.setDate(1); // поставить первое число месяца
+alert(d);
+d.setDate(0); // нулевого числа нет, будет последнее число предыдущего месяца
+alert(d);
+
+
+//даты можно вычитать, результат вычитания объектов Date – их временная разница, в миллисекундах.
+//Это используют для измерения времени:
+var start = new Date; // засекли время
+// что-то сделать
+for (var i = 0; i < 100000; i++) {
+    var doSomething = i * i * i;
+}
+var end = new Date; // конец измерения
+alert("Цикл занял " + (end - start) + " ms");
+
+
+//Для измерения с одновременным выводом результатов в консоли есть методы:
+//console.time(метка) – включить внутренний хронометр браузера с меткой.
+//console.timeEnd(метка) – выключить внутренний хронометр браузера с меткой и вывести результат.
+//Пример: сравниваем скорость FOR IN и FOR
+var arr = [];
+for (var i = 0; i < 1000; i++) {
+    arr[i] = i+i;//заполняем массив
+}
+function walkIn(arr) {
+    for (var key in arr) arr[key]++;
+}
+function walkLength(arr) {
+    for (var i = 0; i < arr.length; i++) arr[i]++;
+}
+//прогоняет переданную ф-ю 10000раз
+function bench(f) {
+    for (var i = 0; i < 10000; i++) f(arr);
+}
+
+console.time("All Benchmarks");
+
+console.time("FOR-IN");
+bench(walkIn);
+console.timeEnd("FOR-IN");
+
+console.time("FOR");
+bench(walkLength);
+console.timeEnd("FOR");
+
+console.timeEnd("All Benchmarks");
+
+
+//--------------------Форматирование и вывод дат----------------------
+
+//Пример с почти всеми параметрами даты и русским, затем английским (США) форматированием:
+var date = new Date(2014, 11, 31, 12, 30, 0);
+var options = {
+    era: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+    timezone: 'UTC',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+};
+alert(date.toLocaleString("ru", options)); // среда, 31 декабря 2014 г. н.э. 12:30:00
+alert(date.toLocaleString("en-US", options)); // Wednesday, December 31, 2014 Anno Domini 12:30:00 PM
+
+
+//Пример 2
+var date = new Date(2014, 11, 31, 12, 30, 0);
+var options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+};
+alert(date.toLocaleString("ru", options)); // 31 декабря 2014 г.
+alert(date.toLocaleString("en-US", options)); // December 31, 2014
+
+
+//Разбор строки, Date.parse
+//Все современные браузеры, включая IE9+, понимают даты в упрощённом формате ISO 8601 Extended.
+//
+//    Этот формат выглядит так: YYYY-MM-DDTHH:mm:ss.sssZ, где:
+//
+//    YYYY-MM-DD – дата в формате год-месяц-день.
+//    Обычный символ T используется как разделитель.
+//    HH:mm:ss.sss – время: часы-минуты-секунды-миллисекунды.
+//    Часть 'Z' обозначает временную зону – в формате +-hh:mm, либо символ Z, обозначающий UTC. По стандарту её можно не указывать, тогда UTC, но в Safari с этим ошибка, так что лучше указывать всегда.
+//    Также возможны укороченные варианты, например YYYY-MM-DD или YYYY-MM или даже только YYYY.
+//
+//    Метод Date.parse(str) разбирает строку str в таком формате и возвращает соответствующее ей количество миллисекунд. Если это невозможно, Date.parse возвращает NaN.
+//
+//    Например:
+var msUTC = Date.parse('2012-01-26T13:51:50.417Z'); // зона UTC
+alert( msUTC ); // 1327571510417 (число миллисекунд)
