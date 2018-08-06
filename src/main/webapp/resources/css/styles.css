@@ -18,3 +18,7 @@ a:hover {
     text-decoration: underline; /* Делает ссылку подчеркнутой при наведении на нее курсора */
     color: cornflowerblue; /* Цвет ссылки */
 }
+
+.a-head{
+    font-weight: bold;
+}

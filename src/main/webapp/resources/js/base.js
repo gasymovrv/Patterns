@@ -1,6 +1,22 @@
 //---------------------------------------------------Базовые понятия----------------------------------------------
 
-
+var string1 = "2354";
+var string2 = "7334.6446";
+var string3 = "73d34.x644s6";
+var integer = Number(string1);
+var double = Number(string2);
+var wrong = Number(string3);
+console.log("string1 = "+string1);
+console.log("string2 = "+string2);
+console.log("string3 = "+string3);
+console.log("integer = "+integer);
+console.log("double = "+double);
+console.log("wrong = "+wrong);
+console.log("тип переменной string1: "+typeof(string1));
+console.log("тип переменной integer: "+typeof(integer));
+console.log("тип переменной string2: "+typeof(string2));
+console.log("тип переменной double: "+typeof(double));
+console.log("тип переменной wrong: "+typeof(wrong));
 
 
 
