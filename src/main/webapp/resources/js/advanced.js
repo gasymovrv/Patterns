@@ -884,7 +884,7 @@ var arr = ['firstName', 'surname'];
 showFullName.apply(user, arr);//тоже что и call, но аргументы массивом
 
 
-//функцию applyAll(func, arg1, arg2...),
+//функция applyAll(func, arg1, arg2...),
 // которая получает функцию func и произвольное количество аргументов.
 //
 //Она должна вызвать func(arg1, arg2...),
@@ -994,3 +994,741 @@ var user = {
 var vasya = user;
 user = null;
 vasya.checkPassword();
+
+
+
+
+
+
+
+
+
+
+
+
+
+//-----------------------------------------Функции-обёртки, декораторы------------------------------------------
+
+//-------------Декоратор-таймер-------------
+var timers = {};
+// прибавит время выполнения f к таймеру timers[timer]
+function timingDecorator(f, timer) {
+    console.log("timingDecorator->this = "+this);//window/undefined
+    return function() {//это ф-ия станет ф-ей f() и arguments переданные в f() будем использовать ниже
+        var start = performance.now();
+
+        // arguments - переданные в function при вызове той переменной в которую эта function будет сохранена,
+        // у той же переменной и возьмется this (см. строку "user.fun2 = timingDecorator(user.fun2, "fun2");")
+        console.log("timingDecorator->this->function = "+this);
+        var result = f.apply(this, arguments);//форвардинг вызова
+
+        if (!timers[timer]) timers[timer] = 0;
+        timers[timer] += performance.now() - start;
+
+        return result;
+    }
+}
+
+// функция может быть произвольной, например такой:
+function fibonacci(n) {
+    return (n > 2) ? fibonacci(n - 1) + fibonacci(n - 2) : 1;
+}
+//или, например, методом объекта:
+var user =
+    {
+        fun2: function() {
+            console.log("user->fun2->this =" + this);
+        },
+        toString: function () {
+            return "user";
+        }
+    };
+
+// использование 1: завернём fibonacci в декоратор
+console.log("-------fibonacci-------");
+fibonacci = timingDecorator(fibonacci, "fibo");
+// неоднократные вызовы...
+alert(fibonacci(10));
+// в любой момент можно получить общее количество времени на вызовы
+alert('times fibo = ' + timers["fibo"] + 'мс');
+
+// использование 2: завернём fun2 в декоратор
+console.log("-------fun2-------");
+user.fun2 = timingDecorator(user.fun2, "fun2");
+user.fun2();
+alert('times fun2 = ' + timers["fun2"] + 'мс');
+
+
+
+//-------------Декоратор проверяльщик типов (+exception)-------------
+
+// вспомогательная функция для проверки на число
+function checkNumber(value) {
+    return typeof value == 'number';
+}
+// декоратор, проверяющий типы для f
+// второй аргумент checks - массив с функциями для проверки
+function typeCheck(f, checks) {
+    return function() {
+        for (var i = 0; i < arguments.length; i++) {
+            if (!checks[i](arguments[i])) {
+                throw new TypeException(arguments[i], i);
+            }
+        }
+        return f.apply(this, arguments);//здесь вновь форвардинг вызова
+    }
+}
+function TypeException(value, position) {
+    this.value = value;
+    this.name = 'TypeException';
+    this.position = position;
+    this.message = "Некорректный тип аргумента номер ";
+    this.toString = function () {
+        return this.value + " : " + this.name + " : " + this.message + this.position;
+    }
+}
+function sum(a, b) {
+    return a + b;
+}
+// обернём в декоратор для проверки
+sum = typeCheck(sum, [checkNumber, checkNumber]); // оба аргумента - числа
+// пользуемся функцией как обычно
+alert( sum(1, 2) ); // 3, все хорошо
+// а вот так - будет ошибка
+sum(true, null); // uncaught exception: true : TypeException : Некорректный тип аргумента номер 0
+// sum(1, ["array", "in", "sum?!?"]); // uncaught exception: array,in,sum?!? : TypeException : Некорректный тип аргумента номер 1
+// sum(1, {name:"Dima"}); // uncaught exception: [object Object] : TypeException : Некорректный тип аргумента номер 1
+
+//декораторы можно накладывать друг на друга
+//Например, добавим еще предыдущий timingDecorator:
+sum = timingDecorator(sum, "sum");
+//теперь есть и проверка типов и учет веремени выполнения
+alert('times sum = ' + timers.sum + 'мс');
+
+
+
+//------Декотратор логгирования аргументов ф-ии--------
+function makeLogging(f, log) {
+    return function () {
+        var args = [];
+        //вызываю forEach с this=arguments,
+        //что позволяет работать с arguments как с массивом
+        [].forEach.call(arguments, function(element) {
+            args.push(element);
+        });
+        log.push(args);
+        //log.push([].slice.call(arguments)); //это еще более простое решение
+        return f.apply(this, arguments);
+    }
+}
+function work(a, b) {
+    alert( a + b ); // work - произвольная функция
+}
+//использование
+var log = [];
+work = makeLogging(work, log);
+work(1, 2); // 3
+work(4, 5); // 9
+for (var i = 0; i < log.length; i++) {
+    var args = log[i]; // массив из аргументов i-го вызова
+    alert( 'Лог:' + args.join() ); // "Лог:1,2", "Лог:4,5"
+}
+
+
+
+//------Кеширующий декоратор--------
+//При первом вызове обертки с определенным аргументом – она вызывает f и запоминает ее результат.
+//При втором и последующих вызовах с тем же аргументом возвращается запомненное значение.
+function f(x) {
+    return Math.random() * x; // random для удобства тестирования
+}
+function makeCaching(f) {
+    var cache = {};
+    return function(x) {
+        if(!(x in cache)){
+            cache[x] = f.call(this, x);
+        }
+        return cache[x];
+    }
+}
+
+//использование:
+f = makeCaching(f);
+var a, b;
+a = f(1);
+b = f(1);
+alert(a == b); // true (значение закешировано)
+b = f(2);
+alert(a == b); // false, другой аргумент => другое значение
+
+
+
+
+
+
+
+
+
+
+
+
+
+//-----------------------------------------Типы данных: [[Class]], instanceof и утки------------------------------------------
+
+//----------------[[Class]]
+function getClass(obj) {
+    return {}.toString.call(obj).slice(8, -1);
+}
+alert( getClass(new Date) ); // Date
+alert( getClass([1, 2, 3]) ); // Array
+
+
+//----------------instanceof
+function User() {}
+function Pet() {}
+var u = new User();
+var p = new Pet();
+console.log("u instanceof User: "+(u instanceof User));
+console.log("p instanceof Pet: "+(p instanceof Pet));
+
+
+//------------------Пример полиморфной функции 1
+//Пример полиморфной функции – sayHi(who), которая будет говорить «Привет» своему аргументу,
+// причём если передан массив – то «Привет» каждому:
+function sayHi(who) {
+    if (who.forEach) {  // если есть forEach
+        who.forEach(sayHi); // предполагаем, что он ведёт себя "как надо" - это и есть утиная типизация
+    } else {
+        alert( 'Привет, ' + who );
+    }
+}
+
+// Вызов с примитивным аргументом
+sayHi("Вася"); // Привет, Вася
+
+// Вызов с массивом
+sayHi(["Саша", "Петя"]); // Привет, Саша... Петя
+
+// Вызов с вложенными массивами - тоже работает!
+sayHi(["Саша", "Петя", ["Маша", "Юля"]]); // Привет Саша..Петя..Маша..Юля
+
+
+
+
+//------------------Пример полиморфной функции 2
+//
+//Напишите функцию formatDate(date), которая возвращает дату в формате dd.mm.yy.
+//Ее первый аргумент должен содержать дату в одном из видов:
+//
+//Как объект Date.
+//Как строку, например yyyy-mm-dd или другую в стандартном формате даты.
+//Как число секунд с 01.01.1970.
+//Как массив [гггг, мм, дд], месяц начинается с нуля
+function formatDate(date) {
+    if (typeof date == 'number') {
+        // перевести секунды в миллисекунды и преобразовать к Date
+        date = new Date(date * 1000);
+    } else if (typeof date == 'string') {
+        // строка в стандартном формате автоматически будет разобрана в дату
+        date = new Date(date);
+    } else if (Array.isArray(date)) {
+        date = new Date(date[0], date[1], date[2]);
+    }
+    var options1 = {day: 'numeric', month: 'numeric', year: '2-digit'};//вариант формата 1
+    var options2 = {day: '2-digit', month: '2-digit', year: '2-digit'};//вариант формата 2 (в итоге дают одно и тоже)
+    return date.toLocaleString("ru", options1);
+}
+
+alert(formatDate('2011-10-02')); // 02.10.11
+alert(formatDate(1234567890)); // 14.02.09
+alert(formatDate([2014, 0, 1])); // 01.01.14
+alert(formatDate(new Date(2014, 0, 1))); // 01.01.14
+
+
+
+
+
+
+
+
+
+
+
+//-----------------------------------------Формат JSON, метод toJSON------------------------------------------
+
+//-----------JSON.parse----------
+//Вызов JSON.parse(str) превратит строку с данными в формате JSON в JavaScript-объект/массив/значение.
+
+//Синтаксис JSON
+// Объекты в формате JSON похожи на обычные JavaScript-объекты,
+// но отличаются от них более строгими требованиями к строкам – они должны быть именно в двойных кавычках.
+var incorrectJSON = {
+    name: "Вася",       // ошибка: ключ name без кавычек!
+    "surname": 'Петров',// ошибка: одинарные кавычки у значения 'Петров'!
+    "age": 35,           // .. а тут всё в порядке.
+    "isAdmin": false    // и тут тоже всё ок
+}
+var user = JSON.parse(incorrectJSON);//SyntaxError: JSON.parse: unexpected character
+
+//Пример 1
+var str = '{ "name": "Вася", "age": 35, "isAdmin": false, "friends": ["el0","el1","el2","el3"] }';
+var user = JSON.parse(str);
+alert( user.name ); // Вася
+alert( user.age ); // 35
+alert( user.isAdmin ); // false
+alert( user.friends[0] ); // el0
+alert( user.friends[1] ); // el1
+
+//Пример 2 (с распознаванием дат)
+var schedule = '{ \
+  "events": [ \
+    {"title":"Конференция","date":"2014-11-30T12:00:00.000Z"}, \
+    {"title":"День рождения","date":"2015-04-18T12:00:00.000Z"} \
+  ]\
+}';
+schedule = JSON.parse(schedule, function(key, value) {
+    if (key == 'date') return new Date(value);
+    return value;
+});
+alert( schedule.events[0].date.getDate() ); // сработает!
+
+
+//-----------JSON.stringify----------
+//Метод JSON.stringify(value, replacer, space) преобразует («сериализует») значение в JSON-строку.
+//При сериализации объекта вызывается его метод toJSON.
+//Если такого метода нет – перечисляются его свойства, кроме функций.
+
+// Пример использования 1:
+var event = {
+    title: "Конференция",
+    date: "сегодня"
+};
+var str = JSON.stringify(event);
+alert(str); // {"title":"Конференция","date":"сегодня"}
+// Обратное преобразование.
+event = JSON.parse(str);
+
+
+// Пример использования 2:
+var room = {
+    number: 23,
+    occupy: function () {
+        alert(this.number);
+    }
+};
+var event = {
+    title: "Конференция",
+    date: new Date(Date.UTC(2014, 0, 1)),
+    room: room
+};
+alert(JSON.stringify(event));
+/*
+  {
+    "title":"Конференция",
+    "date":"2014-01-01T00:00:00.000Z",  // (1)
+    "room": {"number":23}               // (2)
+  }
+*/
+
+//---------toJSON---------
+//У объекта room нет метода toJSON. Поэтому он сериализуется перечислением свойств.
+//Мы, конечно, могли бы добавить такой метод, тогда в итог попал бы его результат:
+var room = {
+    number: 23,
+    toJSON: function() {
+        return this.number;
+    }
+};
+alert( JSON.stringify(room) ); // 23
+
+
+
+//----------Исключения из сериализации-------------
+// Во втором параметре JSON.stringify(value, replacer) можно указать массив свойств,
+// которые подлежат сериализации.
+//Например:
+var user = {
+    name: "Вася",
+    age: 25,
+    window: window
+};
+alert(JSON.stringify(user, ["name", "age"]));
+// {"name":"Вася","age":25}
+
+
+//Либо указать ф-ю:
+var user = {
+    name: "Вася",
+    age: 25,
+    window: window
+};
+var str = JSON.stringify(user, function(key, value) {
+    if (key == 'window') return undefined;
+    return value;
+});
+alert( str ); // {"name":"Вася","age":25}
+
+
+//-----------Красивое форматирование----------
+//В методе JSON.stringify(value, replacer, space) есть ещё третий параметр space.
+//Если он является числом – то уровни вложенности в JSON оформляются указанным количеством пробелов,
+// если строкой – вставляется эта строка.
+//Например:
+var user = {
+    name: "Вася",
+    age: 25,
+    roles: {
+        isAdmin: false,
+        isEditor: true
+    }
+};
+var str = JSON.stringify(user, "", 4);
+alert( str );
+/* Результат -- красиво сериализованный объект:
+{
+    "name": "Вася",
+    "age": 25,
+    "roles": {
+        "isAdmin": false,
+        "isEditor": true
+    }
+}
+*/
+
+
+//----------еще примеры----------
+var leader = {
+    name: "Василий Иванович",
+    age: 35
+};
+var json = JSON.stringify(leader, null, 4);
+console.log(json);
+var leader2 = JSON.parse(json);
+console.log(leader2);
+
+
+
+
+
+
+
+
+
+//-----------------------------------------setTimeout и setInterval------------------------------------------
+
+//setTimeout и setInterval
+//Рекурсивный setTimeout гарантирует паузу между вызовами, setInterval – нет,
+// потому что не дожидается завершения ф-ии для начала отсчета и если ф-ия дольше интервала, то она будет выполняться сразу же.
+//Давайте сравним два кода.
+
+// Первый использует setInterval:
+var i1 = 1;
+var timer1 = setInterval(function () {
+    console.log("interval: "+i1++);
+    if(i1==20) {
+        clearInterval(timer1);
+    }
+}, 100);
+
+//Второй использует рекурсивный setTimeout:
+var i2 = 1;
+setTimeout(function run() {
+    console.log("recur. timeout: "+i2++);
+    var t=setTimeout(run, 100);
+    if(i2==20) {
+        clearTimeout(t);
+    }
+}, 2000);
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------Перехват ошибок, "try..catch"---------------------------------------------
+
+//Пример с ошибкой: при запуске сработают (1) и (3):
+try {
+    alert('Начало блока try');  // (1) <--
+    lalala; // ошибка, переменная не определена!
+    alert('Конец блока try');  // (2)
+} catch(e) {
+    alert('Ошибка ' + e.name + ":" + e.message + "\n" + e.stack); // (3) <--
+}
+alert("Потом код продолжит выполнение...");
+
+
+//Используем try..catch, чтобы обработать некорректный ответ:
+var data = "Has Error"; // в данных ошибка
+try {
+    var user = JSON.parse(data); // <-- ошибка при выполнении
+    alert(user.name); // не сработает
+} catch (e) {
+    // ...выполнится catch
+    alert("Извините, в данных ошибка, мы попробуем получить их ещё раз");
+    alert(e.name);
+    alert(e.message);
+}
+
+
+//Используем конструктор new SyntaxError(message).
+// Он создаёт ошибку того же типа, что и JSON.parse.
+var data = '{ "age": 30 }'; // данные неполны
+try {
+    var user = JSON.parse(data); // <-- выполнится без ошибок
+    if (!user.name) {
+        throw new SyntaxError("Данные некорректны");
+    }
+    alert(user.name);
+} catch (e) {
+    alert("Извините, в данных ошибка");
+}
+
+
+//В примере ниже catch обрабатывает только ошибки SyntaxError,
+// а остальные – выбрасывает дальше:
+var data = '{ "name": "Вася", "age": 30 }'; // данные корректны
+try {
+    var user = JSON.parse(data);
+    if (!user.name) {
+        throw new SyntaxError("Ошибка в данных");
+    }
+    blabla(); // произошла непредусмотренная ошибка
+    alert(user.name);
+} catch (e) {
+    if (e.name == "SyntaxError") {
+        alert("Извините, в данных ошибка");
+    } else {
+        throw e;
+    }
+}
+
+
+//------Оборачивание исключений---------
+function ReadError(message, cause) {
+    this.message = message;
+    this.cause = cause;
+    this.name = 'ReadError';
+    this.stack = cause.stack;
+}
+function readData() {
+    var data = '{ bad data }';
+
+    try {
+        // ...
+        JSON.parse(data);
+        // ...
+    } catch (e) {
+        // ...
+        if (e.name == 'URIError') {
+            throw new ReadError("Ошибка в URI", e);
+        } else if (e.name == 'SyntaxError') {
+            throw new ReadError("Синтаксическая ошибка в данных", e);
+        } else {
+            throw e; // пробрасываем
+        }
+    }
+}
+try {
+    readData();
+} catch (e) {
+    if (e.name == 'ReadError') {
+        alert(e.message);
+        alert(e.cause); // оригинальная ошибка-причина
+    } else {
+        throw e;
+    }
+}
+
+
+//---------finally----------
+function func() {
+    try {
+        // сразу вернуть значение
+        return 1;
+    } catch (e) {
+        /* ... */
+    } finally {
+        alert('finally');
+    }
+}
+alert(func()); // сначала finally, потом 1
+
+
+//---------window.onerror----------
+window.onerror = function(message, url, lineNumber) {
+    alert("Поймана ошибка, выпавшая в глобальную область!\n" +
+        "Сообщение: " + message + "\n(" + url + ":" + lineNumber + ")");
+};
+function readData() {
+    error(); // ой, что-то не так
+}
+readData();
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------Внутренний и внешний интерфейс--------------------------------------------
+//приватный = локальный
+//публичный = объектный(this.xxx)
+
+//Пример проблемы с доступом к объекту из внутреннего метода
+"use strict";
+function CoffeeMachine(power) {
+    this.waterAmount = 0;//публичное поле
+    // физическая константа - удельная теплоёмкость воды для getBoilTime
+    var WATER_HEAT_CAPACITY = 4200;//приватное поле
+    // расчёт времени для кипячения
+    function getBoilTime() {//приватная ф-ия
+        // ошибка! this тут - это объект функции getBoilTime (которого сейчас нет),
+        // без строгого режима - это window,
+        // а в строгом - undefined
+        return this.waterAmount * WATER_HEAT_CAPACITY * 80 / power;
+    }
+    // что делать по окончании процесса
+    function onReady() {//приватная ф-ия
+        alert( 'Кофе готов!' );
+    }
+    this.run = function() {//публичный метод
+        setTimeout(onReady, getBoilTime());
+        console.log(this);
+    };
+}
+var coffeeMachine = new CoffeeMachine(1000);
+coffeeMachine.waterAmount = 200;
+coffeeMachine.run();
+
+
+//Решение этой проблемы через сохранение this в замыкании
+"use strict";
+function CoffeeMachine(power) {
+    this.waterAmount = 0;
+    var WATER_HEAT_CAPACITY = 4200;
+    var self = this;//сохраняем this во внутреннее свойство
+    function getBoilTime() {
+        return self.waterAmount * WATER_HEAT_CAPACITY * 80 / power;
+    }
+    function onReady() {
+        alert('Кофе готов!');
+    }
+    this.run = function () {
+        setTimeout(onReady, getBoilTime());
+    };
+}
+var coffeeMachine = new CoffeeMachine(100000);
+coffeeMachine.waterAmount = 200;
+coffeeMachine.run();
+
+
+//Та же кофеварка но добавлен стоп
+"use strict";
+function CoffeeMachine(power) {
+    this.waterAmount = 0;
+    var WATER_HEAT_CAPACITY = 4200;
+    var self = this;//сохраняем this во внутреннее свойство
+    var timer;
+    function getBoilTime() {
+        return self.waterAmount * WATER_HEAT_CAPACITY * 80 / power;
+    }
+    function onReady() {
+        alert('Кофе готов!');
+    }
+    this.run = function () {
+        timer = setTimeout(onReady, getBoilTime());
+    };
+    this.stop = function () {
+        clearTimeout(timer);
+    }
+}
+
+var coffeeMachine = new CoffeeMachine(50000);
+coffeeMachine.waterAmount = 200;
+coffeeMachine.run();
+coffeeMachine.stop(); // кофе приготовлен не будет
+
+
+
+//-------------Геттеры и сеттеры--------------
+function User() {
+    var firstName;
+    var surname;
+    this.getFirstName = function () {
+        return firstName;
+    };
+    this.setFirstName = function (value) {
+        firstName = value;
+    };
+    this.getSurname = function () {
+        return surname;
+    };
+    this.setSurname = function (value) {
+        surname = value;
+    };
+    this.getFullName = function () {//не имеет соотв. свойства - это нормально
+        return firstName + ' ' + surname;
+    };
+    this.setFullName = function (value) {//не имеет соотв. свойства - это нормально
+        var split = value.split(' ');
+        firstName = split[0];
+        surname = split[1];
+    };
+}
+var user = new User();
+user.setFirstName("Петя");
+user.setSurname("Иванов");
+alert(user.getFullName()); // Петя Иванов
+
+
+
+//кофеварка с сеттерем для onReady
+"use strict";
+function CoffeeMachine(power, capacity) {
+    var waterAmount = 0;
+    var WATER_HEAT_CAPACITY = 4200;
+    function getBoilTime() {
+        return waterAmount * WATER_HEAT_CAPACITY * 80 / power;
+    }
+    function onReady() {
+        alert('Кофе готов!');
+    }
+    this.setOnReady = function (f) {
+        onReady = f;
+    };
+    //Чтобы setOnReady можно было вызывать в любое время, в setTimeout передаётся не onReady,
+    // а анонимная функция function() { onReady() },
+    // которая возьмёт текущий (установленный последним) onReady из замыкания.
+    this.run = function () {
+        setTimeout(function(){onReady();}, getBoilTime());
+    };
+    this.setWaterAmount = function(amount) {
+        if (amount < 0) {
+            throw new Error("Значение должно быть положительным");
+        }
+        if (amount > capacity) {
+            throw new Error("Нельзя залить воды больше, чем " + capacity);
+        }
+
+        waterAmount = amount;
+    };
+    this.getWaterAmount = function() {
+        return waterAmount;
+    };
+}
+var coffeeMachine = new CoffeeMachine(20000, 500);
+coffeeMachine.setWaterAmount(150);
+coffeeMachine.setOnReady(function() {
+    var amount = coffeeMachine.getWaterAmount();
+    alert( 'Готов кофе: ' + amount + 'мл' ); // Кофе готов: 150 мл
+});
+coffeeMachine.run();

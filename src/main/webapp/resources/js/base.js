@@ -6,20 +6,69 @@ var string3 = "73d34.x644s6";
 var integer = Number(string1);
 var double = Number(string2);
 var wrong = Number(string3);
+
 console.log("string1 = "+string1);
 console.log("string2 = "+string2);
 console.log("string3 = "+string3);
 console.log("integer = "+integer);
 console.log("double = "+double);
 console.log("wrong = "+wrong);
-console.log("тип переменной string1: "+typeof(string1));
-console.log("тип переменной integer: "+typeof(integer));
-console.log("тип переменной string2: "+typeof(string2));
-console.log("тип переменной double: "+typeof(double));
-console.log("тип переменной wrong: "+typeof(wrong));
+
+console.log("тип переменной string1: " + typeof(string1));
+console.log("тип переменной integer: " + typeof(integer));
+console.log("тип переменной string2: " + typeof(string2));
+console.log("тип переменной double: " + typeof(double));
+console.log("тип переменной wrong: " + typeof(wrong));
+//или так:
+// console.log("тип переменной string1: " + typeof string1);
+// console.log("тип переменной integer: " + typeof integer);
+// console.log("тип переменной string2: " + typeof string2);
+// console.log("тип переменной double: " + typeof double);
+// console.log("тип переменной wrong: " + typeof wrong);
+
+console.log("typeof string1 === \"string\": "+(typeof string1 === 'string'));
+console.log("typeof integer === \"number\": "+(typeof integer === "number"));
+console.log("typeof string2 === \"string\": "+(typeof string2 === "string"));
+console.log("typeof double === \"number\": "+(typeof double === "number"));
+console.log("typeof wrong === \"string\": "+(typeof wrong === "string"));
+
+alert(typeof 1);         // 'number'
+alert(typeof true);      // 'boolean'
+alert(typeof "Текст");   // 'string'
+alert(typeof undefined); // 'undefined'
+alert(typeof null);      // 'object' (ошибка в языке)
+alert(typeof alert);     // 'function'
+alert(typeof {});        // 'object'
+alert(typeof []);        // 'object'
+alert(typeof new Date);  // 'object'
+
+function User() {}
+function Pet() {}
+var u = new User();
+var p = new Pet();
+console.log("u instanceof User: "+(u instanceof User));
+console.log("p instanceof Pet: "+(p instanceof Pet));
 
 
+//Взяли метод toString, принадлежащий именно стандартному объекту {}.
+// Нам пришлось это сделать, так как у Date и Array – свои собственные методы toString, которые работают иначе.
+//Затем мы вызываем этот toString в контексте нужного объекта obj,
+// и он возвращает его внутреннее, невидимое другими способами, свойство [[Class]]
+var toString = {}.toString;
+var arr = [1, 2];
+alert(toString.call(arr)); // [object Array]
+var date = new Date;
+alert(toString.call(date)); // [object Date]
+var user = {name: "Вася"};
+alert(toString.call(user)); // [object Object]
+alert(toString.call(123)); // [object Number]
+alert(toString.call("строка")); // [object String]
 
+function getClass(obj) {
+    return {}.toString.call(obj).slice(8, -1);
+}
+alert( getClass(new Date) ); // Date
+alert( getClass([1, 2, 3]) ); // Array
 
 
 
