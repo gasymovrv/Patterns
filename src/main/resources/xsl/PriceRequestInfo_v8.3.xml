@@ -1,54 +1,74 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <?xml-stylesheet type="text/xsl" href="PriceRequestInfo_v8.3.xsl"?>
-<ns2:fcsRequestForQuotation schemeVersion="6.3" xmlns="http://zakupki.gov.ru/oos/types/1" xmlns:ns2="http://zakupki.gov.ru/oos/printform/1">
-
-    <docPublishDate>2016-04-25T11:16:08+04:00</docPublishDate>
-    <registryNum>9911111111316000035</registryNum>
+<ns2:fcsRequestForQuotation schemeVersion="8.3" xmlns="http://zakupki.gov.ru/oos/types/1"
+                            xmlns:ns2="http://zakupki.gov.ru/oos/printform/1">
+    <id>401</id>
     <versionNumber>01</versionNumber>
-    <state>Размещен</state>
+    <state>Подготовка</state>
     <publishOrg>
         <regNum>99111111113</regNum>
-        <shortName>Тестовая организация 3</shortName>
+        <fullName>Тестовая организация 3</fullName>
         <INN>4444444442</INN>
         <KPP>444444442</KPP>
+        <OGRN>9999999999992</OGRN>
+        <responsibleRole>CU</responsibleRole>
     </publishOrg>
-    <requestObjectInfo>fdgdfg</requestObjectInfo>
+    <requestObjectInfo>FCSNF-6414 ЗЦ Изменение формата поля Количество</requestObjectInfo>
     <responsibleInfo>
-        <place>dfgfdg</place>
-        <contactPerson>
-            <lastName>fdg</lastName>
-            <firstName>dfg</firstName>
-            <middleName>dfg</middleName>
-        </contactPerson>
-        <contactEMail>ww@ww.ww</contactEMail>
-        <contactPhone>7-777-7777777</contactPhone>
+        <contactPerson/>
     </responsibleInfo>
     <procedureInfo>
         <request>
-            <startDate>2016-04-26T11:11:00+04:00</startDate>
-            <endDate>2016-04-27T11:11:00+04:00</endDate>
+            <startDate>2018-07-30T05:03:00-03:00</startDate>
         </request>
-        <purchase>
-            <startDate>2016-04-01T00:00:00+04:00</startDate>
-            <endDate>2016-04-01T00:00:00+04:00</endDate>
-        </purchase>
+        <purchase/>
     </procedureInfo>
     <products>
-        <objectInfo>dsfsdf</objectInfo>
+        <objectInfo>тре555</objectInfo>
         <product>
             <OKPD2>
-                <code>01.11.11.111</code>
-                <name>Зерно озимой твердой пшеницы</name>
+                <code>17.12.14.170</code>
+                <name>Бумага электроизоляционная</name>
             </OKPD2>
-            <name>sad</name>
+            <name>17.12.14.170: Бумага электроизоляционная</name>
+            <OKEI>
+                <code>626</code>
+                <name>Сто листов</name>
+            </OKEI>
+            <quantity>5555555555555.05</quantity>
+        </product>
+        <product>
+            <OKPD2>
+                <code>10.13.16.110</code>
+                <name>Мука тонкого и грубого помола и гранулы из мяса или мясных субпродуктов, не пригодные для
+                    употребления в пищу
+                </name>
+            </OKPD2>
+            <name>10.13.16.110: Мука тонкого и грубого помола и гранулы из мяса или мясных субпродуктов, не пригодные
+                для употребления в пищу
+            </name>
             <OKEI>
                 <code>952</code>
                 <name>Тысяча вагоно-(машино)-километров</name>
             </OKEI>
-            <!--<quantity>123456789012345.12300000</quantity>-->
-            <quantity>123121321321321321,12500000</quantity>
+            <quantity>1234567891234.003</quantity>
+        </product>
+        <product>
+            <OKPD2>
+                <code>10.20.42.000</code>
+                <name>Продукты из рыбы, ракообразных, моллюсков и прочих водных беспозвоночных, не пригодные для
+                    употребления в пищу, прочие
+                </name>
+            </OKPD2>
+            <name>10.20.42.000: Продукты из рыбы, ракообразных, моллюсков и прочих водных беспозвоночных, не пригодные
+                для употребления в пищу, прочие
+            </name>
+            <OKEI>
+                <code>781</code>
+                <name>Сто упаковок</name>
+            </OKEI>
+            <quantity>122342332222222222.00000000009</quantity>
         </product>
     </products>
     <conditions/>
-    <attachments/>
 </ns2:fcsRequestForQuotation>
