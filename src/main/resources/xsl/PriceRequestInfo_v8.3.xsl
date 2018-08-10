@@ -733,7 +733,7 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:variable>
-                    <xsl:value-of select="format-number($newX,'0.00')"/>
+                    <xsl:value-of select="$newX"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="$x"/>
