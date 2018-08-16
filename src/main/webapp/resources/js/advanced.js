@@ -2018,7 +2018,10 @@ fridge.disable(); // ошибка, в холодильнике есть еда
 
 //-------------------------------------Прототипное наследование------------------------------------------------------
 
-//__proto__
+
+
+//----------------------__proto__---------------------------
+
 var animal = {
     eats: true
 };
@@ -2029,3 +2032,429 @@ rabbit.__proto__ = animal;
 // в rabbit можно найти оба свойства
 alert( rabbit.jumps ); // true
 alert( rabbit.eats ); // true
+
+
+//Запись свойств не работает, только чтение
+//записываем свойство в сам rabbit, после чего alert перестаёт брать его у прототипа,
+// а берёт уже из самого объекта:
+var animal = {
+    eats: true
+};
+var rabbit = {
+    jumps: true,
+    eats: false
+};
+rabbit.__proto__ = animal;
+alert( rabbit.eats ); // false, свойство взято из rabbit
+
+
+//Обычный цикл for..in не делает различия между свойствами объекта и его прототипа.
+//Он перебирает всё, например:
+var animal = {
+    eats: true
+};
+var rabbit = {
+    jumps: true,
+    __proto__: animal
+};
+for (var key in rabbit) {
+    alert( key + " = " + rabbit[key] ); // выводит и "eats" и "jumps"
+}
+
+
+//Вызов obj.hasOwnProperty(prop) возвращает true,
+// если свойство prop принадлежит самому объекту obj, иначе false.
+// Например:
+var animal = {
+    eats: true
+};
+var rabbit = {
+    jumps: true,
+    __proto__: animal
+};
+alert( rabbit.hasOwnProperty('jumps') ); // true: jumps принадлежит rabbit
+alert( rabbit.hasOwnProperty('eats') ); // false: eats не принадлежит
+for (var key in rabbit) {
+    if (!rabbit.hasOwnProperty(key)) continue; // пропустить "не свои" свойства
+    alert( key + " = " + rabbit[key] ); // выводит только "jumps"
+}
+
+//удаление свойств из __proto__
+var animal = {
+    jumps: null
+};
+var rabbit = {
+    jumps: true
+};
+rabbit.__proto__ = animal;
+alert( rabbit.jumps ); // true
+delete rabbit.jumps;
+alert( rabbit.jumps ); // null
+delete animal.jumps;
+alert( rabbit.jumps ); // undefined
+
+
+//Вызов метода с this из прототипа
+var animal = {
+    eat: function() {
+        this.full = true;
+        //свойство будет записано в rabbit, потому что this будет указывать на rabbit,
+        // а прототип при записи не используется.
+    }
+};
+var rabbit = {
+    __proto__: animal
+};
+rabbit.eat();
+
+
+//цепочка наследования через __proto__
+var head = {
+    glasses: 1
+};
+var table = {
+    __proto__:head,
+    pen: 3
+};
+var bed = {
+    __proto__:table,
+    sheet: 1,
+    pillow: 2
+};
+var pockets = {
+    __proto__:bed,
+    money: 2000
+};
+alert(pockets.glasses);//1
+alert(head.money);//undefined
+
+//---------------Object.create---------------
+
+//Объект, создаваемый при помощи Object.create(null) не имеет прототипа,
+// а значит в нём нет лишних свойств. Для коллекции – как раз то, что надо.
+var data = Object.create(null);
+data.text = "Привет";
+alert(data.text); // Привет
+alert(data.toString); // undefined
+
+
+//Пользуемся тем что __proto__ доступен только для чтения, чтобы не менять исходный объект (родитель),
+// т.к. он может быть повторно использован во внешнем коде
+function Menu(options) {
+    options = Object.create(options);//создаем объект, в __proto__ которого будет options
+    options.width = 300; //т.к. в __proto__ поле не меняется, то создается новое поле у наследника и ему присв. значение
+    alert("width: " + options.width); // возьмёт width из наследника
+    alert("height: " + options.height); // возьмёт height из исходного объекта
+}
+var options = {
+    width: 100,
+    height: 200
+};
+new Menu(options);
+alert("original width: " + options.width); // width исходного объекта
+alert("original height: " + options.height); // height исходного объекта
+
+
+//----------------------prototype---------------------------
+//Чтобы новым объектам автоматически ставить прототип, конструктору ставится свойство prototype.
+//При создании объекта через new,
+// в его прототип __proto__ записывается ссылка из prototype функции-конструктора.
+
+//если я хочу, чтобы у всех объектов, которые создаются new Rabbit, был прототип animal, я могу сделать так:
+//(Недостаток этого подхода – он не работает в IE10-.)
+var animal = {
+    eats: true
+};
+function Rabbit(name) {
+    this.name = name;
+    this.__proto__ = animal;
+}
+var rabbit = new Rabbit("Кроль");
+alert( rabbit.eats ); // true, из прототипа
+
+
+// код ниже полностью аналогичен предыдущему, но работает всегда и везде:
+var animal = {
+    eats: true
+};
+function Rabbit(name) {
+    this.name = name;
+}
+Rabbit.prototype = animal;
+var rabbit = new Rabbit("Кроль"); //  rabbit.__proto__ == animal
+alert( rabbit.eats ); // true
+
+
+//тоже самое, но в прототип пишем объект ф-ию-конструктор
+function Animal() {
+    this.eats = true;
+}
+function Rabbit(name) {
+    this.name = name;
+}
+Rabbit.prototype = new Animal();
+var rabbit = new Rabbit("Кроль"); // rabbit.__proto__ == animal
+alert( rabbit.eats ); // true
+
+
+
+
+//В примерах ниже создаётся объект new Rabbit, а затем проводятся различные действия с prototype.
+//Каковы будут результаты выполнения? Почему?
+// 1--- Начнём с этого кода. Что он выведет?
+function Rabbit() {
+}
+Rabbit.prototype = {
+    eats: true
+};
+var rabbit = new Rabbit();
+alert(rabbit.eats);//Результат: true
+//Берется из прототипа
+
+
+// 2--- Добавили строку (выделена), что будет теперь?
+function Rabbit() {
+}
+Rabbit.prototype = {
+    eats: true
+};
+var rabbit = new Rabbit();
+Rabbit.prototype = {};
+alert(rabbit.eats);//Результат: true.
+// Свойство prototype всего лишь задаёт __proto__ у новых объектов.
+// Так что его изменение не повлияет на rabbit.__proto__.
+// Свойство eats будет получено из прототипа.
+
+
+// 3--- А если код будет такой? (заменена одна строка):
+function Rabbit(name) {
+}
+Rabbit.prototype = {
+    eats: true
+};
+var rabbit = new Rabbit();
+Rabbit.prototype.eats = false;
+alert(rabbit.eats);//Результат: false.
+// Свойство Rabbit.prototype и rabbit.__proto__ указывают на один и тот же объект.
+// В данном случае изменения вносятся в сам объект.
+
+
+// 4--- А такой? (заменена одна строка)
+function Rabbit(name) {
+}
+Rabbit.prototype = {
+    eats: true
+};
+var rabbit = new Rabbit();
+delete rabbit.eats;
+alert(rabbit.eats);//Результат: true,
+// так как delete rabbit.eats попытается удалить eats из rabbit, где его и так нет.
+// А чтение в alert произойдёт из прототипа.
+
+
+// 5--- И последний вариант:
+function Rabbit(name) {
+}
+Rabbit.prototype = {
+    eats: true
+};
+var rabbit = new Rabbit();
+delete Rabbit.prototype.eats;
+alert(rabbit.eats);//Результат: undefined.
+// Удаление осуществляется из самого прототипа,
+// поэтому свойство rabbit.eats больше взять неоткуда.
+
+
+
+//----------------------constructor---------------------------
+
+//У каждой функции по умолчанию уже есть свойство prototype.
+//Оно содержит объект такого вида:
+function Rabbit() {}
+Rabbit.prototype = {
+    constructor: Rabbit
+};
+
+//Можно его использовать для создания объекта с тем же конструктором, что и данный:
+function Rabbit(name) {
+    this.name = name;
+    alert( name );
+}
+var rabbit = new Rabbit("Кроль");
+var rabbit2 = new rabbit.constructor("Крольчиха");
+//Эта возможность бывает полезна, когда, получив объект, мы не знаем в точности,
+// какой у него был конструктор (например, сделан вне нашего кода), а нужно создать такой же.
+
+
+
+//Но если кто-то, к примеру, перезапишет User.prototype и забудет указать constructor,
+// то такой фокус не пройдёт, например:
+function User(name) {
+    this.name = name;
+}
+User.prototype = {}; // (*)
+var obj = new User('Вася');
+var obj2 = new obj.constructor('Петя');
+alert( obj2.name ); // undefined
+
+//Почему obj2.name равен undefined? Вот как это работает:
+
+//1. При вызове new obj.constructor('Петя'), obj ищет у себя свойство constructor – не находит.
+
+//2. Обращается к своему свойству __proto__, которое ведёт к прототипу.
+
+//3. Прототипом будет (*), пустой объект.
+
+//4. Далее здесь также ищется свойство constructor – его нет.
+
+//5. Где ищем дальше? Правильно – у следующего прототипа выше, а им будет Object.prototype.
+
+//6. Свойство Object.prototype.constructor существует, это встроенный конструктор объектов, который,
+// вообще говоря, не предназначен для вызова с аргументом-строкой,
+// поэтому создаст совсем не то, что ожидается, но то же самое, что вызов new Object('Петя'), и у такого объекта не будет name.
+
+
+//this в prototype
+function Rabbit(name) {
+    this.name = name;
+    this.toString = function () {
+        return "Object Rabbit";
+    }
+}
+Rabbit.prototype.sayHi = function() {
+    alert("this = " + this + ", this.name = " + this.name );
+};
+var rabbit = new Rabbit("Rabbit");
+rabbit.sayHi();//this = Object Rabbit, this.name = Rabbit (вызвался у rabbit и дернул метод из proto)
+Rabbit.prototype.sayHi();//this = [object Object], this.name = undefined (вызвался у proto и взял его метод)
+Object.getPrototypeOf(rabbit).sayHi();//this = [object Object], this.name = undefined (вызвался у proto и взял его метод)
+rabbit.__proto__.sayHi();//this = [object Object], this.name = undefined (вызвался у proto и взял его метод)
+
+
+
+//----------------------Object, __proto__, prototype-----------------------
+
+var obj = {};
+// метод берётся из прототипа?
+alert( obj.toString == Object.prototype.toString ); // true, да
+// проверим, правда ли что __proto__ это Object.prototype?
+alert( obj.__proto__ == Object.prototype ); // true
+// А есть ли __proto__ у Object.prototype?
+alert( obj.__proto__.__proto__ ); // null, нет
+
+
+//Вызов методов через call и apply из прототипа
+//Ранее мы говорили о применении методов массивов к «псевдомассивам», например, можно использовать [].join для arguments:
+function showList() {
+    alert([].join.call(arguments, " - "));
+}
+showList("Вася", "Паша", "Маша"); // Вася - Паша - Маша
+
+
+//Так как метод join находится в Array.prototype, то можно вызвать его оттуда напрямую, вот так:
+function showList() {
+    alert(Array.prototype.join.call(arguments, " - "));//Это эффективнее, потому что не создаётся лишний объект массива []
+}
+showList("Вася", "Паша", "Маша"); // Вася - Паша - Маша
+
+
+//----------------Изменение встроенных прототипов---------------------
+
+//Встроенные прототипы можно изменять. В том числе – добавлять свои методы.
+//Мы можем написать метод для многократного повторения строки, и он тут же станет доступным для всех строк:
+String.prototype.repeat = function (times) {
+    return new Array(times + 1).join(this);
+};
+alert("ля".repeat(3)); // ляляля
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------Класс через прототип--------------------------------------------------------
+
+//А теперь создадим класс, используя прототипы, наподобие того, как сделаны классы Object, Date и остальные.
+//
+//Чтобы объявить свой класс, нужно:
+//
+//Объявить функцию-конструктор.
+//    Записать методы и свойства, нужные всем объектам класса, в prototype.
+//    Опишем класс Animal:
+
+// конструктор
+function Animal(name) {
+    this.name = name;
+    this.speed = 0;
+}
+// методы в прототипе
+Animal.prototype.run = function(speed) {
+    this.speed += speed;
+    alert( this.name + ' бежит, скорость ' + this.speed );
+};
+Animal.prototype.stop = function() {
+    this.speed = 0;
+    alert( this.name + ' стоит' );
+};
+var animal = new Animal('Зверь');
+alert( animal.speed ); // 0, свойство взято из прототипа
+animal.run(5); // Зверь бежит, скорость 5
+animal.run(5); // Зверь бежит, скорость 10
+animal.stop(); // Зверь стоит
+
+
+
+
+//Задача: переписать CoffeeMachine в виде класса с использованием прототипа.
+// Исходный код:
+function CoffeeMachine(power) {
+    var waterAmount = 0;
+    var WATER_HEAT_CAPACITY = 4200;
+    function getTimeToBoil() {
+        return waterAmount * WATER_HEAT_CAPACITY * 80 / power;
+    }
+    this.run = function () {
+        setTimeout(function () {
+            alert('Кофе готов!');
+        }, getTimeToBoil());
+    };
+    this.setWaterAmount = function (amount) {
+        waterAmount = amount;
+    };
+
+}
+var coffeeMachine = new CoffeeMachine(10000);
+coffeeMachine.setWaterAmount(50);
+coffeeMachine.run();
+
+
+//Решение
+function CoffeeMachine(power) {
+    // свойства конкретной кофеварки
+    this._power = power;
+    this._waterAmount = 0;
+}
+// свойства и методы для всех объектов класса
+CoffeeMachine.prototype.WATER_HEAT_CAPACITY = 4200;
+
+CoffeeMachine.prototype._getTimeToBoil = function() {
+    return this._waterAmount * this.WATER_HEAT_CAPACITY * 80 / this._power;
+};
+CoffeeMachine.prototype.run = function() {
+    setTimeout(function() {
+        alert( 'Кофе готов!' );
+    }, this._getTimeToBoil());
+};
+CoffeeMachine.prototype.setWaterAmount = function(amount) {
+    this._waterAmount = amount;
+};
+var coffeeMachine = new CoffeeMachine(10000);
+coffeeMachine.setWaterAmount(50);
+coffeeMachine.run();
