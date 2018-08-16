@@ -14,11 +14,30 @@ public class Main {
     private static String finallyTest(){
         String message = null;
         try {
-            message = "Успешно!";
-//            throw new Exception();
-            return message;
-        } catch (Exception e){
-            message = "Ошибка!";
+            try {
+                throw new RuntimeException("Корневое исключение!");
+            } catch (RuntimeException e) {
+
+                try {
+                    throw new RuntimeException(e);
+                } catch (RuntimeException e1) {
+
+                    try {
+                        throw new RuntimeException(e1);
+                    } catch (RuntimeException e2) {
+
+                        throw new RuntimeException(e2);
+                    }
+                }
+            }
+        } catch (RuntimeException e){
+            Throwable t = e;
+            //берем корневое исключение
+            while (t.getCause() != null){
+                t = t.getCause();
+            }
+            //и сообщение из него
+            message = t.getMessage();
             return message;
         } finally {
             message += " from finally";
