@@ -2369,7 +2369,13 @@ alert("ля".repeat(3)); // ляляля
 
 
 
-
+//--------------Object.create------------------
+//Имеет примерно такую реализацию
+Object.create = function(proto) {
+    function F() {}
+    F.prototype = proto;
+    return new F;
+};
 
 
 
@@ -2458,3 +2464,59 @@ CoffeeMachine.prototype.setWaterAmount = function(amount) {
 var coffeeMachine = new CoffeeMachine(10000);
 coffeeMachine.setWaterAmount(50);
 coffeeMachine.run();
+
+
+
+//-------------Наследование классов---------------
+
+// --------- Класс-Родитель ------------
+// Конструктор родителя пишет свойства конкретного объекта
+function Animal(name) {
+    this.name = name;
+    this.speed = 0;
+}
+
+// Методы хранятся в прототипе
+Animal.prototype.run = function() {
+    alert(this.name + " бежит!");
+};
+
+// --------- Класс-потомок 1-----------
+// Конструктор потомка
+function Rabbit(name) {
+    //вызываем конструктор родителя чтобы не дублировать код, но можем и не вызывать - в отличии от ф-го наследования
+    Animal.apply(this, arguments);
+}
+// Унаследовать
+Rabbit.prototype = Object.create(Animal.prototype);
+//если написать так:
+//Rabbit.prototype = Animal.prototype;
+//то это приведёт к тому, что Rabbit.prototype и Animal.prototype – один и тот же объект.
+// В результате методы Rabbit будут помещены в него и, при совпадении, перезапишут методы Animal
+
+// Желательно и constructor сохранить
+Rabbit.prototype.constructor = Rabbit;
+// Методы потомка
+Rabbit.prototype.run = function() {
+    // Вызов метода родителя внутри своего
+    Animal.prototype.run.apply(this);
+    alert( this.name + " подпрыгивает!" );
+};
+
+// --------- Класс-потомок 2-----------
+function Cat(name) {
+    Animal.apply(this, arguments);
+}
+Cat.prototype = Object.create(Animal.prototype);
+Cat.prototype.constructor = Rabbit;
+Cat.prototype.run = function() {
+    Animal.prototype.run.apply(this);
+    alert( this.name + " мяучит!" );
+};
+
+
+// Готово, можно создавать объекты
+var rabbit = new Rabbit('Кроль');
+rabbit.run();
+var cat = new Cat('Кот');
+cat.run();

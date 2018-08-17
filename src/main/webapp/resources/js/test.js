@@ -1,24 +1,37 @@
-function CoffeeMachine(power) {
-    this._power = power;
-    this._waterAmount = 0;
-    this._WATER_HEAT_CAPACITY = 4200;
-    this._getTimeToBoil = function getTimeToBoil() {
-        return this._waterAmount * this._WATER_HEAT_CAPACITY * 80 / this._power;
-    };
+function Clock(options) {
+    this._template = options.template;
 }
 
-CoffeeMachine.prototype.run = function() {
-    setTimeout(function() {
-        alert( 'Кофе готов!' );
-    }, this._getTimeToBoil());
+Clock.prototype._render = function() {
+    var date = new Date();
+
+    var hours = date.getHours();
+    if (hours < 10) hours = '0' + hours;
+
+    var min = date.getMinutes();
+    if (min < 10) min = '0' + min;
+
+    var sec = date.getSeconds();
+    if (sec < 10) sec = '0' + sec;
+
+    var output = this._template.replace('h', hours).replace('m', min).replace('s', sec);
+
+    console.log(output);
 };
 
-CoffeeMachine.prototype.setWaterAmount = function(amount) {
-    this._waterAmount = amount;
+Clock.prototype.stop = function() {
+    clearInterval(this._timer);
 };
 
+Clock.prototype.start = function() {
+    this._render();
+    var self = this;
+    this._timer = setInterval(function() {
+        self._render();
+    }, 1000);
+};
 
-
-var coffeeMachine = new CoffeeMachine(10000);
-coffeeMachine.setWaterAmount(50);
-coffeeMachine.run();
+var clock = new Clock({
+    template: 'h:m:s'
+});
+clock.start();
