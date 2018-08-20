@@ -2520,3 +2520,232 @@ var rabbit = new Rabbit('Кроль');
 rabbit.run();
 var cat = new Cat('Кот');
 cat.run();
+
+
+
+
+
+
+
+
+//------------------------------------------Свои ошибки, наследование от Error------------------------------------------
+
+
+//---------Пример 1----------
+
+// Объявление
+function PropertyError(property) {
+    this.name = "PropertyError";
+    this.property = property;
+    this.message = "Ошибка в свойстве " + property;
+    if (Error.captureStackTrace) {
+        Error.captureStackTrace(this, PropertyError);
+    } else {
+        this.stack = (new Error()).stack;
+    }
+}
+PropertyError.prototype = Object.create(Error.prototype);
+
+// Генерация ошибки
+function readUser(data) {
+    var user = JSON.parse(data);
+    if (!user.age) {
+        throw new PropertyError("age");
+    }
+    if (!user.name) {
+        throw new PropertyError("name");
+    }
+    return user;
+}
+
+// Запуск и try..catch
+try {
+    var user = readUser('{ "age": 25 }');
+} catch (err) {
+    if (err instanceof PropertyError) {
+        if (err.property == 'name') {
+            // если в данном месте кода возможны анонимы, то всё нормально
+            alert( "Здравствуйте, Аноним!" );
+        } else {
+            alert( err.message ); // Ошибка в свойстве ...
+        }
+    } else if (err instanceof SyntaxError) {
+        alert( "Ошибка в синтаксисе данных: " + err.message );
+    } else {
+        throw err; // неизвестная ошибка, не знаю что с ней делать
+    }
+}
+
+
+
+//-------Пример 2---------
+
+// общего вида "наша" ошибка
+function CustomError(message) {
+    this.name = "CustomError";
+    this.message = message;
+    if (Error.captureStackTrace) {
+        Error.captureStackTrace(this, this.constructor);
+    } else {
+        this.stack = (new Error()).stack;
+    }
+}
+CustomError.prototype = Object.create(Error.prototype);
+CustomError.prototype.constructor = CustomError;
+
+// наследник
+function PropertyError(property) {
+    CustomError.call(this, "Ошибка в свойстве " + property)
+    this.name = "PropertyError";
+    this.property = property;
+}
+PropertyError.prototype = Object.create(CustomError.prototype);
+PropertyError.prototype.constructor = PropertyError;
+
+// и ещё уровень
+function PropertyRequiredError(property) {
+    PropertyError.call(this, property);
+    this.name = 'PropertyRequiredError';
+    this.message = 'Отсутствует свойство ' + property;
+}
+PropertyRequiredError.prototype = Object.create(PropertyError.prototype);
+PropertyRequiredError.prototype.constructor = PropertyRequiredError;
+
+// использование
+var err = new PropertyRequiredError("age");
+// пройдёт проверку
+alert( err instanceof PropertyRequiredError ); // true
+alert( err instanceof PropertyError ); // true
+alert( err instanceof CustomError ); // true
+alert( err instanceof Error ); // true
+
+
+
+//-------Пример 3---------
+
+function FormatError(message) {
+    this.name = "FormatError";
+    this.message = message;
+    if (Error.captureStackTrace) {
+        Error.captureStackTrace(this, this.constructor);
+    } else {
+        this.stack = (new Error()).stack;
+    }
+}
+FormatError.prototype = Object.create(SyntaxError.prototype);
+FormatError.prototype.constructor = FormatError;
+
+var err = new FormatError("ошибка форматирования");
+
+alert( err.message ); // ошибка форматирования
+alert( err.name ); // FormatError
+alert( err.stack ); // стек на момент генерации ошибки
+
+alert( err instanceof SyntaxError ); // true
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------Примеси---------------------------------------------------------
+
+//------------примесь-------
+var sayHiMixin = {
+    sayHi: function() {
+        alert("Привет " + this.name);
+    },
+    sayBye: function() {
+        alert("Пока " + this.name);
+    }
+};
+
+// использование:
+function User(name) {
+    this.name = name;
+}
+
+// передать методы примеси
+for(var key in sayHiMixin) User.prototype[key] = sayHiMixin[key];
+
+// User "умеет" sayHi
+new User("Вася").sayHi(); // Привет Вася
+
+
+
+//-----------Реальный пример на событиях-----------
+var eventMixin = {
+    /**
+     * Подписка на событие
+     * Использование:
+     *  menu.on('select', function(item) { ... }
+     */
+    on: function(eventName, handler) {
+        if (!this._eventHandlers) this._eventHandlers = {};
+        if (!this._eventHandlers[eventName]) {
+            this._eventHandlers[eventName] = [];
+        }
+        this._eventHandlers[eventName].push(handler);
+    },
+    /**
+     * Прекращение подписки
+     *  menu.off('select',  handler)
+     */
+    off: function(eventName, handler) {
+        var handlers = this._eventHandlers && this._eventHandlers[eventName];
+        if (!handlers) return;
+        for(var i=0; i<handlers.length; i++) {
+            if (handlers[i] == handler) {
+                handlers.splice(i--, 1);
+            }
+        }
+    },
+    /**
+     * Генерация события с передачей данных
+     *  this.trigger('select', item);
+     */
+    trigger: function(eventName /*, ... */) {
+        if (!this._eventHandlers || !this._eventHandlers[eventName]) {
+            return; // обработчиков для события нет
+        }
+        // вызвать обработчики
+        var handlers = this._eventHandlers[eventName];
+        for (var i = 0; i < handlers.length; i++) {
+            handlers[i].apply(this, [].slice.call(arguments, 1));
+        }
+    }
+};
+
+// Класс Menu с примесью eventMixin
+function Menu() {
+    // ...
+}
+for(var key in eventMixin) {
+    Menu.prototype[key] = eventMixin[key];
+}
+// Генерирует событие select при выборе значения
+Menu.prototype.choose = function(value) {
+    this.trigger("select", value);
+};
+// Создадим меню
+var menu = new Menu();
+// При наступлении события select вызвать эту функцию
+menu.on("select", function(value) {
+    alert("Выбрано значение " + value);
+});
+// Запускаем выбор (событие select вызовет обработчики)
+menu.choose("123");
+
+
+
+
+
+
+
+
+
+//------------------------------------------------ES-2015---------------------------------------------------------------
+

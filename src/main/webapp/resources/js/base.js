@@ -48,6 +48,9 @@ var u = new User();
 var p = new Pet();
 console.log("u instanceof User: "+(u instanceof User));
 console.log("p instanceof Pet: "+(p instanceof Pet));
+var arr = [];
+alert( arr instanceof Array ); // true
+alert( arr instanceof Object ); // true
 
 
 //Взяли метод toString, принадлежащий именно стандартному объекту {}.
