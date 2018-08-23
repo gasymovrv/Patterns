@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- FCS INTEGRATION Integration Scheme, version 8.2, create date 13.08.2018 -->
+<xs:schema xmlns="http://zakupki.gov.ru/oos/integration/1"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:base="http://zakupki.gov.ru/oos/base/1"
+           xmlns:oos="http://zakupki.gov.ru/oos/types/1"
+           targetNamespace="http://zakupki.gov.ru/oos/integration/1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+    <xs:import namespace="http://zakupki.gov.ru/oos/base/1" schemaLocation="BaseTypes.xsd"/>
+    <xs:import namespace="http://zakupki.gov.ru/oos/types/1" schemaLocation="IntegrationTypes.xsd"/>
+    <xs:import namespace="http://zakupki.gov.ru/oos/pprf615types/1" schemaLocation="Integration615Types.xsd"/>
+    <xs:import namespace="http://zakupki.gov.ru/oos/EPtypes/1" schemaLocation="IntegrationEPTypes.xsd"/>
+    <xs:import namespace="http://zakupki.gov.ru/oos/CPtypes/1" schemaLocation="IntegrationCPTypes.xsd"/>
+    <xs:element name="fcsProtocolOK2">
+        <xs:annotation>
+            <xs:documentation>Пакет данных:Протокол рассмотрения и оценки заявок на участие в конкурсе в ОК; внесение изменений</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="as2PacketType">
+                    <xs:sequence>
+                        <xs:element name="data" type="oos:zfcs_protocolOK2Type">
+                            <xs:annotation>
+                                <xs:documentation>Данные информационного пакета</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="as2PacketType" abstract="true">
+        <xs:annotation>
+            <xs:documentation>Пакет данных AS2 протокола</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="index">
+                <xs:annotation>
+                    <xs:documentation>Индексная карточка информационного пакета</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:annotation>
+                        <xs:documentation>Индексная карточка пакета данных</xs:documentation>
+                    </xs:annotation>
+                    <xs:sequence>
+                        <xs:element name="id">
+                            <xs:annotation>
+                                <xs:documentation>Глобальный идентификатор информационного пакета</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:length value="36"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="sender">
+                            <xs:annotation>
+                                <xs:documentation>Отправитель</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:maxLength value="200"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="receiver">
+                            <xs:annotation>
+                                <xs:documentation>Получатель</xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:maxLength value="200"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="createDateTime" type="xs:dateTime">
+                            <xs:annotation>
+                                <xs:documentation>Дата и время формирования информационного пакета</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="objectType" type="indexObjectTypeEnum">
+                            <xs:annotation>
+                                <xs:documentation>Кодовое наименование объекта информационного обмена,
+                                    информация о котором содержится в данном пакете:
+
+                                    94_OK - 94ФЗ Открытый конкурс;
+                                    94_EF - 94ФЗ Открытый аукцион в электронной форме;
+                                    94_ZK - 94ФЗ Запрос котировок;
+                                    94_PO - 94ФЗ Предварительный отбор;
+                                    94_SZ - 94ФЗ Сообщение о заинтересованности в проведении конкурса;
+                                    94_DD - 94ФЗ Разные документы;
+
+                                    EF - Электронный аукцион;
+                                    EP - Единственный поставщик;
+                                    ISM - Иной способ, многолотовый;
+                                    ISO - Иной способ, однолотовый;
+                                    OKD - Открытый конкурс, двухэтапный;
+                                    OKOU - Открытый конкурс с ограниченным участием;
+                                    OK - Открытый конкурс;
+                                    PO - Предварительный отбор;
+                                    ZAKA - Закрытый аукцион;
+                                    ZAKKD - Закрытый конкурс, двухэтапный;
+                                    ZAKKOU - Закрытый конкурс с ограниченным участием;
+                                    ZAKK - Закрытый конкурс;
+                                    ZKBI - Запрос котировок без извещения;
+                                    ZK - Запрос котировок;
+                                    ZP - Запрос предложений;
+                                    ST111 - Способ определения поставщика (подрядчика, исполнителя), установленный
+                                    Правительством Российской Федерации в соответствии со ст. 111 Федерального закона №
+                                    44-ФЗ;
+                                    CT - Контракт;
+                                    MD - Справочная информация;
+                                    TP - План график;
+                                    SP - План закупок;
+                                    PP - План закупок (структурированный);
+                                    BG - Банковская гарантия;
+                                    ZC - Запрос цен;
+                                    OZ - Отчет заказчика;
+                                    DD - 44ФЗ Разные документы;
+                                    PPM - План мероприятий для ИС ОВК;
+                                    PRK - Результат контроля для ИС ОВК;
+                                    PVKM - Информации по внеплановому контрольному мероприятию для ИС ОВК;
+                                    CM - Информация по жалобе для ИС КО;
+                                    CR - Результат контроля для ИС КО;
+                                    UC - Внеплановая проверка для ИС КО;
+                                    PC - Плановая проверка для ИС КО;
+                                    99DOC - Документы контроля по 99 статье;
+                                    615_PO - ПП РФ 615 Предварительный отбор;
+                                    615_KPO - ПП РФ 615 Квалифицированная подрядная организация;
+                                    615_EF - ПП РФ 615 Электронный аукцион;
+                                    615_CT - ПП РФ 615 Договор;
+                                    615_DD - ПП РФ 615 Разные документы;
+                                    EOK - ЭП Открытый конкурс в электронной форме;
+                                    EOKOU - ЭП Открытый конкурс с ограниченным участием в электронной форме;
+                                    EOKD - ЭП Двухэтапный конкурс в электронной форме;
+                                    EZK - ЭП Запрос котировок в электронной форме;
+                                    EZP - ЭП Запрос предложений в электронной форме;
+                                    EP_DD - ЭП Разные документы;
+                                    CP - Проекты контрактов.
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="objectId" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>Идентификатор объекта информационного обмена (реестровый номер)
+                                </xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:maxLength value="36"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="indexNum" minOccurs="0">
+                            <xs:annotation>
+                                <xs:documentation>Порядковый номер пакета данных в рамках передачи информации об объекте
+                                    информационного обмена
+                                </xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:int"/>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="signature">
+                            <xs:annotation>
+                                <xs:documentation>ЭЦП на данные информационного пакета</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:simpleContent>
+                                    <xs:extension base="xs:base64Binary">
+                                        <xs:attribute name="type" type="base:signatureType" use="required"/>
+                                    </xs:extension>
+                                </xs:simpleContent>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="mode" type="indexModeType">
+                            <xs:annotation>
+                                <xs:documentation>Режим передачи информации
+                                    PROD - промышленная эксплуатация
+                                    TEST - тестовые данные
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="testCase" minOccurs="0">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:int"/>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="indexModeType">
+        <xs:annotation>
+            <xs:documentation>Перечисление режимов</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PROD"/>
+            <xs:enumeration value="TEST"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="indexObjectTypeEnum">
+        <xs:annotation>
+            <xs:documentation>Перечисление типов объектов:
+
+                94_OK - 94ФЗ Открытый конкурс;
+                94_EF - 94ФЗ Открытый аукцион в электронной форме;
+                94_ZK - 94ФЗ Запрос котировок;
+                94_PO - 94ФЗ Предварительный отбор;
+                94_SZ - 94ФЗ Сообщение о заинтересованности в проведении конкурса;
+                94_DD - 94ФЗ Разные документы;
+
+                EF - Электронный аукцион;
+                EP - Единственный поставщик;
+                ISM - Иной способ, многолотовый;
+                ISO - Иной способ, однолотовый;
+                OKD - Открытый конкурс, двухэтапный;
+                OKOU - Открытый конкурс с ограниченным участием;
+                OK - Открытый конкурс;
+                PO - Предварительный отбор;
+                ZAKA - Закрытый аукцион;
+                ZAKKD - Закрытый конкурс, двухэтапный;
+                ZAKKOU - Закрытый конкурс с ограниченным участием;
+                ZAKK - Закрытый конкурс;
+                ZKBI - Запрос котировок без извещения;
+                ZK - Запрос котировок;
+                ZP - Запрос предложений;
+                ST111 - Способ определения поставщика (подрядчика, исполнителя), установленный Правительством Российской
+                Федерации в соответствии со ст. 111 Федерального закона № 44-ФЗ;
+                CT - Контракт;
+                MD - Справочная информация;
+                TP - План график;
+                SP - План закупок;
+                PP - План закупок (структурированный);
+                BG - Банковская гарантия;
+                ZC - Запрос цен;
+                OZ - Отчет заказчика;
+                DD - 44ФЗ Разные документы;
+                PPM - План мероприятий для ИС ОВК;
+                PRK - Результат контроля для ИС ОВК;
+                PVKM - Информации по внеплановому контрольному мероприятию для ИС ОВК;
+                CM - Информация по жалобе для ИС КО;
+                CR - Результат контроля для ИС КО;
+                UC - Внеплановая проверка для ИС КО;
+                PC - Плановая проверка для ИС КО;
+                99DOC - Документы контроля по 99 статье;
+                ST - Участник закупки, аккредитованный на ЭП;
+                615_PO - ПП РФ 615 Предварительный отбор;
+                615_KPO - ПП РФ 615 Квалифицированная подрядная организация;
+                615_EF - ПП РФ 615 Электронный аукцион;
+                615_CT - ПП РФ 615 Договор;
+                615_DD - ПП РФ 615 Разные документы;
+                EOK - ЭП Открытый конкурс в электронной форме;
+                EOKOU - ЭП Открытый конкурс с ограниченным участием в электронной форме;
+                EOKD - ЭП Двухэтапный конкурс в электронной форме;
+                EZK - ЭП Запрос котировок в электронной форме;
+                EZP - ЭП Запрос предложений в электронной форме;
+                EP_DD - ЭП Разные документы;
+                CP - Проекты контрактов.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="94_OK"/>
+            <xs:enumeration value="94_EF"/>
+            <xs:enumeration value="94_ZK"/>
+            <xs:enumeration value="94_PO"/>
+            <xs:enumeration value="94_SZ"/>
+            <xs:enumeration value="94_DD"/>
+            <xs:enumeration value="EF"/>
+            <xs:enumeration value="EP"/>
+            <xs:enumeration value="ISM"/>
+            <xs:enumeration value="ISO"/>
+            <xs:enumeration value="OKD"/>
+            <xs:enumeration value="OKOU"/>
+            <xs:enumeration value="OK"/>
+            <xs:enumeration value="PO"/>
+            <xs:enumeration value="ZAKA"/>
+            <xs:enumeration value="ZAKKD"/>
+            <xs:enumeration value="ZAKKOU"/>
+            <xs:enumeration value="ZAKK"/>
+            <xs:enumeration value="ZKBI"/>
+            <xs:enumeration value="ZK"/>
+            <xs:enumeration value="ZP"/>
+            <xs:enumeration value="ST111"/>
+            <xs:enumeration value="CT"/>
+            <xs:enumeration value="MD"/>
+            <xs:enumeration value="TP"/>
+            <xs:enumeration value="SP"/>
+            <xs:enumeration value="PP"/>
+            <xs:enumeration value="BG"/>
+            <xs:enumeration value="ZC"/>
+            <xs:enumeration value="OZ"/>
+            <xs:enumeration value="DD"/>
+            <xs:enumeration value="PPM"/>
+            <xs:enumeration value="PRK"/>
+            <xs:enumeration value="PVKM"/>
+            <xs:enumeration value="CM"/>
+            <xs:enumeration value="CR"/>
+            <xs:enumeration value="UC"/>
+            <xs:enumeration value="PC"/>
+            <xs:enumeration value="99DOC"/>
+            <xs:enumeration value="ST"/>
+            <xs:enumeration value="615_PO"/>
+            <xs:enumeration value="615_KPO"/>
+            <xs:enumeration value="615_EF"/>
+            <xs:enumeration value="615_CT"/>
+            <xs:enumeration value="615_DD"/>
+            <xs:enumeration value="EOK"/>
+            <xs:enumeration value="EOKOU"/>
+            <xs:enumeration value="EOKD"/>
+            <xs:enumeration value="EZK"/>
+            <xs:enumeration value="EZP"/>
+            <xs:enumeration value="EP_DD"/>
+            <xs:enumeration value="CP"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
