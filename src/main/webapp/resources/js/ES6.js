@@ -684,3 +684,424 @@ let obj = {
 alert( Object.getOwnPropertySymbols(obj)[0].toString() ); // Symbol(Symbol.iterator)
 // и одно обычное свойство
 alert( Object.getOwnPropertyNames(obj) ); // iterator
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------Итераторы----------------------------------------------------
+//Итерируемым является массив (новый цикл for of):
+'use strict';
+let arr = [1, 2, 3]; // массив — пример итерируемого объекта
+for (let value of arr) {
+    alert(value); // 1, затем 2, затем 3
+}
+
+//Также итерируемой является строка:
+'use strict';
+for (let char of "Привет") {
+    alert(char); // Выведет по одной букве: П, р, и, в, е, т
+}
+
+
+//---Свой итератор---
+//У итератора должен быть метод next(),
+// который при каждом вызове возвращает объект со свойствами:
+//value – очередное значение,
+//done – равно false если есть ещё значения, и true – в конце.
+'use strict';
+let range = {
+    from: 1,
+    to: 5
+};
+// сделаем объект range итерируемым
+range[Symbol.iterator] = function() {
+    let current = this.from;
+    let last = this.to;
+    // метод должен вернуть объект с методом next()
+    return {
+        next() {
+            if (current <= last) {
+                return {
+                    done: false,
+                    value: current++
+                };
+            } else {
+                return {
+                    done: true
+                };
+            }
+        }
+    }
+};
+for (let num of range) {
+    alert(num); // 1, затем 2, 3, 4, 5
+}
+
+
+//Получаем итератор для строки и вызывает его полностью «вручную»:
+'use strict';
+let str = "Hello";
+// Делает то же, что и
+// for (var letter of str) alert(letter);
+let iterator = str[Symbol.iterator]();
+while(true) {
+    let result = iterator.next();
+    if (result.done) break;
+    alert(result.value); // Выведет все буквы по очереди
+}
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------Set, Map, WeakSet и WeakMap----------------------------------------------------
+
+//---------Map--------
+
+'use strict';
+let map = new Map();
+map.set('1', 'str1');   // ключ-строка
+map.set(1, 'num1');     // число
+map.set(true, 'bool1'); // булевое значение
+// в обычном объекте это было бы одно и то же,
+// map сохраняет тип ключа
+alert( map.get(1)   ); // 'num1'
+alert( map.get('1') ); // 'str1'
+alert( map.size ); // 3
+
+//Метод set можно чейнить:
+map.set('1', 'str1')
+   .set(1, 'num1')
+   .set(true, 'bool1');
+
+//При создании Map можно сразу инициализировать списком значений.
+//Объект map с тремя ключами, как и в примере выше:
+let map = new Map([
+    ['1', 'str1'],
+    [1, 'num1'],
+    [true, 'bool1']
+]);
+//Аргументом new Map должен быть итерируемый объект
+// (не обязательно именно массив)
+
+
+//В качестве ключей map можно использовать и объекты:
+'use strict';
+let user = { name: "Вася" };
+// для каждого пользователя будем хранить количество посещений
+let visitsCountMap = new Map();
+// объект user является ключом в visitsCountMap
+visitsCountMap.set(user, 123);
+alert( visitsCountMap.get(user) ); // 123
+
+
+//Пишу свои compareTo и equals, но они не исп-ся в map
+'use strict';
+let visitsCountMap = new Map();
+class User{
+    constructor(name){
+        this.name = name;
+    }
+    compareTo(user){
+        if(this.name == user.name)
+            return 0;
+        else if(this.name > user.name)
+            return 1;
+        else
+            return -1;
+    }
+    equals(user){
+        return this.name === user.name;
+    }
+    toString(){
+        return this.name;
+    }
+}
+let u1 = new User("u1");
+let u2 = new User("u1");
+visitsCountMap
+    .set(u1, 1)
+    .set(u2, 2);
+//Хоть объекты и одинаковые с т.з. equals и compareTo, но разные для map
+//Поэтому запишутся оба:
+alert(visitsCountMap.get(u1)); // 1
+alert(visitsCountMap.get(u2)); // 2
+alert(Object.is(u1, u2));
+alert(u1.compareTo(u2));
+alert(u1.equals(u2));
+
+
+//итерация
+let recipeMap = new Map([
+    ['огурцов',   '500 гр'],
+    ['помидоров', '350 гр'],
+    ['сметаны',   '50 гр']
+]);
+// цикл по ключам
+for(let fruit of recipeMap.keys()) {
+    alert(fruit); // огурцов, помидоров, сметаны
+}
+// цикл по значениям
+for(let amount of recipeMap.values()) {
+    alert(amount); // 500 гр, 350 гр, 50 гр
+}
+// цикл по записям [ключ,значение]
+for(let entry of recipeMap) { // то же что и recipeMap.entries()
+    alert(entry); // огурцов,500 гр , и т.д., массивы по 2 значения
+}
+//forEach
+recipeMap.forEach( (value, key, map) => {
+    alert(`${key}: ${value}`); // огурцов: 500 гр, и т.д.
+});
+
+//Методы для удаления записей:
+//map.delete(key) удаляет запись с ключом key, возвращает true, если такая запись была, иначе false.
+//map.clear() – удаляет все записи, очищает map.
+
+//Для проверки существования ключа:
+//map.has(key) – возвращает true, если ключ есть, иначе false.
+
+
+//--------Set---------
+
+//Set – коллекция для хранения множества значений,
+// причём каждое значение может встречаться лишь один раз.
+'use strict';
+let set = new Set();
+let vasya = {name: "Вася"};
+let petya = {name: "Петя"};
+let dasha = {name: "Даша"};
+// посещения, некоторые пользователи заходят много раз
+set.add(vasya);
+set.add(petya);
+set.add(dasha);
+set.add(vasya);
+set.add(petya);
+// set сохраняет только уникальные значения
+alert( set.size ); // 3
+set.forEach( user => alert(user.name ) ); // Вася, Петя, Даша
+
+
+//----------WeakSet/WeakMap----------
+
+//если некий объект присутствует только в WeakSet/WeakMap – он удаляется из памяти.
+//Это нужно для тех ситуаций, когда основное место для хранения и
+// использования объектов находится где-то в другом месте кода,
+// а здесь мы хотим хранить для них «вспомогательные» данные, существующие лишь пока жив объект.
+
+//Например, у нас есть элементы на странице или, к примеру, пользователи,
+// и мы хотим хранить для них вспомогательную информацию, например обработчики событий или просто данные,
+// но действительные лишь пока объект, к которому они относятся, существует.
+//Например:
+
+// текущие активные пользователи
+let activeUsers = [
+    {name: "Вася"},
+    {name: "Петя"},
+    {name: "Маша"}
+];
+// вспомогательная информация о них,
+// которая напрямую не входит в объект юзера,
+// и потому хранится отдельно
+let weakMap = new WeakMap();
+weakMap.set(activeUsers[0], 1);
+weakMap.set(activeUsers[1], 2);
+weakMap.set(activeUsers[2], 3);
+weakMap.set('Katya', 4); //Будет ошибка TypeError: "Katya" is not a non-null object
+alert( weakMap.get(activeUsers[0]) ); // 1
+activeUsers.splice(0, 1); // Вася более не активный пользователь
+// weakMap теперь содержит только 2 элемента
+activeUsers.splice(0, 1); // Петя более не активный пользователь
+// weakMap теперь содержит только 1 элемент
+
+//WeakMap работает только на запись (set, delete) и чтение (get, has) элементов по конкретному ключу,
+// а не как полноценная коллекция.
+// Нельзя вывести всё содержимое WeakMap, нет соответствующих методов.
+
+//То же самое относится и к WeakSet
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------Promise----------------------------------------------------
+
+//Пример с setTimeout
+//Возьмём setTimeout в качестве асинхронной операции,
+// которая должна через некоторое время успешно завершиться с результатом «result»:
+'use strict';
+// Создаётся объект promise
+let promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        // переведёт промис в состояние fulfilled с результатом "result"
+        resolve("result");
+    }, 1000);
+});
+
+// promise.then навешивает обработчики на успешный результат или ошибку
+promise
+    .then(
+        result => {
+            // первая функция-обработчик - запустится при вызове resolve
+            alert("Fulfilled: " + result); // result - аргумент resolve
+        },
+        error => {
+            // вторая функция - запустится при вызове reject
+            alert("Rejected: " + error); // error - аргумент reject
+        }
+    );
+alert("Ждемс...");
+
+
+//Пример с setTimeout - завершение с ошибкой
+// Этот promise завершится с ошибкой через 1 секунду
+var promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        reject(new Error("время вышло!"));
+    }, 1000);
+});
+
+promise
+    .then(
+        result => alert("Fulfilled: " + result),
+        error => alert("Rejected: " + error.message) // Rejected: время вышло!
+    );
+
+
+//------Промисификация------
+
+//Промисификация – это когда берут асинхронный функционал и делают для него обёртку, возвращающую промис.
+function httpGet(url) {
+    return new Promise(function(resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onload = function() {
+            if (this.status == 200) {
+                resolve(this.response);
+            } else {
+                var error = new Error(this.statusText);
+                error.code = this.status;
+                reject(error);
+            }
+        };
+        xhr.onerror = function() {
+            reject(new Error("Network Error"));
+        };
+        xhr.send();
+    });
+}
+httpGet("https://learn.javascript.ru/article/promise/user.json")
+    .then(
+        response => alert(`Fulfilled: ${response}`),//здесь появился response потому что в httpGet он передавался через resolve(this.response)
+        error => alert(`Rejected: ${error}`)
+    );
+
+
+
+//-----------Цепочки промисов-----------
+//При чейнинге, то есть последовательных вызовах .then…then…then,
+// в каждый следующий then переходит результат от предыдущего
+
+'use strict';
+// сделать запрос
+httpGet('https://learn.javascript.ru/article/promise/user.json')
+// 1. Получить данные о пользователе в JSON и передать дальше
+    .then(response => {//здесь появился response потому что в httpGet он передавался через resolve(this.response)
+        console.log(response);
+        let user = JSON.parse(response);
+        return user;
+    })
+    // 2. Получить информацию с github
+    .then(user => {
+        console.log(user);
+        return httpGet(`https://api.github.com/users/${user.name}`);
+    })
+    // 3. Вывести аватар на 3 секунды (можно с анимацией)
+    .then(githubUser => {
+        console.log(githubUser);
+        githubUser = JSON.parse(githubUser);
+
+        let img = new Image();
+        img.src = githubUser.avatar_url;
+        img.className = "promise-avatar-example";
+        document.body.appendChild(img);
+
+        setTimeout(() => img.remove(), 3000); // (*)
+    });
+
+
+
+//---------Promise.all(iterable)--------
+//Вызов Promise.all(iterable) получает массив (или другой итерируемый объект) промисов и возвращает промис,
+// который ждёт, пока все переданные промисы завершатся,
+// и переходит в состояние «выполнено» с массивом их результатов.
+let urls = [
+    'https://learn.javascript.ru/article/promise/user.json',
+    'https://learn.javascript.ru/article/promise/guest.json'
+];
+//трансформируем массив [url1, url2] в
+//[httpGet(url1), httpGet(url2)]
+let httpGets = urls.map(httpGet);
+alert(httpGets);
+Promise.all( httpGets )
+    .then(results => {
+        alert(results);
+    });
+
+// если какой-то из промисов завершился с ошибкой, то результатом Promise.all будет эта ошибка.
+// При этом остальные промисы игнорируются.
+//Например:
+Promise.all([
+    httpGet('/article/promise/user.json'),
+    httpGet('/article/promise/guest.json'),
+    httpGet('/article/promise/no-such-page.json') // (нет такой страницы)
+]).then(
+    result => alert("не сработает"),
+    error => alert("Ошибка: " + error.message) // Ошибка: Not Found
+);
+
+
+//------Promise.race(iterable)--------
+//в отличие от Promise.all, результатом будет только первый успешно выполнившийся промис из списка.
+// Остальные игнорируются.
+Promise.race([
+    httpGet('https://learn.javascript.ru/article/promise/user.json'),
+    httpGet('https://learn.javascript.ru/article/promise/guest.json')
+]).then(firstResult => {
+    firstResult = JSON.parse(firstResult);
+    alert( firstResult.name ); // iliakan или guest, смотря что загрузится раньше
+}, err => {alert(err)});
+
+
+//-------------Fetch---------------
+//Это по сути тоже что и httpGet написанный выше, но с кучей возможностей и по стандрату
+//Не во всех браузерах поддерживается, но для него есть полифиллы
+'use strict';
+//сохраняю в переменную просто для наглядности что это тоже промис
+let promise = fetch('https://learn.javascript.ru/article/promise/user.json');
+promise
+    .then(function(response) {
+        alert(response.headers.get('Content-Type')); // application/json; charset=utf-8
+        alert(response.status); // 200
+        return response.json();
+    })
+    .then(function(user) {//user - это то что вернул первый then
+        alert(JSON.stringify(user)); // {"name":"iliakan","isAdmin":true}
+    })
+    .catch( alert );
+//В примере выше мы можем в первом .then проанализировать ответ и,
+// если он нас устроит – вернуть промис с нужным форматом.
+// Следующий .then уже будет содержать полный ответ сервера.
