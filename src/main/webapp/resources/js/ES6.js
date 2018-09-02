@@ -981,6 +981,21 @@ promise
     );
 
 
+//Напишите функцию delay(ms), которая возвращает промис,
+// переходящий в состояние "resolved" через ms миллисекунд.
+function delay(ms) {
+   return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            // переведёт промис в состояние fulfilled с результатом "result"
+            resolve("result");
+        }, ms);
+    });
+}
+delay(1000)
+    .then(() => alert("Hello!"));
+
+
+
 //------Промисификация------
 
 //Промисификация – это когда берут асинхронный функционал и делают для него обёртку, возвращающую промис.
@@ -1086,6 +1101,38 @@ Promise.race([
 }, err => {alert(err)});
 
 
+//--------Promise.resolve(value)--------
+//Вызов Promise.resolve(value) создаёт успешно выполнившийся промис с результатом value.
+//пример 2
+Promise.resolve('https://learn.javascript.ru/article/promise/user.json') // начать с этого значения
+    .then(httpGet) // вызвать для него httpGet
+    .then(alert); // и вывести результат
+
+//пример 2
+//Напишите код, который все URL из этого массива загружает – один за другим (последовательно),
+// и сохраняет в результаты в массиве results, а потом выводит.
+let urls = [
+    'user.json',
+    'badurl',
+    'guest.json',
+    'badurl2'
+];
+// начало цепочки
+let chain = Promise.resolve();
+let results = [];
+// в цикле добавляем задачи в цепочку
+urls.forEach(function(url) {
+    chain = chain
+        .then(() => httpGet(`https://learn.javascript.ru/article/promise/${url}`))
+        .then(
+            (result) => {results.push(result);},//onFulfilled
+            (error) => {results.push(`${url} - тут ошибка "${error}"!\n`)}//onRejected
+        );
+});
+// в конце — выводим результаты
+chain.then(() => {alert(results);});
+
+
 //-------------Fetch---------------
 //Это по сути тоже что и httpGet написанный выше, но с кучей возможностей и по стандрату
 //Не во всех браузерах поддерживается, но для него есть полифиллы
@@ -1105,3 +1152,41 @@ promise
 //В примере выше мы можем в первом .then проанализировать ответ и,
 // если он нас устроит – вернуть промис с нужным форматом.
 // Следующий .then уже будет содержать полный ответ сервера.
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------Генераторы----------------------------------------------------
+//Генераторы – новый вид функций в современном JavaScript.
+// Они отличаются от обычных тем, что могут приостанавливать своё выполнение,
+// возвращать промежуточный результат и далее возобновлять его позже, в произвольный момент времени.
+
+function* generateSequence() {
+    yield 1;
+    yield 2;
+    return 3;
+}
+let generator = generateSequence();
+alert(JSON.stringify(generator.next())); // {value: 1, done: false}
+alert(JSON.stringify(generator.next())); // {value: 2, done: false}
+alert(JSON.stringify(generator.next())); // {value: 3, done: true}
+
+
+//-------Генератор – итератор-------
+function* generateSequence() {
+    yield 1;
+    yield 2;
+    return 3;
+}
+let generator = generateSequence();
+for(let value of generator) {
+    alert(value); // 1, затем 2
+}
+//Значение 3 выведено не будет.
+// Это потому что стандартный перебор итератора игнорирует value на последнем значении,
+// при done: true.
