@@ -1118,12 +1118,15 @@ let urls = [
     'badurl2'
 ];
 // начало цепочки
-let chain = Promise.resolve();
+let chain = Promise.resolve("val");//создаем промис с result="val". можно и без аргументов, тогда result=undefined
 let results = [];
 // в цикле добавляем задачи в цепочку
 urls.forEach(function(url) {
     chain = chain
-        .then(() => httpGet(`https://learn.javascript.ru/article/promise/${url}`))
+        .then((val) => {
+            alert(val);//val, затем 3 раза undefined
+            return httpGet(`https://learn.javascript.ru/article/promise/${url}`)
+        })
         .then(
             (result) => {results.push(result);},//onFulfilled
             (error) => {results.push(`${url} - тут ошибка "${error}"!\n`)}//onRejected
@@ -1190,3 +1193,218 @@ for(let value of generator) {
 //Значение 3 выведено не будет.
 // Это потому что стандартный перебор итератора игнорирует value на последнем значении,
 // при done: true.
+
+//Т.к. генератор итерируемый, то его можно представить в виде массива
+function* generateSequence(start, end) {
+    for (let i = start; i <= end; i++) {
+        yield i;
+    }
+}
+// Используем оператор … для преобразования итерируемого объекта в массив
+let sequence = [...generateSequence(2,5)];
+alert(sequence); // 2, 3, 4, 5
+
+
+//-------Композиция генераторов-------
+//Пример генератора кодов символов (кроме пунктуации)
+function* generateSequence(start, end) {
+    for (let i = start; i <= end; i++) yield i;
+}
+function* generateAlphaNum() {
+    // 0..9
+    yield* generateSequence(48, 57);
+    // A..Z
+    yield* generateSequence(65, 90);
+    // a..z
+    yield* generateSequence(97, 122);
+}
+let str = '';
+for(let code of generateAlphaNum()) {
+    str += String.fromCharCode(code);
+}
+alert(str); // 0..9A..Za..z
+
+
+//-----------yield – дорога в обе стороны----------
+function* gen() {
+    // Передать вопрос во внешний код и подождать ответа
+    let result = yield "2 + 2?";
+    alert(result===4?"4 - Верно!" : `${result} - не верно!`);
+}
+let generator = gen();
+// "2 + 2?"
+let result = Number.parseInt(prompt(generator.next().value));
+generator.next(result);
+
+//Несколько yield и next
+function* gen() {
+    let ask1 = yield "2 + 2?";
+    alert(`ask1 = ${ask1} (in gen)`); // 4
+    let ask2 = yield "3 * 3?";
+    alert(`ask2 = ${ask2} (in gen)`); // 9
+}
+let generator = gen();
+alert( `generator.next().value = ${generator.next().value}` ); // "2 + 2?"
+alert( `generator.next(4).value = ${generator.next(4).value}` ); // "3 * 3?"
+alert( `generator.next(9).done = ${generator.next(9).done}` ); // true
+
+
+//------------generator.throw-----------
+//перехват внутри генератора
+function* gen() {
+    try {
+        // в этой строке возникнет ошибка
+        let result = yield "Сколько будет 2 + 2?";
+        alert("выше будет исключение ^^^");
+    } catch(e) {
+        alert(e); // выведет ошибку
+    }
+}
+let generator = gen();
+alert(generator.next().value);
+generator.throw(new Error("ответ не найден в моей базе данных"));
+
+//перехват снаружи генератора
+function* gen() {
+    // В этой строке возникнет ошибка
+    let result = yield "Сколько будет 2 + 2?";
+}
+let generator = gen();
+alert(generator.next().value);
+try {
+    generator.throw(new Error("ответ не найден в моей базе данных"));
+} catch(e) {
+    alert(e); // выведет ошибку
+}
+
+
+//-----------Плоский асинхронный код----------
+//Общий принцип такой:
+//Генератор yield'ит не просто значения, а промисы.
+//Есть специальная «функция-чернорабочий» execute(generator) которая запускает генератор,
+// последовательными вызовами next получает из него промисы – один за другим, и, когда очередной промис выполнится,
+// возвращает его результат в генератор следующим next.
+// Последнее значение генератора (done:true) execute уже обрабатывает как окончательный результат – например,
+// возвращает через промис куда-то ещё, во внешний код или просто использует, как в примере ниже.
+
+//Для AJAX-запросов будем использовать метод fetch, он как раз возвращает промисы.
+
+//Генератор для получения и показа аватара
+// он yield'ит промисы
+function* showUserAvatar() {
+    //fetch(..) - возвращает промис с result = httpResponse
+    //после обработки в execute, userFetch = result промиса полученного из fetch, т.е. httpResponse
+    let userFetch = yield fetch('https://learn.javascript.ru/article/promise/user.json');
+
+    //userFetch.json() - возвращает промис с result=JSON.stringify(userFetch). не забываем что userFetch = httpResponse
+    //после обработки в execute, userFetch = result промиса полученного из userFetch.json(), т.е. httpResponse в виде json
+    let userInfo = yield userFetch.json();
+    alert(JSON.stringify(userInfo));
+
+    //тоже что и с 1ым yield
+    let githubFetch = yield fetch(`https://api.github.com/users/${userInfo.name}`);
+    //тоже что и со 2ым yield
+    let githubUserInfo = yield githubFetch.json();
+
+    let img = new Image();
+    img.src = githubUserInfo.avatar_url;
+    img.className = "promise-avatar-example";
+    document.body.appendChild(img);
+    yield new Promise(resolve => setTimeout(resolve, 3000));
+    img.remove();
+    return img.src;
+}
+
+// вспомогательная функция-чернорабочий
+// для выполнения промисов из generator
+function execute(generator, yieldValue) {
+    let next = generator.next(yieldValue);
+    if (!next.done) {
+        next.value.then(
+            result => execute(generator, result),
+            err => generator.throw(err)
+        );
+    } else {
+        // обработаем результат return из генератора
+        // обычно здесь вызов callback или что-то в этом духе
+        alert(next.value);
+    }
+}
+execute(showUserAvatar());
+//Функция execute в примере выше – универсальная, она может работать с любым генератором, который yield'ит промисы.
+//Вместе с тем, это – всего лишь набросок, чтобы было понятно, как такая функция в принципе работает.
+// Есть уже готовые реализации, обладающие большим количеством возможностей.
+// Одна из самых известных – это библиотека co
+
+
+//-------------Библиотека CO-----------
+//https://cdnjs.cloudflare.com/ajax/libs/co/4.1.0/index.min.js
+
+Object.defineProperty(window, 'result', {
+    // присвоение result=… будет выводить значение
+    set: value => alert(JSON.stringify(value))
+});
+co(function*() {
+    result = yield function*() { // генератор
+        return 1;
+    }();
+    result = yield function*() { // функция-генератор
+        return 2;
+    };
+    result = yield Promise.resolve(3); // промис
+    result = yield function(callback) { // function(callback)
+        setTimeout(() => callback(null, 4), 1000);
+    };
+    result = yield { // две задачи выполнит параллельно, как Promise.all
+        one: Promise.resolve(1),
+        two: function*() { return 2; }
+    };
+    result = yield [ // две задачи выполнит параллельно, как Promise.all
+        Promise.resolve(1),
+        function*() { return 2 }
+    ];
+});
+
+
+//Пример showUserAvatar() можно переписать с использованием co вот так:
+// Загрузить данные пользователя с нашего сервера
+function* fetchUser(url) {
+    let userFetch = yield fetch(url);
+    let user = yield userFetch.json();
+    return user;
+}
+// Загрузить профиль пользователя с github
+function* fetchGithubUser(user) {
+    let githubFetch = yield fetch(`https://api.github.com/users/${user.name}`);
+    let githubUser = yield githubFetch.json();
+    return githubUser;
+}
+// Подождать ms миллисекунд
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+// Использовать функции выше для получения аватара пользователя
+function* fetchAvatar(url) {
+    let user = yield* fetchUser(url);
+    let githubUser = yield* fetchGithubUser(user);
+    return githubUser.avatar_url;
+}
+// Использовать функции выше для получения и показа аватара
+function* showUserAvatar() {
+    let avatarUrl;
+    try {
+        avatarUrl = yield* fetchAvatar('https://learn.javascript.ru/article/promise/user.json');
+    } catch(e) {
+        avatarUrl = 'https://learn.javascript.ru/article/generator/anon.png';
+    }
+    let img = new Image();
+    img.src = avatarUrl;
+    img.className = "promise-avatar-example";
+    document.body.appendChild(img);
+    yield sleep(2000);
+    img.remove();
+    return img.src;
+}
+co(showUserAvatar).then((resolve => {
+    alert(resolve);//выводит img.src, который вернула ф-ия-генератор showUserAvatar
+}));
