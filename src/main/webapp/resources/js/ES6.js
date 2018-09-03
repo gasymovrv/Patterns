@@ -1408,3 +1408,239 @@ function* showUserAvatar() {
 co(showUserAvatar).then((resolve => {
     alert(resolve);//выводит img.src, который вернула ф-ия-генератор showUserAvatar
 }));
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------Модули----------------------------------------------------
+
+//--------------export-----------------
+// экспорт прямо перед объявлением
+export let one = 1;
+
+//Можно написать export и отдельно от объявления:
+let two = 2;
+export {two};
+
+//Для двух переменных будет так:
+export {one, two};
+
+//При помощи ключевого слова as можно указать,
+// что переменная one будет доступна снаружи (экспортирована) под именем once,
+// а two – под именем twice:
+export {one as once, two as twice};
+
+//Экспорт функций и классов выглядит так же:
+export class User {
+    constructor(name) {
+        this.name = name;
+    }
+}
+export function sayHi() {
+    alert("Hello!");
+}
+// отдельно от объявлений было бы так:
+// export {User, sayHi}
+
+//--------------import--------------
+import {one, two} from "./nums";
+//Здесь:
+//"./nums" – модуль, как правило это путь к файлу модуля.
+//one, two – импортируемые переменные,
+// которые должны быть обозначены в nums словом export.
+
+//Например, при таком файле nums.js:
+export let one = 1;
+export let two = 2;
+//Модуль ниже выведет «1 and 2»:
+import {one, two} from "./nums";
+alert( `${one} and ${two}` ); // 1 and 2
+
+//Импортировать можно и под другим именем, указав его в «as»:
+// импорт one под именем item1, а two – под именем item2
+import {one as item1, two as item2} from "./nums";
+alert( `${item1} and ${item2}` ); // 1 and 2
+
+//Можно импортировать все значения сразу в виде объекта вызовом import * as obj, например:
+import * as numbers from "./nums";
+// теперь экспортированные переменные - свойства numbers
+alert( `${numbers.one} and ${numbers.two}` ); // 1 and 2
+
+//export default
+// Например, файл user.js:
+export default class User {
+    constructor(name) {
+        this.name = name;
+    }
+};
+//…А в файле login.js:
+import User from './user';
+new User("Вася");
+
+
+
+
+
+
+
+
+//---------------------------------------------------Proxy----------------------------------------------------
+
+//----------get/set-----------
+//Самыми частыми являются ловушки для чтения и записи в объект:
+//
+//get(target, property, receiver)
+//Срабатывает при чтении свойства из прокси. Аргументы:
+//target – целевой объект, тот же который был передан первым аргументом в new Proxy.
+//property – имя свойства.
+//receiver – объект, к которому было применено присваивание. Обычно сам прокси, либо прототипно наследующий от него.
+// Этот аргумент используется редко.
+//set(target, property, value, receiver)
+//Срабатывает при записи свойства в прокси.
+//
+//Аргументы:
+//target – целевой объект, тот же который был передан первым аргументом в new Proxy.
+//property – имя свойства.
+//value – значение свойства.
+//receiver – объект, к которому было применено присваивание, обычно сам прокси, либо прототипно наследующий от него.
+//
+//Метод set должен вернуть true, если присвоение успешно обработано и false в случае ошибки (приведёт к генерации TypeError).
+
+//Пример с выводом всех операций чтения и записи:
+'use strict';
+let user = {};
+let proxy = new Proxy(user, {
+    get(target, prop) {
+        alert(`Чтение ${prop}`);
+        return target[prop];
+    },
+    set(target, prop, value) {
+        alert(`Запись ${prop} ${value}`);
+        target[prop] = value;
+        return true;
+    }
+});
+proxy.firstName = "Ilya"; // запись
+proxy.firstName; // чтение
+alert(user.firstName); // Ilya
+
+
+//Прокси для словаря
+'use strict';
+let dictionary = {
+    'Hello': 'Привет',
+    'Bye': 'Пока'
+};
+dictionary = new Proxy(dictionary, {
+    get(target, phrase) {
+        if (phrase in target) {
+            return target[phrase];
+        } else {
+            console.log(`No phrase: ${phrase}`);
+            return phrase;
+        }
+    }
+});
+// Обращаемся к произвольным свойствам словаря!
+alert( dictionary['Hello'] ); // Привет
+alert( dictionary['Welcome']); // Welcome (без перевода)
+
+
+//----------has---------
+'use strict';
+let dictionary = {
+    'Hello': 'Привет'
+};
+dictionary = new Proxy(dictionary, {
+    has(target, phrase) {
+        return true;//теперь in всегда будет возвращать true
+    }
+});
+alert("BlaBlaBla" in dictionary); // true
+
+
+//----------deleteProperty----------
+//Срабатывает при операции delete, должна вернуть true, если удаление было успешным.
+'use strict';
+let dictionary = {
+    'Hello': 'Привет'
+};
+let proxy = new Proxy(dictionary, {
+    deleteProperty(target, phrase) {
+        return true; // ничего не делаем, но возвращает true
+    }
+});
+// не удалит свойство
+delete proxy['Hello'];
+alert("Hello" in dictionary); // true
+// будет то же самое, что и выше
+// так как нет ловушки has, операция in сработает на исходном объекте
+alert("Hello" in proxy); // true
+
+
+//----------enumerate----------
+//Ловушка enumerate перехватывает операции for..in и for..of по объекту.
+
+//В примере ниже прокси делает так, что итерация идёт по всем свойствам, кроме начинающихся с подчёркивания _:
+'use strict';
+let user = {
+    name: "Ilya",
+    surname: "Kantor",
+    _version: 1,
+    _secret: 123456
+};
+let proxy = new Proxy(user, {
+    enumerate(target) {
+        let props = Object.keys(target).filter(function(prop) {
+            return prop[0] != '_';
+        });
+        return props[Symbol.iterator]();
+    }
+});
+// отфильтрованы свойства, начинающиеся с _
+for(let prop in proxy) {
+    alert(prop); // Выведет свойства user: name, surname
+}
+
+
+//----------apply----------
+//Если аргумент target прокси – функция, то становится доступна ловушка apply для её вызова.
+//Метод apply(target, thisArgument, argumentsList) получает:
+//target – исходный объект.
+//thisArgument – контекст this вызова.
+//argumentsList – аргументы вызова в виде массива.
+function sum(a, b) {
+    return a + b;
+}
+let proxy = new Proxy(sum, {
+    // передаст вызов в target, предварительно сообщив о нём
+    apply: function(target, thisArg, argumentsList) {
+        alert(`Буду вычислять сумму: ${argumentsList}`);
+        return target.apply(thisArg, argumentsList);
+    }
+});
+// Выведет сначала сообщение из прокси,
+// а затем уже сумму
+alert( proxy(1, 2) );
+
+
+//----------construct----------
+//Ловушка construct(target, argumentsList) перехватывает вызовы при помощи new.
+function User(name, surname) {
+    this.name = name;
+    this.surname = surname;
+}
+let UserProxy = new Proxy(User, {
+    // передаст вызов new User, предварительно сообщив о нём
+    construct: function(target, argumentsList) {
+        alert(`Запуск new с аргументами: ${argumentsList}`);
+        return new target(...argumentsList);
+    }
+});
+let user = new UserProxy("Ilya", "Kantor");
+alert( user.name ); // Ilya
