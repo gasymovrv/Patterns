@@ -43,11 +43,21 @@ alert(typeof []);        // 'object'
 alert(typeof new Date);  // 'object'
 
 function User() {}
-function Pet() {}
+function Animal(name) {}
+function Rabbit(name) {}
+Rabbit.prototype = Object.create(Animal.prototype);
+class AnimalES6{ constructor(name){this.name = name;} }
+class RabbitES6 extends AnimalES6{ constructor(name){super(name);} }
 var u = new User();
-var p = new Pet();
-console.log("u instanceof User: "+(u instanceof User));
-console.log("p instanceof Pet: "+(p instanceof Pet));
+var r = new Rabbit("кроль");
+var rES6 = new RabbitES6("кроль");
+alert(rES6.name);//кроль
+console.log("u instanceof User: "+(u instanceof User));//true
+console.log("r instanceof Animal: "+(r instanceof Animal));//true
+console.log("r instanceof Object: "+(r instanceof Object));//true
+console.log("rES6 instanceof AnimalES6: "+(rES6 instanceof AnimalES6));//true
+console.log("rES6 instanceof Object: "+(rES6 instanceof Object));//true
+
 var arr = [];
 alert( arr instanceof Array ); // true
 alert( arr instanceof Object ); // true
