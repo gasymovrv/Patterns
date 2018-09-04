@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Тестовая страница</title>
+    <script src="resources/js/testDOM.js"></script>
+    <link rel="stylesheet" type="text/css" href="resources/css/styles.css">
+</head>
+<body><!-- комментарий -->
+<div>
+    <h1 style="text-align: center">Тестовая страница</h1>
+    <ol>
+        <li>
+            <a href="https://learn.javascript.ru/ui" class="a-head">Документ, события, интерфейсы</a>
+            <ul>
+                <li><a href="https://learn.javascript.ru/document">Документ и объекты страницы</a></li>
+                <li><a href="https://learn.javascript.ru/events-and-interfaces">Основы работы с событиями</a></li>
+                <li><a href="https://learn.javascript.ru/forms-controls">Формы, элементы управления</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="https://learn.javascript.ru/ajax" class="a-head">AJAX и COMET</a>
+            <ul>
+                <li><a href="https://learn.javascript.ru/ajax-intro">Введение в AJAX и COMET</a></li>
+                <li><a href="https://learn.javascript.ru/ajax-nodejs">Node.JS для решения задач</a></li>
+                <li><a href="https://learn.javascript.ru/ajax-xmlhttprequest">Основы XMLHttpRequest</a></li>
+                <li><a href="https://learn.javascript.ru/ajax-jsonp">Протокол JSONP</a></li>
+            </ul>
+        </li>
+    </ol>
+</div>
+
+<!--див для тестов скриптов-->
+<div id="testId"></div>
+
+</body>
+</html>
+
+<script>
+    let accept = confirm("Включить тестовые скрипты?");
+    if(accept){
+        run();
+    }
+</script>
