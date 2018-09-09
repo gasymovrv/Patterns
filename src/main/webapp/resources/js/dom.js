@@ -162,15 +162,131 @@ document.body.getElementsByTagName("div")[0].getElementsByTagName("ul")[0].textC
 
 //---------------------------------------Современный DOM: полифиллы-----------------------------------------------------
 
+//«Полифилл» (англ. polyfill) – это библиотека, которая добавляет в старые браузеры поддержку возможностей, которые в современных браузерах являются встроенными.
+
+// Один полифилл мы уже видели, когда изучали собственно JavaScript – это библиотека ES5 shim.
+// Если её подключить, то в IE8- начинают работать многие возможности ES5.
+// Работает она через модификацию стандартных объектов и их прототипов. Это типично для полифиллов.
+if (document.documentElement.firstElementChild === undefined) { // (1)
+
+    Object.defineProperty(Element.prototype, 'firstElementChild', { // (2)
+        get: function() {
+            var el = this.firstChild;
+            do {
+                if (el.nodeType === 1) {
+                    return el;
+                }
+                el = el.nextSibling;
+            } while (el);
+
+            return null;
+        }
+    });
+}
+//Если этот код запустить, то firstElementChild появится у всех элементов в IE8.
+// Общий вид этого полифилла довольно типичен. Обычно полифилл состоит из двух частей:
+    // Проверка, есть ли встроенная возможность.
+    // Эмуляция, если её нет.
+
+
+//Полифилл для matches
+(function() {
+
+    // проверяем поддержку
+    if (!Element.prototype.matches) {
+
+        // определяем свойство
+        Element.prototype.matches = Element.prototype.matchesSelector ||
+            Element.prototype.webkitMatchesSelector ||
+            Element.prototype.mozMatchesSelector ||
+            Element.prototype.msMatchesSelector;
+
+    }
+
+})();
 
 
 
-//---------------------------------------Навигация по DOM-элементам-----------------------------------------------------
 
 
 
 
-//---------------------------------------Навигация по DOM-элементам-----------------------------------------------------
+//---------------------------------------Атрибуты и DOM-свойства--------------------------------------------------------
+//-----Свои DOM-свойства-----
+//Узел DOM – это объект, поэтому, как и любой объект в JavaScript,
+// он может содержать пользовательские свойства и методы.
+
+//Например, создадим в document.body новое свойство и запишем в него объект:
+document.body.myData = {
+    name: 'Петр',
+    familyName: 'Петрович'
+};
+alert( document.body.myData.name ); // Петр
+
+
+//Можно добавить и новую функцию:
+document.body.sayHi = function () {
+    alert(this.nodeName);
+};
+document.body.sayHi(); // BODY, выполнилась с правильным this
+
+
+//----Атрибуты-----
+//В отличие от свойств, атрибуты:
+
+//Всегда являются строками.
+//Их имя нечувствительно к регистру (ведь это HTML)
+//Видны в innerHTML (за исключением старых IE)
+
+// elem.hasAttribute(name) – проверяет наличие атрибута
+// elem.getAttribute(name) – получает значение атрибута
+// elem.setAttribute(name, value) – устанавливает атрибут
+// elem.removeAttribute(name) – удаляет атрибут
+
+var elem = document.getElementById('testId2');
+alert( elem.getAttribute('About') ); // (1) 'Elephant', атрибут получен
+elem.setAttribute('Test', 123); // (2) атрибут Test установлен
+alert( document.body.innerHTML ); // (3) в HTML видны все атрибуты!
+var attrs = elem.attributes; // (4) можно получить коллекцию атрибутов
+for (var i = 0; i < attrs.length; i++) {
+    alert( attrs[i].name + " = " + attrs[i].value );
+}
+
+
+var a = document.getElementById('testId3');
+a.href = '/';
+alert( 'атрибут:' + a.getAttribute('href') ); // '/'
+alert( 'свойство:' + a.href );  // полный URL
+
+
+var input = document.getElementById('testId4');
+// работа с checked через атрибут
+alert( input.getAttribute('checked') ); // пустая строка
+input.removeAttribute('checked'); // снять галочку
+
+// работа с checked через свойство
+alert( input.checked ); // false <-- может быть только true/false
+input.checked = true; // поставить галочку (при этом атрибут в элементе не появится)
+
+
+//Изменение некоторых свойств обновляет атрибут. Но это скорее исключение, чем правило.
+//Чаще синхронизация – односторонняя: свойство зависит от атрибута, но не наоборот.
+var input = document.getElementById('testId5');
+input.value = 'new'; // поменяли свойство
+alert( input.getAttribute('value') ); // 'markup', не изменилось!
+
+input.setAttribute('value', 'new'); // поменяли атрибут
+alert( input.value ); // 'new', input.value изменилось!
+//Например, можно взять изначальное значение из атрибута и сравнить со свойством,
+// чтобы узнать, изменилось ли значение.
+// А при необходимости и перезаписать свойство атрибутом, отменив изменения.
+
+
+
+
+
+
+//----------------------------------Методы contains и compareDocumentPosition-------------------------------------------
 
 
 
