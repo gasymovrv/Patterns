@@ -22,3 +22,7 @@ a:hover {
 .a-head{
     font-weight: bold;
 }
+
+.external {
+    background-color: yellow;
+}

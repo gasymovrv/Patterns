@@ -282,7 +282,85 @@ alert( input.value ); // 'new', input.value изменилось!
 // А при необходимости и перезаписать свойство атрибутом, отменив изменения.
 
 
+//-----Классы в виде строки: className------
+var div = document.getElementById('testId6');
+// прочитать класс элемента
+alert( div.className ); // testClass
 
+// поменять класс элемента (у класса меняется даже при изменении свойства)
+div.className = "testClass1 testClass2";
+alert( div.className ); // testClass1 testClass2
+alert( div.getAttribute('class') ); // testClass1 testClass2
+
+
+//-----Классы в виде объекта: classList-------
+//Методы classList:
+//elem.classList.contains("class") – возвращает true/false, в зависимости от того, есть ли у элемента класс class.
+//elem.classList.add/remove("class") – добавляет/удаляет класс class
+//elem.classList.toggle("class") – если класса class нет, добавляет его, если есть – удаляет.
+var div = document.getElementById('testId7');
+var classList = div.classList;
+classList.remove('page'); // удалить класс
+classList.add('post'); // добавить класс
+for (var i = 0; i < classList.length; i++) { // перечислить классы
+    alert( classList[i] ); // main, затем post
+}
+alert( classList.contains('post') ); // проверить наличие класса
+alert( div.className ); // main post, тоже работает
+
+
+//---------Нестандартные атрибуты----------
+var div = document.getElementById('testId8');
+//Для нестандартных атрибутов DOM-свойство не создаётся.
+alert( div.id ); // testId8
+alert( div.about ); // undefined
+//но можно получить через getAttribute
+alert( elem.getAttribute('About') ); // (1) 'Elephant', атрибут получен
+
+
+//--------Свойство dataset, data-атрибуты--------
+//Стандарт HTML5 специально разрешает атрибуты data-* и резервирует их для пользовательских данных.
+// При этом во всех браузерах, кроме IE10-, к таким атрибутам можно обратиться не только как к атрибутам,
+// но и как к свойствам, при помощи специального свойства dataset:
+var elem = document.getElementById('testId9');
+alert( elem.dataset.about ); // Elephant
+
+//название data-user-location трансформировалось в dataset.userLocation.
+// Дефис превращается в большую букву:
+alert( elem.dataset.userLocation ); // street
+
+
+//--------задачи------
+//---------- 1
+//Получите div в переменную.
+//Получите значение атрибута "data-widget-name" в переменную.
+//Выведите его.
+var elem = document.getElementById('testId10');
+alert(elem.dataset.widgetName);
+//или
+alert(elem.getAttribute('data-widget-name'));
+
+//---------- 2
+//Сделайте желтыми внешние ссылки, добавив им класс external.
+//Все ссылки без href, без протокола и начинающиеся с http://internal.com считаются внутренними.
+//код может быть таким:
+var links = document.getElementById('testId11').querySelectorAll('a');
+for (var i = 0; i < links.length; i++) {
+    var a = links[i];
+    var href = a.getAttribute('href');
+    if (!href) continue; // нет атрибута
+    if (href.indexOf('://') == -1) continue; // без протокола
+    if (href.indexOf('http://internal.com') === 0) continue; // внутренняя
+    a.classList.add('external');
+}
+//Удобнее и эффективнее здесь – указать проверки для href прямо в CSS-селекторе:
+// ищем все ссылки, у которых в href есть протокол,
+// но адрес начинается не с http://internal.com
+var css = '#testId11 a[href*="://"]:not([href^="http://internal.com"])';
+var links = document.querySelectorAll(css);
+for (var i = 0; i < links.length; i++) {
+    links[i].classList.add('external');
+}
 
 
 
