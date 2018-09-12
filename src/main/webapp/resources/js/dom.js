@@ -366,7 +366,243 @@ for (var i = 0; i < links.length; i++) {
 
 //----------------------------------Методы contains и compareDocumentPosition-------------------------------------------
 
+//--------Метод contains для проверки на вложенность-------
+//Синтаксис:
+var result = parent.contains(child);
+//Возвращает true, если parent содержит child или parent == child.
+
+//--------Метод compareDocumentPosition для порядка узлов-------
+var result = nodeA.compareDocumentPosition(nodeB);
+//Возвращаемое значение – битовая маска, биты в которой означают следующее:
+//Биты	Число	Значение
+//000000	0	nodeA и nodeB -- один и тот же узел
+//000001	1	Узлы в разных документах (или один из них не в документе)
+//000010	2	nodeB предшествует nodeA (в порядке обхода документа)
+//000100	4	nodeA предшествует nodeB
+//001000	8	nodeB содержит nodeA
+//010000	16	nodeA содержит nodeB
 
 
 
-//---------------------------------------Навигация по DOM-элементам-----------------------------------------------------
+//---------------------------------------Добавление и удаление узлов-----------------------------------------------------
+
+//------Создание сообщения-------
+//В нашем случае мы хотим сделать DOM-элемент div, дать ему классы и заполнить текстом:
+var div = document.createElement('div');
+div.className = "alert";
+div.innerHTML = "<strong>Ура!</strong> Вы прочитали это важное сообщение.";
+//После этого кода у нас есть готовый DOM-элемент.
+// Пока что он присвоен в переменную div, но не виден, так как никак не связан со страницей.
+
+
+//--------Добавление элемента: appendChild, insertBefore---------
+//Все методы вставки автоматически удаляют вставляемый элемент со старого места.
+
+//appendChild
+//Добавляет elem в конец дочерних элементов parentElem.
+var parent = document.getElementById('testId12');
+parent.appendChild(div);
+//пример 2
+var list = document.getElementById('testId13');
+var newLi = document.createElement('li');
+newLi.innerHTML = 'Привет, мир!';
+list.appendChild(newLi);
+
+
+//insertBefore
+var newLi = document.createElement('li');
+newLi.innerHTML = 'Привет, мир!';
+var list = document.getElementById('testId14');
+list.insertBefore(newLi, list.children[1]);
+//Для вставки элемента в начало достаточно указать, что вставлять будем перед первым потомком:
+list.insertBefore(newLi, list.firstChild);
+
+//если вторым аргументом указать null, то insertBefore сработает как appendChild
+list.insertBefore(newLi, null);
+// то же, что и:
+list.appendChild(newLi);
+
+//пример с созданием
+var div = document.createElement('div');
+div.className = "alert";
+div.innerHTML = "<strong>Ура!</strong> Вы прочитали это важное сообщение.";
+document.body.insertBefore(div, document.body.firstChild);
+
+
+//---------Клонирование узлов: cloneNode-----------
+//Вызов elem.cloneNode(true) создаст «глубокую» копию элемента – вместе с атрибутами, включая подэлементы.
+//Если же вызвать с аргументом false, то копия будет сделана без дочерних элементов
+var div = document.createElement('div');
+div.className = "alert alert-success";
+div.innerHTML = "<strong>Ура!</strong> Вы прочитали это важное сообщение.";
+
+document.body.insertBefore(div, document.body.firstChild);
+// создать копию узла
+var div2 = div.cloneNode(true);
+// копию можно подправить
+div2.querySelector('strong').innerHTML = 'Супер!';
+// вставим её после текущего сообщения
+div.parentNode.insertBefore(div2, div.nextSibling);
+
+
+//--------Удаление узлов: removeChild---------
+//---parentElem.removeChild(elem)---
+//Удаляет elem из списка детей parentElem.
+var div = document.createElement('div');
+div.className = "alert alert-success";
+div.innerHTML = "<strong>Ура!</strong> Вы прочитали это важное сообщение.";
+
+document.body.insertBefore(div, document.body.firstChild);
+
+setTimeout(function() {
+    div.parentNode.removeChild(div);
+}, 1000);
+
+//---parentElem.replaceChild(newElem, elem)---
+//Среди детей parentElem удаляет elem и вставляет на его место newElem.
+
+//---elem.remove()---
+//который удаляет элемент напрямую
+
+//полифилл для remove()
+if (!Element.prototype.remove) {
+    Element.prototype.remove = function remove() {
+        if (this.parentNode) {
+            this.parentNode.removeChild(this);
+        }
+    };
+}
+
+//пишем insertAfter
+//т.к. insertBefore со вторым аргументом null работает как appendChild, то можно так:
+function insertAfter(elem, refElem) {
+    return refElem.parentNode.insertBefore(elem, refElem.nextSibling);
+}
+
+//пишем removeChildren
+function removeChildren(elem) {
+    while(elem.lastChild) {
+        elem.removeChild(elem.lastChild);
+    }
+}
+
+//динамический список
+var list = document.getElementById('testId15');
+var ul = document.createElement('ul');
+var text = prompt("Введите элемент списка");
+while (text){
+    var li = document.createElement('li');
+    li.appendChild(document.createTextNode(text));
+    ul.appendChild(li);
+    text = prompt("Введите следующий элемент списка");
+}
+list.appendChild(ul);
+
+//Создайте дерево из объекта
+var data = {
+    "Рыбы": {
+        "Форель": {},
+        "Щука": {}
+    },
+
+    "Деревья": {
+        "Хвойные": {
+            "Лиственница": {},
+            "Ель": {}
+        },
+        "Цветковые": {
+            "Берёза": {},
+            "Тополь": {}
+        }
+    }
+};
+var list = document.getElementById('testId16');
+createTree(list, data);
+
+function createTree(container, data) {
+    var ul = document.createElement('ul');
+    container.appendChild(ul);
+    for(let o in data){
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode(o));
+        ul.appendChild(li);
+        if(Object.keys(data[o]).length > 0){
+            createTree(li, data[o]);
+        }
+    }
+}
+
+
+
+
+//------------------------------Мультивставка: insertAdjacentHTML и DocumentFragment----------------------------------------
+//Обычные методы вставки работают с одним узлом. Но есть и способы вставлять множество узлов одновременно.
+
+
+//-----insertAdjacent*-----
+elem.insertAdjacentHTML(where, html);
+//html: Строка HTML, которую нужно вставить
+//where: Куда по отношению к elem вставлять строку. Всего четыре варианта:
+//
+//1. `beforeBegin` -- перед `elem`.
+//2. `afterBegin` -- внутрь `elem`, в самое начало.
+//3. `beforeEnd` -- внутрь `elem`, в конец.
+//4. `afterEnd` -- после `elem`.
+
+elem.insertAdjacentElement(where, newElem); // – вставляет в произвольное место не строку HTML, а элемент newElem.
+elem.insertAdjacentText(where, text); // – создаёт текстовый узел из строки text и вставляет его в указанное место относительно elem.
+
+
+//--------DocumentFragment--------
+//Вставить пачку узлов единовременно поможет DocumentFragment.
+// Это особенный кросс-браузерный DOM-объект, который похож на обычный DOM-узел, но им не является.
+//Его «Фишка» заключается в том, что когда DocumentFragment вставляется в DOM – то он исчезает,
+// а вместо него вставляются его дети
+// хотим вставить в список UL много LI
+
+// делаем вспомогательный DocumentFragment
+// var fragment = document.createDocumentFragment();
+//
+// for (цикл по li) {
+//     fragment.appendChild(list[i]); // вставить каждый LI в DocumentFragment
+// }
+//
+// ul.appendChild(fragment); // вместо фрагмента вставятся элементы списка
+
+
+
+
+//--------------------------------------------Стили, getComputedStyle-----------------------------------------------------
+//--------Стили элемента: свойство style------
+//Свойство style содержит лишь тот стиль, который указан в атрибуте элемента, без учёта каскада CSS.
+document.body.style.margin = '20px';
+alert( document.body.style.marginTop ); // 20px!
+document.body.style.color = '#abc';
+alert( document.body.style.color ); // rgb(170, 187, 204)
+
+//-------Строка стилей style.cssText---------
+//Свойство style.cssText позволяет поставить стиль целиком в виде строки.
+//При установке style.cssText все предыдущие свойства style удаляются.
+var div = document.getElementById('table');
+div.style.cssText="color: red !important; \
+    background-color: yellow; \
+    width: 100px; \
+    text-align: center; \
+    blabla: 5; \
+  ";
+alert(div.style.cssText);
+//Браузер разбирает строку style.cssText и применяет известные ему свойства.
+// Неизвестные, наподобие blabla, большинство браузеров просто проигнорируют.
+
+//----------Полный стиль из getComputedStyle---------
+//Для того, чтобы получить текущее используемое значение свойства,
+// используется метод window.getComputedStyle, описанный в стандарте DOM Level 2.
+
+//getComputedStyle(element[, pseudo])
+//element - Элемент, значения для которого нужно получить
+//pseudo - Указывается, если нужен стиль псевдо-элемента, например "::before".
+// Пустая строка или отсутствие аргумента означают сам элемент.
+
+var computedStyle = getComputedStyle(document.body);
+alert( computedStyle.marginTop ); // выведет отступ в пикселях
+alert( computedStyle.color ); // выведет цвет
