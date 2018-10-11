@@ -435,7 +435,13 @@
                         <!-- Перечень прикрепленных документов -->
                         <xsl:call-template name="Attachments"/>
                     </table>
-
+                    <p align="center">
+                        <xsl:call-template name="singleChangeType">
+                            <xsl:with-param name="param1" select="'(В связи с '"/>
+                            <xsl:with-param name="param2" select="')'"/>
+                            <xsl:with-param name="value" select="fcs:changeType"/>
+                        </xsl:call-template>
+                    </p>
                 </div>
             </body>
         </html>
@@ -782,5 +788,28 @@
         </xsl:if>
     </xsl:template>
 
-
+    <xsl:template name="singleChangeType">
+        <xsl:param name="param1" select="''"/>
+        <xsl:param name="param2" select="''"/>
+        <xsl:param name="value" select="''"/>
+        <xsl:variable name="role">
+            <xsl:choose>
+                <xsl:when test="$value = 'C'">прекращением действия права уполномоченного органа, уполномоченного
+                    учреждения, организации, осуществляющей полномочия заказчика на осуществление закупок на основании
+                    договора (соглашения) в соответствии с частью 6 статьи 15 Федерального закона № 44-ФЗ на размещение
+                    закупок для заказчика
+                </xsl:when>
+                <xsl:when test="$value = 'R'">реорганизацией заказчика или уполномоченного органа, осуществляющего размещение</xsl:when>
+                <xsl:when test="$value = 'F'">изменением организации, осуществляющей размещение в соответствии со
+                    статьей 26 Федерального закона № 44-ФЗ
+                </xsl:when>
+                <xsl:otherwise>Информация отсутствует</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <p align="center">
+            <xsl:value-of select="$param1"/>
+            <xsl:value-of select="$role"/>
+            <xsl:value-of select="$param2"/>
+        </p>
+    </xsl:template>
 </xsl:stylesheet>

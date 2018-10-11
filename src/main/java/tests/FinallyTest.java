@@ -1,17 +1,15 @@
-package test;
+package tests;
+/**
+* Возвращаем finally и получаем корневое исключение
+ */
+public class FinallyTest extends Test {
 
-public class Main {
-    public static void main(String[] args) {
-        //-----------------------------Math.random()-------------------
-        for (int i = 0; i < 100; i++) {
-            System.out.println((int)(Math.random()*5));
-        }
-
-        //-----------------------------finally-------------------
-        System.out.println(finallyTest());
+    @Override
+    public void contentGo() {
+        System.out.println(getMessage());
     }
 
-    private static String finallyTest(){
+    private String getMessage(){
         String message = null;
         try {
             try {

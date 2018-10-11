@@ -71,4 +71,5 @@
         </product>
     </products>
     <conditions/>
+    <changeType>R</changeType>
 </ns2:fcsRequestForQuotation>
