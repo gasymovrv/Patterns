@@ -34,3 +34,22 @@ a:hover {
     color: #3c763d;
     background-color: #dff0d8;
 }
+
+.box {
+    display: flex;
+    align-items: stretch;
+}
+
+.frontpage-content__part {
+    display: inline-block;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    background-color: #9b6b6b;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 3px 8px;
+    text-transform: uppercase;
+    text-align: center;
+    color: #fff;
+}

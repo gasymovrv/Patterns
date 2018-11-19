@@ -429,6 +429,43 @@ div.innerHTML = "<strong>Ура!</strong> Вы прочитали это важ�
 document.body.insertBefore(div, document.body.firstChild);
 
 
+//---------Создаем такой блок и делаем обработку события---------
+// <div class="collapse">
+//     <a class="collapse-toggle" type="button" href="/">
+//     Скрыть
+//     </a>
+//
+//     <div class="collapse-content">
+//     Скрываемое содержимое
+// </div>
+// </div>
+
+var div = document.createElement('div');
+div.setAttribute('class', 'collapse');
+var a = document.createElement('a');
+a.setAttribute('class', 'collapse-toggle');
+a.setAttribute('type', 'button');
+a.setAttribute('href', '/');
+a.textContent = 'Скрыть';
+div.appendChild(a);
+var div2 = document.createElement('div');
+div2.setAttribute('class', 'collapse-content');
+div2.textContent = 'Скрываемое содержимое';
+div.appendChild(div2);
+
+// document.body.appendChild(div);
+document.getElementById('testId17').appendChild(div);
+
+
+document.getElementsByClassName('collapse-toggle')[0].addEventListener('click', (e) => {
+    e.preventDefault();
+    let div = document.getElementsByClassName('collapse-content')[0];
+    e.target.textContent = div.hidden ? 'Скрыть' : 'Показать';
+    div.hidden = !div.hidden;
+});
+
+
+
 //---------Клонирование узлов: cloneNode-----------
 //Вызов elem.cloneNode(true) создаст «глубокую» копию элемента – вместе с атрибутами, включая подэлементы.
 //Если же вызвать с аргументом false, то копия будет сделана без дочерних элементов
