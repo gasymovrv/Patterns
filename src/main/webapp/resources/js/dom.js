@@ -429,6 +429,7 @@ div.innerHTML = "<strong>Ура!</strong> Вы прочитали это важ�
 document.body.insertBefore(div, document.body.firstChild);
 
 
+//Тестовое задание из JL
 //---------Создаем такой блок и делаем обработку события---------
 // <div class="collapse">
 //     <a class="collapse-toggle" type="button" href="/">
