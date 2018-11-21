@@ -644,3 +644,54 @@ alert(div.style.cssText);
 var computedStyle = getComputedStyle(document.body);
 alert( computedStyle.marginTop ); // выведет отступ в пикселях
 alert( computedStyle.color ); // выведет цвет
+
+
+
+
+
+//--------------------------------------------Введение в браузерные события----------------------------------------
+let div = document.getElementById('testId18');
+div.onclick = (e) => {
+    console.log('div.onclick');
+    console.log('this:');
+    console.log(this);//window
+    console.log('event:');
+    console.log(e);//click{..}
+    console.log('target:');
+    console.log(e.target);//место куда кликаем
+    console.log('currentTarget:');
+    console.log(e.currentTarget);//<div id="testId18" class="selectable"> место где установлен обработчик
+    console.log('---------------------------------------');
+
+};
+div.addEventListener('click', clickHandler);
+let div2 = document.getElementById('id18_1');
+div2.addEventListener('click', clickHandler);
+let div3 = document.getElementById('id18_2');
+div3.addEventListener('click', clickHandler);
+let a = document.getElementById('id18_3');
+a.addEventListener('click', clickHandler);
+a.addEventListener('click', clickHandler2);
+a.addEventListener('click', clickHandler3);
+
+function clickHandler(e) {
+    e.stopPropagation();//дальше не будет всплывать
+    console.log('this:');
+    console.log(this);//==currentTarget
+    console.log('event:');
+    console.log(e);//click{..}
+    console.log('target:');
+    console.log(e.target);//место куда кликаем
+    console.log('currentTarget:');
+    console.log(e.currentTarget);// место где установлен обработчик
+    console.log('---------------------------------------');
+}
+function clickHandler2(e) {
+    console.log('a#id18_3 handler 2');
+    console.log('---------------------------------------');
+}
+function clickHandler3(e) {
+    e.stopImmediatePropagation();//дальше не будет всплывать
+    console.log('a#id18_3 handler 3');
+    console.log('---------------------------------------');
+}

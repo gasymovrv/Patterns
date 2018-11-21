@@ -15,29 +15,51 @@
 <!-- ------------тэги для тестов скриптов--------------- -->
 <!--begin-->
 
-<div id="testId"></div>
+<hr/>
+testId
+<div id="testId" class="selectable"></div>
 
-<div id="testId2" about="Elephant" class="smiling"></div>
+<hr/>
+testId2
+<div id="testId2" about="Elephant" class="smiling selectable"></div>
 
-<a id="testId3" href="#"></a>
+<hr/>
+testId3
+<a id="testId3" href="#" class="selectable"></a>
 
-<input id="testId4" type="checkbox" checked>
+<hr/>
+testId4
+<input id="testId4" type="checkbox" checked class="selectable">
 
-<input id="testId5" type="text" value="markup">
+<hr/>
+testId5
+<input id="testId5" type="text" value="markup" class="selectable">
 
-<div id="testId6" class="testClass"></div>
+<hr/>
+testId6
+<div id="testId6" class="testClass selectable"></div>
 
-<div id="testId7" class="main page"></div>
+<hr/>
+testId7
+<div id="testId7" class="main page selectable"></div>
 
-<div id="testId8" href="http://ya.ru" about="Elephant"></div>
+<hr/>
+testId8
+<div id="testId8" href="http://ya.ru" about="Elephant" class="selectable"></div>
 
-<div id="testId9" data-about="Elephant" data-user-location="street">
+<hr/>
+testId9
+<div id="testId9" data-about="Elephant" data-user-location="street" class="selectable">
     <p>По улице прошёлся слон. Весьма красив и толст был он.</p>
 </div>
 
-<div id="testId10" data-widget-name="menu">Выберите жанр</div>
+<hr/>
+testId10
+<div id="testId10" data-widget-name="menu" class="selectable">Выберите жанр</div>
 
-<div id="testId11">
+<hr/>
+testId11
+<div id="testId11" class="selectable">
     <a name="list">список</a>
     <ul>
         <li><a href="http://google.com">http://google.com</a></li>
@@ -49,45 +71,69 @@
     </ul>
 </div>
 
-<div id="testId12"></div>
+<hr/>
+testId12
+<div id="testId12" class="selectable"></div>
 
+<hr/>
+testId13
 appendChild:
-<ol id="testId13">
+<ol id="testId13" class="selectable">
     <li>0</li>
     <li>1</li>
     <li>2</li>
 </ol>
 
+<hr/>
+testId14
 insertBefore:
-<ol id="testId14">
+<ol id="testId14" class="selectable">
     <li>0</li>
     <li>1</li>
     <li>2</li>
 </ol>
 
+<hr/>
 table и ol для removeChildren
-<table id="table">
+<table id="table" class="selectable">
     <tr>
         <td>Это</td>
         <td>Все</td>
         <td>Элементы DOM</td>
     </tr>
 </table>
-<ol id="ol">
+<ol id="ol" class="selectable">
     <li>Вася</li>
     <li>Петя</li>
     <li>Маша</li>
     <li>Даша</li>
 </ol>
 
+<hr/>
+testId15
 динамический список
-<div id="testId15"></div>
+<div id="testId15" class="selectable"></div>
 
+<hr/>
+testId16
 дерево из объекта
-<div id="testId16"></div>
+<div id="testId16" class="selectable"></div>
 
+<hr/>
+testId17
 тестовое задание из JL
-<div id="testId17"></div>
+<div id="testId17" class="selectable"></div>
+
+<hr/>
+testId18
+браузерные события
+<div id="testId18" class="selectable">
+    <div id="id18_1">
+        <div id="id18_2">
+            <a id="id18_3">click here!</a>
+        </div>
+    </div>
+</div>
 <!--end-->
 
 
@@ -96,8 +142,10 @@ table и ol для removeChildren
 </html>
 
 <script>
-    let accept = confirm("Включить тестовые скрипты?");
-    if(accept){
+    // let accept = confirm("Включить тестовые скрипты?");
+    // if(accept){
+        console.log("Тестовые скрипты включены по умолчанию. " +
+            "Чтобы запрашивать подтверждение, исправь скрипт в конце файла indexDOM.html")
         run();
-    }
+    // }
 </script>
