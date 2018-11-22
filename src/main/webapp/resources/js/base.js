@@ -455,6 +455,24 @@ alert( result ); // 15
 
 //Метод arr.reduceRight работает аналогично, но идёт по массиву справа-налево.
 
+//Пример создания редюсом объекта
+var something = '{"name": "Вася", "surname": "Петров","age": 35, "isAdmin": false}';
+let arr = something.split(/,|:/);
+let obj = arr.reduce((com, cur, i)=>{
+    com[cur] = i;
+    return com;
+}, {});
+console.log(obj);
+//{
+//"{\"name\"": 0
+//" \"Вася\"": 1
+//" \"surname\"": 2
+//" \"Петров\"": 3
+//"\"age\"": 4
+//" 35": 5
+//" \"isAdmin\"": 6
+//" false}": 7
+//}
 
 //--------------------Псевдомассив аргументов "arguments"----------------------
 function sayHi() {

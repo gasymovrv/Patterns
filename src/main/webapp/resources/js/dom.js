@@ -671,11 +671,15 @@ let div3 = document.getElementById('id18_2');
 div3.addEventListener('click', clickHandler);
 let a = document.getElementById('id18_3');
 a.addEventListener('click', clickHandler);
-a.addEventListener('click', clickHandler2);
+a.addEventListener('click', clickHandler2);//тут stopImmediatePropagation, хандлеры ниже и всплывающие не выполнятся
 a.addEventListener('click', clickHandler3);
+a.addEventListener('click', ()=>{
+    console.log('a#id18_3 => handler4');
+    console.log(this);//window
+});
 
 function clickHandler(e) {
-    e.stopPropagation();//дальше не будет всплывать
+    console.log('a#id18_3 handler 1');
     console.log('this:');
     console.log(this);//==currentTarget
     console.log('event:');
@@ -688,10 +692,15 @@ function clickHandler(e) {
 }
 function clickHandler2(e) {
     console.log('a#id18_3 handler 2');
+
+    //дальше не будет всплывать +
+    // не будут выполняться обработичики объявленные после этого, т.е. 3 и 4
+    e.stopImmediatePropagation();
+
+    //e.stopPropagation();//а это делает чтобы просто дальше не всплывало, но 3 и 4 выполнятся
     console.log('---------------------------------------');
 }
 function clickHandler3(e) {
-    e.stopImmediatePropagation();//дальше не будет всплывать
     console.log('a#id18_3 handler 3');
     console.log('---------------------------------------');
 }
