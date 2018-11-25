@@ -63,3 +63,29 @@ a:hover {
 .selectable:hover {
      background-color: darkgray;
 }
+
+#id19_1 {
+    background-color: green;
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#id19_2 {
+    background-color: blue;
+    top: 25px;
+    left: 25px;
+    width: 100px;
+    height: 100px;
+}
+
+#id19_3 {
+    background-color: red;
+    top: 25px;
+    left: 25px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    margin: 0;
+}

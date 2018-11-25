@@ -650,6 +650,17 @@ alert( computedStyle.color ); // выведет цвет
 
 
 //--------------------------------------------Введение в браузерные события----------------------------------------
+
+//В этом примере создаем несколько обработчиков на несоклько элементов
+//
+//1) onclick
+//2) addEventListener
+//3) событие event и его свойства
+//      3.1 target
+//      3.2 currentTarget
+//4)Прекращение всплытия
+//      4.1 stopPropagation
+//      4.2 stopImmediatePropagation
 let div = document.getElementById('testId18');
 div.onclick = (e) => {
     console.log('div.onclick');
@@ -703,4 +714,24 @@ function clickHandler2(e) {
 function clickHandler3(e) {
     console.log('a#id18_3 handler 3');
     console.log('---------------------------------------');
+}
+
+
+
+
+
+//--------------------------------------------Погружение----------------------------------------
+//Чтобы перехватить событие на погружении необходимо указать true в addEventListener
+
+var elems = document.querySelectorAll('#id19_1,#id19_2,#id19_3');
+
+for (var i = 0; i < elems.length; i++) {
+    elems[i].addEventListener("click", highlightThis, true);
+    elems[i].addEventListener("click", highlightThis, false);
+}
+
+function highlightThis() {
+    this.style.backgroundColor = 'yellow';
+    alert(this.tagName);
+    this.style.backgroundColor = '';
 }
