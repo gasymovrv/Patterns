@@ -1,0 +1,17 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "dependencies": {
+    "babel-loader": "^8.0.4",
+    "webpack": "^4.26.1"
+  },
+  "scripts": {
+    "dev": "webpack --mode development",
+    "dev-watch": "webpack --watch --mode development",
+    "build": "webpack --mode production",
+    "watch": "webpack --watch --mode production"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.1.2"
+  }
+}
