@@ -1,4 +1,3 @@
-// 'use strict';
 var oscar = {
     name: 'Oscar',
     meow: function() {
@@ -8,5 +7,5 @@ var oscar = {
 };
 
 var m = oscar.meow;
-oscar.meow();
-m();
+oscar.meow();//здесь this=oscar
+m();//а здесь this=window

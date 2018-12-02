@@ -1,5 +1,5 @@
-export function consoleLog(text) {
-    console.log(text);
+export function consoleLog(any) {
+    console.log(any);
 }
 
 export function consoleLogWithName(name, text) {

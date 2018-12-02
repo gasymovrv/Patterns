@@ -1,4 +1,11 @@
-import {consoleLog, consoleLogWithName, consoleLogObjectJSONWithName, consoleLogObjectStandartWithName} from "./resources/js/helpers/consoleLog";
+import {
+    consoleLog,
+    consoleLogWithName,
+    consoleLogObjectJSONWithName,
+    consoleLogObjectStandartWithName,
+    consoleLogObjectJSONWithNameWithContext,
+    consoleLogObjectStandartWithNameWithContext
+} from "./resources/js/helpers/consoleLog";
 consoleLog('--------------------------------------------begin code from bundle.js---------------------------------------------------');
 
 
@@ -7,14 +14,18 @@ consoleLog('--------------------------------------------begin code from bundle.j
 
 
 
-let i = parseInt('12345.34');
-let f = parseFloat('12345.457');
-let i2 = Number.parseInt('12345.34');
-let f2 = Number.parseFloat('12345.457');
-consoleLogWithName('parseInt()', i);
-consoleLogWithName('parseFloat()+toFixed', f.toFixed(2));
-consoleLogWithName('Number.parseInt()', i2);
-consoleLogWithName('Number.parseFloat()+toFixed', f2.toFixed(2));
+var oscar = {
+    name: 'Oscar',
+    meow: function() {
+        // console.log(this.name + ' meows!');
+        consoleLogObjectJSONWithNameWithContext('this', this, this);
+    }
+};
+
+var m = oscar.meow;
+oscar.meow();//здесь this=oscar
+m();//а здесь будет undefined, т.к. webpack добавляет в bundle.js "use strict"
+
 
 
 
