@@ -24,3 +24,7 @@
     ```
     src\main\resources\xsl
     ```
++ Различные заметки
+    ```
+    notes
+    ```
