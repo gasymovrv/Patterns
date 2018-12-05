@@ -198,32 +198,40 @@ npm un -g getstorybook
         1. ```shouldComponentUpdate(nextProps, nextState)``` - вызовется при setState **родителей** или **внутри** самого компонента
         1. ```componentWillUpdate(nextProps, nextState)``` - вызовется при setState **родителей** или **внутри** самого компонента, прямо перед ререндерингом
         1. ```render()``` - перестроение virtual DOM, сравнение со старым virtual DOM, реальная отрисовка изменений
-        1. ```componentDidUpdate(prevProps, prevState)``` - после отрисовки
+        1. ```componentDidUpdate(prevProps, prevState, snapshot)``` - после отрисовки
     + Удаление
         1. ```componentWillUnmount()``` - после удаления из DOM дерева
 
-1. Функции жизненных циклов, после обновления
+1. Функции жизненных циклов после обновления 16.3
     + Инициализация
         1. ```constructor(props)``` - неизменно
-        1. ```static getDerivedStateFromProps(nextProps, prevState)``` - **новый**
+        1. ```static getDerivedStateFromProps(nextProps, prevState)``` - **новый** (почти componentWillReceiveProps, но статический и срабатывает также при инициализации, необходимо вернуть state)
         1. ```UNSAFE_componentWillMount()``` - **устарел**
         1. ```render()``` - неизменно
         1. ```componentDidMount()``` - неизменно
     + Обновление (произошел setState)
-        1. ```static getDerivedStateFromProps(nextProps, prevState)``` - **новый**
+        1. ```static getDerivedStateFromProps(nextProps, prevState)``` - **новый** см. в инициализации
         1. ```UNSAFE_componentWillReceiveProps(nextProps)``` - **устарел**
         1. ```shouldComponentUpdate(nextProps, nextState)``` - неизменно
         1. ```UNSAFE_componentWillUpdate(nextProps, nextState)``` - **устарел**
         1. ```render()``` - неизменно
-        1. ```getSnapshotBeforeUpdate(prevProps, prevState)``` - **новый**
-        1. ```componentDidUpdate(prevProps, prevState)``` - неизменно
+        1. ```getSnapshotBeforeUpdate(prevProps, prevState)``` - **новый** (прямо перед рендерингом)
+        1. ```componentDidUpdate(prevProps, prevState, snapshot)``` - неизменно
     + Удаление
         1. ```componentWillUnmount()``` - неизменно
     + Обработка ошибок
-        1. ```static getDerivedStateFromError(error)``` - **новый**
-        1. ```componentDidCatch(error, info)``` - **новый**
+        1. ```static getDerivedStateFromError(error)``` - **новый** (при ошибке в методах ЖЦ или рендере с учетом детей, необходимо вернуть state)
+        1. ```componentDidCatch(error, info)``` - **новый** (тоже что и предыдущий, но после перехвата ошибки)
 
 1.  Что можно делать в функциях этих жизненных циклов.
+    + ```constructor(props)``` - Инициализация переменных в this или state
+    + ```static getDerivedStateFromProps(nextProps, prevState)``` - можно выполнять действия при изменении состояния, доступа к this нет, но можно вернуть новое состояние или null если оставить неизменным
+    + ```componentDidMount()``` - здесь обычно вызывается AJAX для вытягивания данных с api, и записывается в state. Хоть это вызовет повторный render но браузер не перерисовывает 
+    + ```shouldComponentUpdate(nextProps, nextState)``` - оптимизация производительности, если не нужно рендерить при определенных пропсах или стейтах, но лучше использовать PureComponent (чтобы не забыть сравнить с чем-нибудь)
+    + ```render()``` - здесь желательно минимум логики и только отображаемый элемент
+    + ```getSnapshotBeforeUpdate(prevProps, prevState)``` - Ее можно использовать в основном, если вам нужно прочитать текущее состояние DOM (и далее в componentDidUpdate вернуть это состояние через параметр snapshot). Можно возвращать state
+    + ```componentDidUpdate(prevProps, prevState, snapshot)``` - какие-то действия при обновлении. setState - можно но только как callback - иначе бесконечный цикл обновлений
+    + ```componentWillUnmount()``` - очистка интервалов, отмена подписок, сетевых запросов и прочее. setState - нельзя. 
 
 1.  Хуки (с версии 16.7.0, сейчас она alpha) - это возможность юзать state в функ-ых компонентах
     + ```useState()``` - добавляем переменную в state
