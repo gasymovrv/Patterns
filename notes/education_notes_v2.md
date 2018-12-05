@@ -20,7 +20,7 @@
 
 ## Команды npm/yarn
 
-1. **Глобально**
++ **Глобально**
 ```
 npm install -g create-react-app@1.5.2
 npm install -g create-react-app
@@ -34,14 +34,13 @@ npm i -g create-react-app
 npm un -g create-react-app
 ```
 
-1. **В пустом проекте**
++ **В пустом проекте**
 ```
 create-react-app client --scripts-version=react-scripts-ts
 create-react-app app2
 ```
 
-
-1. **В готовом проекте**, если нет зависимостей (например скачал с гита):
++ **В готовом проекте**, если нет зависимостей (например скачал с гита):
 
 Ставим реакт:
 ```
@@ -73,8 +72,8 @@ yarn run storybook
 
 ## Добавление зависимостей
 
-1.	**Reactstrap** - bootstrap для react:
- 
++	**Reactstrap** - bootstrap для react:
+
 через npm   
 ```
 npm install bootstrap --save
@@ -86,7 +85,7 @@ npm install --save reactstrap react react-dom
 yarn add bootstrap
 ```
 
-1. **Recompose:**
++ **Recompose:**
 ```
 yarn add recompose
 ```
@@ -94,7 +93,8 @@ yarn add recompose
 ```
 npm install recompose --save
 ```
-1. **Storybook** - утилита для просмотра компонентов:
+
++ **Storybook** - утилита для просмотра компонентов:
 ```
 npm i -g @storybook/cli
 npm un -g getstorybook
@@ -174,11 +174,11 @@ npm un -g getstorybook
 1. Как сетается стейт. 
     + Вариант 1:
     ```js
-    this.setState({something:'something value'})
+       this.setState({something:'something value'})
     ```
     + Вариант 2 (с предыдущим состоянием и пропсами):
     ```js
-        this.setState((state, props)=>({counter:state.counter + props.newCounter}))
+       this.setState((state, props)=>({counter:state.counter + props.newCounter}))
     ```
 
 1. Virtual DOM, когда происходит ререндеринг
@@ -187,21 +187,72 @@ npm un -g getstorybook
     + Затем перестроенное дерево этого компонента сравнивается со старым виртуальным деревом и вносятся **изменения** в реальное DOM-дерево - **```ререндеринг```**
     + Для списков необходимо указывать props ```key```, чтобы обновление было более оптимизированным (иначе он будет проходиться по всему списку) 
 
-1. Какие жизненные циклы компонента бывают и что можно делать в функциях хуков этих жизненных циклов. 
+1. Какие жизненные циклы компонента бывают. 
     + Инициализация
-        1. constructor(props) - создание компонента как js-объекта
-        1. componentWillMount()
-        1. render() - создание virtual DOM, реальная отрисовка 
-        1. componentDidMount() - после окончания отрисовки
+        1. ```constructor(props)``` - создание компонента как js-объекта
+        1. ```componentWillMount()```
+        1. ```render()``` - создание virtual DOM, реальная отрисовка 
+        1. ```componentDidMount()``` - после окончания отрисовки
     + Обновление (произошел setState)
-        1. componentWillReceiveProps(nextProps) - вызовется при setState **родителей** даже когда пропсы не менялись
-        1. shouldComponentUpdate(nextProps, nextState) - вызовется при setState **родителей** или **внутри** самого компонента
-        1. componentWillUpdate(nextProps, nextState) - вызовется при setState **родителей** или **внутри** самого компонента, прямо перед ререндерингом
-        1. render() - перестроение virtual DOM, сравнение со старым virtual DOM, реальная отрисовка изменений
-        1. componentDidUpdate(prevProps, prevState) - после отрисовки
+        1. ```componentWillReceiveProps(nextProps)``` - вызовется при setState **родителей** даже когда пропсы не менялись
+        1. ```shouldComponentUpdate(nextProps, nextState)``` - вызовется при setState **родителей** или **внутри** самого компонента
+        1. ```componentWillUpdate(nextProps, nextState)``` - вызовется при setState **родителей** или **внутри** самого компонента, прямо перед ререндерингом
+        1. ```render()``` - перестроение virtual DOM, сравнение со старым virtual DOM, реальная отрисовка изменений
+        1. ```componentDidUpdate(prevProps, prevState)``` - после отрисовки
     + Удаление
-        1. componentWillUnmount() - после удаления из DOM дерева
+        1. ```componentWillUnmount()``` - после удаления из DOM дерева
 
+1. Функции жизненных циклов, после обновления
+    + Инициализация
+        1. ```constructor(props)``` - неизменно
+        1. ```static getDerivedStateFromProps(nextProps, prevState)``` - **новый**
+        1. ```UNSAFE_componentWillMount()``` - **устарел**
+        1. ```render()``` - неизменно
+        1. ```componentDidMount()``` - неизменно
+    + Обновление (произошел setState)
+        1. ```static getDerivedStateFromProps(nextProps, prevState)``` - **новый**
+        1. ```UNSAFE_componentWillReceiveProps(nextProps)``` - **устарел**
+        1. ```shouldComponentUpdate(nextProps, nextState)``` - неизменно
+        1. ```UNSAFE_componentWillUpdate(nextProps, nextState)``` - **устарел**
+        1. ```render()``` - неизменно
+        1. ```getSnapshotBeforeUpdate(prevProps, prevState)``` - **новый**
+        1. ```componentDidUpdate(prevProps, prevState)``` - неизменно
+    + Удаление
+        1. ```componentWillUnmount()``` - неизменно
+    + Обработка ошибок
+        1. ```static getDerivedStateFromError(error)``` - **новый**
+        1. ```componentDidCatch(error, info)``` - **новый**
+
+1.  Что можно делать в функциях этих жизненных циклов.
+
+1.  Хуки (с версии 16.7.0, сейчас она alpha) - это возможность юзать state в функ-ых компонентах
+    + ```useState()``` - добавляем переменную в state
+    + ```useEffect()``` - аналог componentDidMount/componentDidUpdate
+    
+    Пример:
+    ```jsx harmony
+      import { useState, useEffect } from 'react';
+      
+      function Example() {
+        //Деструктурируем массив, useState возвращает именно массив
+        const [count, setCount] = useState(0);
+      
+        // Similar to componentDidMount and componentDidUpdate:
+        useEffect(() => {
+            // Меняем название вкладки
+            document.title = `${count} click`;
+        });
+      
+        return (
+          <div>
+            <p>You clicked {count} times</p>
+            <button onClick={() => setCount(count + 1)}>
+              Click me
+            </button>
+          </div>
+        );
+      }
+    ```
         
 1. Что такое ```ref```. 
 	+ Нужны чтобы получить элемент в виде DOM-объекта
@@ -230,4 +281,52 @@ npm un -g getstorybook
     + ```shouldComponentUpdate``` - если возвращает ```false```, 
     то виртуальный дом этого комопнента не будет перестраиваться (даже не вызовется render)
     
+1. Контролируемый компонент -  это такой компонент, 
+где React осуществляет контроль 
+и является единственным источником правды для данных формы, пример:
+    ```jsx harmony
+    class ControlledForm extends Component {
+      state = {
+        username: ''
+      };
+      updateUsername = (e) => {
+        this.setState({
+          username: e.target.value,
+        })
+      };
+      handleSubmit = () => {};
+      render () {
+        return (
+          <form onSubmit={this.handleSubmit}>
+            <input
+              type='text'
+              value={this.state.username}
+              onChange={this.updateUsername} />
+            <button type='submit'>Submit</button>
+          </form>
+        )
+      }
+    }
+    ```
+
+1. Некотролируемый компонент — это такой компонент, 
+где ваши данные формы обрабатываются в DOM, 
+а не внутри вашего компонента, пример:
+    ```jsx harmony
+    class UnControlledForm extends Component {
+      handleSubmit = () => {
+        console.log("Input Value: ", this.input.value)
+      };
+      render () {
+        return (
+          <form onSubmit={this.handleSubmit}>
+            <input
+              type='text'
+              ref={(input) => this.input = input} />
+            <button type='submit'>Submit</button>
+          </form>
+        )
+      }
+    }
+    ```
 1. Redux
