@@ -2738,3 +2738,56 @@ menu.on("select", function(value) {
 });
 // Запускаем выбор (событие select вызовет обработчики)
 menu.choose("123");
+
+
+
+
+
+
+
+
+
+//-------------------------------------Сравнение массивов, объектов, циклы in, of-----------------------------------------------
+//использовать только в forBundle.js потому что юзаем импорт
+
+import {log} from "./resources/js/helpers/consoleLog";
+
+let arr1 = [1.4, 35, 6, 34.5];
+let arr2 = [1.4, 35, 34.5, 6];
+const arr1C = [...arr1].sort();
+const arr2C = [...arr2].sort();
+//отсортированные массивы проще всего сравнить так
+const comparedArrs = arr1C.every((el, i)=>el===arr2C[i]);
+log('comparedArrs=', comparedArrs);
+log('arr1=', arr1);
+log('arr2=', arr2);
+log('arr1C=', arr1C);
+log('arr2C=', arr2C);
+
+const parentObj = {
+    equals: function (obj) {
+        return !!(obj
+            && this.name === obj.name
+            && this.lastName === obj.lastName
+            && this.height === obj.height);
+    }
+};
+const obj1 = {name: 'gsdf', lastName: 'hoho', height: 174, __proto__: parentObj};
+const obj2 = {name: 'gsdf', lastName: 'hoho', height: 174, __proto__: parentObj};
+log('comparedObjs=', obj1.equals(obj2));
+
+//for of - работает только с итерируемыми объектами (содержат метод с названием Symbol.iterator).
+// по умолчанию итерируемые Array и string
+for(let el of arr1){
+    log('arr1 of=', el);
+}
+//for in - для массивов лучше не использовать, он менее эффективен
+for(let el in arr1){
+    log('arr1 in=', el);
+}
+//for in - хорош для объектов, el - это имя свойств (включая наследуемые)
+for(let el in obj1){
+    log('obj1 in=', el);
+}
+//по массиву проще всего пройтись так
+arr1.forEach((el)=>{log('arr1 forEach=', el)});

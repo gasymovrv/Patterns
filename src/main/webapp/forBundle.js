@@ -1,12 +1,6 @@
-import {
-    consoleLog,
-    consoleLogWithName,
-    consoleLogObjectJSONWithName,
-    consoleLogObjectStandartWithName,
-    consoleLogObjectJSONWithNameWithContext,
-    consoleLogObjectStandartWithNameWithContext
-} from "./resources/js/helpers/consoleLog";
-consoleLog('--------------------------------------------begin code from bundle.js---------------------------------------------------');
+import {log} from "./resources/js/helpers/consoleLog";
+
+log('--------------------------------------------begin code from bundle.js---------------------------------------------------');
 
 
 
@@ -18,7 +12,7 @@ var oscar = {
     name: 'Oscar',
     meow: function() {
         // console.log(this.name + ' meows!');
-        consoleLogObjectJSONWithNameWithContext('this', this, this);
+        log('this=', this);
     }
 };
 
@@ -33,6 +27,4 @@ m();//а здесь будет undefined, т.к. webpack добавляет в b
 
 
 
-
-
-consoleLog('--------------------------------------------end code from bundle.js---------------------------------------------------');
+log('--------------------------------------------end code from bundle.js---------------------------------------------------');
