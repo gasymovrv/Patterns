@@ -1,4 +1,15 @@
+//---------------------------------------УЗЛЫ и ЭЛЕМЕНТЫ-----------------------------------------------------
+var list = document.getElementById('testId14');
+var firstChild = document.querySelector('ol#testId14 :first-child');
 
+//NODES - УЗЛЫ - они могут содержать и тэги и всякую шалуху (переносы, текст, пробелы)
+console.log('list.childNodes[0]',list.childNodes[0]);//#text "
+console.log('list.firstChild',list.firstChild);//#text "
+
+//ELEMENTS - ЭЛЕМЕНТЫ - содержат только тэги
+console.log('list.firstElementChild',list.firstElementChild);//<li>
+console.log('list.children[0]',list.children[0]);//<li>
+console.log('document.querySelector(...)',firstChild);//<li>
 
 
 
@@ -429,43 +440,6 @@ div.innerHTML = "<strong>Ура!</strong> Вы прочитали это важ�
 document.body.insertBefore(div, document.body.firstChild);
 
 
-//Тестовое задание из JL
-//---------Создаем такой блок и делаем обработку события---------
-// <div class="collapse">
-//     <a class="collapse-toggle" type="button" href="/">
-//     Скрыть
-//     </a>
-//
-//     <div class="collapse-content">
-//     Скрываемое содержимое
-// </div>
-// </div>
-
-var div = document.createElement('div');
-div.setAttribute('class', 'collapse');
-var a = document.createElement('a');
-a.setAttribute('class', 'collapse-toggle');
-a.setAttribute('type', 'button');
-a.setAttribute('href', '/');
-a.textContent = 'Скрыть';
-div.appendChild(a);
-var div2 = document.createElement('div');
-div2.setAttribute('class', 'collapse-content');
-div2.textContent = 'Скрываемое содержимое';
-div.appendChild(div2);
-
-// document.body.appendChild(div);
-document.getElementById('testId17').appendChild(div);
-
-
-document.getElementsByClassName('collapse-toggle')[0].addEventListener('click', (e) => {
-    e.preventDefault();
-    let div = document.getElementsByClassName('collapse-content')[0];
-    e.target.textContent = div.hidden ? 'Скрыть' : 'Показать';
-    div.hidden = !div.hidden;
-});
-
-
 
 //---------Клонирование узлов: cloneNode-----------
 //Вызов elem.cloneNode(true) создаст «глубокую» копию элемента – вместе с атрибутами, включая подэлементы.
@@ -771,3 +745,41 @@ function mouseMoveInfo(event) {
     div.style.top = `${event.pageY - div.offsetHeight - 3}px`;
     document.body.appendChild(div);
 }
+
+
+
+//------------------------------------------------Тестовое задание из JL------------------------------------------------
+//---------Создаем такой блок и делаем обработку события---------
+// <div class="collapse">
+//     <a class="collapse-toggle" type="button" href="/">
+//          Скрыть
+//     </a>
+//
+//     <div class="collapse-content">
+//          Скрываемое содержимое
+//     </div>
+// </div>
+
+var div = document.createElement('div');
+div.setAttribute('class', 'collapse');
+var a = document.createElement('a');
+a.setAttribute('class', 'collapse-toggle');
+a.setAttribute('type', 'button');
+a.setAttribute('href', '/');
+a.textContent = 'Скрыть';
+div.appendChild(a);
+var div2 = document.createElement('div');
+div2.setAttribute('class', 'collapse-content');
+div2.textContent = 'Скрываемое содержимое';
+div.appendChild(div2);
+
+// document.body.appendChild(div);
+document.getElementById('testId17').appendChild(div);
+
+
+document.getElementsByClassName('collapse-toggle')[0].addEventListener('click', (e) => {
+    e.preventDefault();
+    let div = document.getElementsByClassName('collapse-content')[0];
+    e.target.textContent = div.hidden ? 'Скрыть' : 'Показать';
+    div.hidden = !div.hidden;
+});
