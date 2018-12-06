@@ -2752,6 +2752,7 @@ menu.choose("123");
 
 import {log} from "./resources/js/helpers/consoleLog";
 
+//----------------сравнение массивов------------------
 let arr1 = [1.4, 35, 6, 34.5];
 let arr2 = [1.4, 35, 34.5, 6];
 const arr1C = [...arr1].sort();
@@ -2764,6 +2765,8 @@ log('arr2=', arr2);
 log('arr1C=', arr1C);
 log('arr2C=', arr2C);
 
+//----------------сравнение объектов------------------
+//сделаем такой вариант
 const parentObj = {
     equals: function (obj) {
         return !!(obj
@@ -2774,8 +2777,14 @@ const parentObj = {
 };
 const obj1 = {name: 'gsdf', lastName: 'hoho', height: 174, __proto__: parentObj};
 const obj2 = {name: 'gsdf', lastName: 'hoho', height: 174, __proto__: parentObj};
-log('comparedObjs=', obj1.equals(obj2));
+log('comparedObjs (equals)=', obj1.equals(obj2));
 
+//или такой, более общий
+const comparedObjs = Object.keys(obj1).every((key) => obj1[key] === obj2[key]);
+log('comparedObjs (Object.keys)=', comparedObjs);
+
+
+//----------------Циклы in, of, метод forEach------------------
 //for of - работает только с итерируемыми объектами (содержат метод с названием Symbol.iterator).
 // по умолчанию итерируемые Array и string
 for(let el of arr1){
@@ -2791,3 +2800,5 @@ for(let el in obj1){
 }
 //по массиву проще всего пройтись так
 arr1.forEach((el)=>{log('arr1 forEach=', el)});
+//по объекту так (не включает наследуемые поля)
+Object.keys(obj1).forEach((key)=>{log('obj1 forEach=', obj1[key])});
