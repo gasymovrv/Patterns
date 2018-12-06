@@ -705,6 +705,15 @@ for (var i = 0; i < elems.length; i++) {
     elems[i].addEventListener("click", highlightThisAscent, false);
 }
 
+//Вариант через поиск по селектору внутри тэга
+var testId19 = document.getElementById('testId19');
+var elems = testId19.querySelectorAll('*');
+console.log(elems);
+for (var i = 0; i < elems.length; i++) {
+    elems[i].addEventListener("click", highlightThisDive, true);
+    elems[i].addEventListener("click", highlightThisAscent, false);
+}
+
 //Вариант с рекурсивным поиском элементов
 var elems = document.querySelector('#testId19').childNodes;
 console.log(elems);
@@ -725,7 +734,7 @@ function recursiveAddListeners(elems) {
     });
 }
 
-//Методы для обоих вариантов
+//Функции для всех вариантов
 function highlightThisDive() {
     this.style.backgroundColor = 'yellow';
     alert('Погружение\n'+this.tagName);
