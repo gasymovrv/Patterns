@@ -60,7 +60,7 @@ elem.lastElementChild === elem.children[elem.children.length - 1]
 
 //--------------------------------Поиск: getElement* и querySelector* и не только-------------------------------------------------
 
-var elem = document.getElementById('testId');
+var elem = document.getElementById('testId1');
 elem.style.background = 'red';
 alert( elem == testId ); // true
 testId.style.background = ""; // один и тот же элемент
@@ -695,21 +695,47 @@ function clickHandler3(e) {
 
 
 //--------------------------------------------Погружение----------------------------------------
+//testId19
 //Чтобы перехватить событие на погружении необходимо указать true в addEventListener
 
+//Вариант с поиском элементов по селектору
 var elems = document.querySelectorAll('#id19_1,#id19_2,#id19_3');
-
 for (var i = 0; i < elems.length; i++) {
-    elems[i].addEventListener("click", highlightThis, true);
-    elems[i].addEventListener("click", highlightThis, false);
+    elems[i].addEventListener("click", highlightThisDive, true);
+    elems[i].addEventListener("click", highlightThisAscent, false);
 }
 
-function highlightThis() {
+//Вариант с рекурсивным поиском элементов
+var elems = document.querySelector('#testId19').childNodes;
+console.log(elems);
+recursiveAddListeners(elems);
+function recursiveAddListeners(elems) {
+    if (!elems.forEach) {
+        //если не настоящий массив, то копируем в настоящий
+        elems = Array.prototype.slice.call(elems);
+    }
+    elems.forEach((el)=> {
+        if (el instanceof Element) {
+            el.addEventListener("click", highlightThisDive, true);
+            el.addEventListener("click", highlightThisAscent, false);
+        }
+        if (el.children && el.children.length>0) {
+            recursiveAddListeners(el.children);
+        }
+    });
+}
+
+//Методы для обоих вариантов
+function highlightThisDive() {
     this.style.backgroundColor = 'yellow';
-    alert(this.tagName);
+    alert('Погружение\n'+this.tagName);
     this.style.backgroundColor = '';
 }
-
+function highlightThisAscent() {
+    this.style.backgroundColor = 'grey';
+    alert('Всплытие\n'+this.tagName);
+    this.style.backgroundColor = '';
+}
 
 
 
