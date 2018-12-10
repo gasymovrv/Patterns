@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML advanced</title>
+</head>
+
+<body>
+<h1 style="text-align: center">Рассчитываем падение стоимости</h1>
+<form id="changed" style="text-align: center; font-size: large">
+    <div>
+        <label for="drop-part">Процент на который падает стоимость каждый год</label>
+    </div>
+    <div>
+        <input id="drop-part" type="number" value="10">
+    </div>
+    <br/>
+
+    <div>
+        <label for="years">Количество лет</label>
+    </div>
+    <div>
+        <input id="years" type="number" value="0">
+    </div>
+    <br/>
+
+    <div>
+        <label for="price">Исходная стоимость</label>
+    </div>
+    <div>
+        <input id="price" type="number" value="0">
+    </div>
+    <br/>
+
+    <div>
+        <h3>Итоговая стоимость:</h3>
+        <h3 id="total">-</h3>
+    </div>
+</form>
+</body>
+<script>
+     document.getElementById('changed').addEventListener('change', inputsListener);
+
+    function inputsListener(e) {
+        if (e.target.value < 0) {
+            e.target.setAttribute('value', 0);
+            e.target.value = 0;
+            document.getElementById('total').innerHTML = '-';
+            return;
+        }
+        let dropPart = document.getElementById('drop-part').value;
+        let years = document.getElementById('years').value;
+        let price = document.getElementById('price').value;
+        if (dropPart > 0 && years > 0 && price > 0) {
+            dropPart = 1 - (dropPart / 100);
+            let result = price;
+            for (let i = 1; i <= years; i++) {
+                result *= dropPart;
+            }
+            document.getElementById('total').innerHTML = result.toFixed(2);
+        } else {
+            document.getElementById('total').innerHTML = '-';
+        }
+    }
+</script>
+
+</html>
