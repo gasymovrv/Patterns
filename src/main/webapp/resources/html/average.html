@@ -5,11 +5,30 @@
     <title>Average</title>
 </head>
 <style>
+    ol {
+        counter-reset: section;
+        list-style-type: none;
+    }
+
+    li::before {
+        counter-increment: section;
+        content: counter(section) ".";
+    }
+
+    #numbers li{
+        display: flex;
+        align-content: left;
+    }
+
+    #numbers li input, .delete-button{
+        margin-left: 5px;
+    }
+
     .box{
         display: flex;
-        align-items: center;
         justify-content: center;
     }
+
     #numbers input { /* Контекстный селектор */
         color: green; /* Зеленый цвет текста */
     }
@@ -18,15 +37,19 @@
 <h1 style="text-align: center">Рассчитываем среднее</h1>
 <form style="text-align: center; font-size: large">
     Числа
-    <div class="box">
-        <ol id="numbers">
-            <li>
-                <input type="number" value="0">
-            </li>
-            <li>
-                <input type="number" value="0">
-            </li>
-        </ol>
+    <div class="outer-box">
+        <div class="box">
+            <ol  type="a" id="numbers">
+                <li>
+                    <input type="number" value="0">
+                    <button class="delete-button" onclick="deleteNumber(event)">Удалить</button>
+                </li>
+                <li>
+                    <input type="number" value="0">
+                    <button class="delete-button" onclick="deleteNumber(event)">Удалить</button>
+                </li>
+            </ol>
+        </div>
     </div>
     <div>
         <button onclick="addNewNumber(event)">Добавить еще число</button>
@@ -48,16 +71,17 @@
             e.target.value = 0;
         }
         let inputs = document.querySelectorAll('#numbers input');
-        inputs = Array.prototype.slice.call(inputs);
-        let inputsValues = inputs.map((el)=>el.value);
-        console.log('inputs',inputs);
-        let result = inputsValues.reduce((sum, el) => {
-            sum += Number.parseInt(el);
-            return sum;
-        }, 0)/inputsValues.length;
-        console.log('inputsValues',inputsValues);
-        console.log('result',result);
-        document.getElementById('total').innerHTML = result.toFixed(2);
+        if (inputs && inputs.length > 0) {
+            inputs = Array.prototype.slice.call(inputs);
+            let inputsValues = inputs.map((el) => el.value);
+            let result = inputsValues.reduce((sum, el) => {
+                sum += Number.parseInt(el);
+                return sum;
+            }, 0) / inputsValues.length;
+            document.getElementById('total').innerHTML = result.toFixed(2);
+        } else {
+            document.getElementById('total').innerHTML = '-';
+        }
     }
 
     function addNewNumber(e) {
@@ -67,8 +91,19 @@
         let input = document.createElement('input');
         input.setAttribute('type', 'number');
         input.setAttribute('value', '0');
+        let deleteButton = document.createElement('button');
+        deleteButton.setAttribute('class', 'delete-button');
+        deleteButton.textContent ='Удалить';
+        deleteButton.addEventListener('click', deleteNumber);
         li.appendChild(input);
+        li.appendChild(deleteButton);
         ol.appendChild(li);
+        inputsListener();
+    }
+
+    function deleteNumber(e) {
+        e.preventDefault();
+        e.target.parentElement.remove();
         inputsListener();
     }
 </script>
