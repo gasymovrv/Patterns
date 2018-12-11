@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Average</title>
+</head>
+<style>
+    .box{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #numbers input { /* Контекстный селектор */
+        color: green; /* Зеленый цвет текста */
+    }
+</style>
+<body>
+<h1 style="text-align: center">Рассчитываем среднее</h1>
+<form style="text-align: center; font-size: large">
+    Числа
+    <div class="box">
+        <ol id="numbers">
+            <li>
+                <input type="number" value="0">
+            </li>
+            <li>
+                <input type="number" value="0">
+            </li>
+        </ol>
+    </div>
+    <div>
+        <button onclick="addNewNumber(event)">Добавить еще число</button>
+    </div>
+    <br/>
+
+    <div>
+        <h3>Среднее арифметическое указанных чисел:</h3>
+        <h3 id="total">-</h3>
+    </div>
+</form>
+</body>
+<script>
+     document.getElementById('numbers').addEventListener('change', inputsListener);
+
+    function inputsListener(e) {
+        if (e && e.target && e.target.value < 0) {
+            e.target.setAttribute('value', 0);
+            e.target.value = 0;
+        }
+        let inputs = document.querySelectorAll('#numbers input');
+        inputs = Array.prototype.slice.call(inputs);
+        let inputsValues = inputs.map((el)=>el.value);
+        console.log('inputs',inputs);
+        let result = inputsValues.reduce((sum, el) => {
+            sum += Number.parseInt(el);
+            return sum;
+        }, 0)/inputsValues.length;
+        console.log('inputsValues',inputsValues);
+        console.log('result',result);
+        document.getElementById('total').innerHTML = result.toFixed(2);
+    }
+
+    function addNewNumber(e) {
+        e.preventDefault();
+        let ol = document.getElementById('numbers');
+        let li = document.createElement('li');
+        let input = document.createElement('input');
+        input.setAttribute('type', 'number');
+        input.setAttribute('value', '0');
+        li.appendChild(input);
+        ol.appendChild(li);
+        inputsListener();
+    }
+</script>
+
+</html>
