@@ -3,43 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Average</title>
+    <style>
+        ol {
+            counter-reset: section;
+            list-style-type: none;
+        }
+
+        li::before {
+            counter-increment: section;
+            content: counter(section) ".";
+        }
+
+        #numbers li {
+            display: flex;
+        }
+
+        #numbers li input, .delete-button {
+            margin-left: 5px;
+        }
+
+        .box {
+            display: flex;
+            justify-content: center;
+        }
+
+        #numbers input { /* Контекстный селектор */
+            color: green; /* Зеленый цвет текста */
+        }
+    </style>
 </head>
-<style>
-    ol {
-        counter-reset: section;
-        list-style-type: none;
-    }
 
-    li::before {
-        counter-increment: section;
-        content: counter(section) ".";
-    }
-
-    #numbers li{
-        display: flex;
-        align-content: left;
-    }
-
-    #numbers li input, .delete-button{
-        margin-left: 5px;
-    }
-
-    .box{
-        display: flex;
-        justify-content: center;
-    }
-
-    #numbers input { /* Контекстный селектор */
-        color: green; /* Зеленый цвет текста */
-    }
-</style>
 <body>
+
 <h1 style="text-align: center">Рассчитываем среднее</h1>
 <form style="text-align: center; font-size: large">
     Числа
     <div class="outer-box">
         <div class="box">
-            <ol  type="a" id="numbers">
+            <ol type="a" id="numbers">
                 <li>
                     <input type="number" value="0">
                     <button class="delete-button" onclick="deleteNumber(event)">Удалить</button>
@@ -61,9 +62,9 @@
         <h3 id="total">-</h3>
     </div>
 </form>
-</body>
+
 <script>
-     document.getElementById('numbers').addEventListener('change', inputsListener);
+    document.getElementById('numbers').addEventListener('change', inputsListener);
 
     function inputsListener(e) {
         if (e && e.target && e.target.value < 0) {
@@ -93,7 +94,7 @@
         input.setAttribute('value', '0');
         let deleteButton = document.createElement('button');
         deleteButton.setAttribute('class', 'delete-button');
-        deleteButton.textContent ='Удалить';
+        deleteButton.textContent = 'Удалить';
         deleteButton.addEventListener('click', deleteNumber);
         li.appendChild(input);
         li.appendChild(deleteButton);
@@ -107,5 +108,7 @@
         inputsListener();
     }
 </script>
+
+</body>
 
 </html>

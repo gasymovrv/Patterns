@@ -6,6 +6,7 @@
 </head>
 
 <body>
+
 <h1 style="text-align: center">Рассчитываем падение стоимости товара</h1>
 <form id="changed" style="text-align: center; font-size: large">
     <div>
@@ -37,9 +38,9 @@
         <h3 id="total">-</h3>
     </div>
 </form>
-</body>
+
 <script>
-     document.getElementById('changed').addEventListener('change', inputsListener);
+    document.getElementById('changed').addEventListener('change', inputsListener);
 
     function inputsListener(e) {
         if (e.target.value < 0) {
@@ -55,12 +56,12 @@
             let result = price;
             //1. считаем падение цены от неполного года
             //порядок пунктов 1 и 2 не важен - падение рассчитывается верно
-            if(months%12>0){
-            	result *= 1-(dropPart*((months%12)/12)/100);
-            	months -= months%12;
+            if (months % 12 > 0) {
+                result *= 1 - (dropPart * ((months % 12) / 12) / 100);
+                months -= months % 12;
             }
             //2. считаем падение цены от всех полных лет
-            let years = months/12;
+            let years = months / 12;
             for (let i = 0; i < years; i++) {
                 result *= 1 - (dropPart / 100);
             }
@@ -70,5 +71,7 @@
         }
     }
 </script>
+
+</body>
 
 </html>
