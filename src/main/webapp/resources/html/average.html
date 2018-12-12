@@ -75,7 +75,7 @@
             inputs = Array.prototype.slice.call(inputs);
             let inputsValues = inputs.map((el) => el.value);
             let result = inputsValues.reduce((sum, el) => {
-                sum += Number.parseInt(el);
+                sum += Number.parseFloat(el);
                 return sum;
             }, 0) / inputsValues.length;
             document.getElementById('total').innerHTML = result.toFixed(2);
