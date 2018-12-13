@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="modernizr-custom%20.js"></script>
+    <script src="canvas.js"></script>
+    <script src="geolocation.js"></script>
+    <title>HTML5</title>
+    <style>
+        canvas#rain {
+            background-color:black;
+            width: 400px;
+            height: 200px;
+        }
+        canvas {
+            border: solid 1px black;
+        }
+        main {
+            border: solid 1px black;
+            background-color: #d6e9c6;
+        }
+        #geo, #storage {
+            border: solid 1px black;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            //canvas
+            if (window.Modernizr && window.Modernizr.canvas) {
+                canvasRain();
+                canvasSmile();
+            } else {
+                alert('canvas не работает!')
+            }
+
+            //localstorage
+            if (window.Modernizr && window.Modernizr.localstorage) {
+                localStorage.setItem('item1', 2435);//любые данные будут приведены к строке
+                localStorage.setItem('item2', JSON.stringify({name:'item2'}));//объект можно записать только в виде строки
+
+                const storage = document.getElementById('storage');
+                const p1 = document.createElement('p');
+                const p2 = document.createElement('p');
+                p1.textContent = `item1 = ${localStorage.getItem('item1')};`;
+                p2.textContent = `item2 = ${localStorage.getItem('item2')}`;
+                const fragment = document.createDocumentFragment();
+                fragment.appendChild(p1);
+                fragment.appendChild(p2);
+                storage.appendChild(fragment);
+            } else {
+                alert('нет встроенной поддержки HTML5-хранилища')
+            }
+
+            //geolocation
+            if (window.Modernizr && window.Modernizr.geolocation) {
+                let geoButton = document.getElementById("geo-button");
+                geoButton.addEventListener('click', () => {
+                    let x = document.getElementById("geolocation");
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        x.innerHTML = "Latitude: " + position.coords.latitude +
+                            "<br>Longitude: " + position.coords.longitude;
+                    });
+                });
+            } else {
+                alert('нет встроенной поддержки геолокации')
+            }
+
+        }
+    </script>
+</head>
+<body>
+<header>header</header>
+<aside>aside</aside>
+<main>
+    <h3>main</h3>
+    <p>video</p>
+    <video width="400" controls>
+        <source src="2018-08-16%2010-19-03.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+    <span>span</span>
+    <p>canvas1</p>
+    <canvas id="smile" width="200" height="200">
+        <p>Ваш браузер не поддерживает рисование.</p>
+    </canvas>
+    <p>canvas2</p>
+    <canvas id="rain">
+        <p>Ваш браузер не поддерживает рисование.</p>
+    </canvas>
+    <span>span</span>
+
+    <section id="geo">
+        <p>geolocation</p>
+        <button id="geo-button">Try It</button>
+        <p id="geolocation"></p>
+    </section>
+
+    <section id="storage">
+        <p>local storage</p>
+    </section>
+
+    <time datetime="2018-10-22" >time</time>
+    <nav>nav</nav>
+    <article>article</article>
+    <section>section</section>
+    <div>div</div>
+</main>
+<footer>footer</footer>
+
+</body>
+</html>

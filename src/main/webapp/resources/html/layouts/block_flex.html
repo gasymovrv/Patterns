@@ -2,9 +2,181 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Flex-box</title>
+    <style>
+        .flex-direction-row {
+            flex-direction: row;
+        }
+
+        .flex-direction-column {
+            flex-direction: column;
+        }
+
+        .justify-content-space-between {
+            justify-content: space-between;
+        }
+
+        .justify-content-flex-start {
+            justify-content: flex-start;
+        }
+
+        .justify-content-center {
+            justify-content: center;
+        }
+
+        .align-items-center {
+            align-items: center;
+        }
+
+        .align-items-stretch {
+            align-items: stretch;
+        }
+
+        .align-items-flex-start {
+            align-items: flex-start;
+        }
+
+        .my-flex-container {
+            border: solid 2px chocolate;
+            display: flex;
+            width: 200px;
+            height: 200px;
+        }
+
+        .my-flex-block {
+            color: white;
+            background-color: #3498db;
+            border: solid 2px blue;
+        }
+
+    </style>
 </head>
+
 <body>
+
+<header>
+    <h3>header</h3>
+</header>
+
+<main>
+    <h3>main</h3>
+    <form id="options">
+        <fieldset>
+            <strong>flex-direction:</strong>
+            <!-- row | row-reverse | column | column-reverse -->
+            <label class="radio checked"><span class="icons"><span
+                    class="first-icon fui-radio-unchecked"></span><span
+                    class="second-icon fui-radio-checked"></span></span>
+                <input type="radio" name="flex-direction"
+                       value="row" data-toggle="radio">
+                row
+            </label>
+            <label class="radio"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span
+                    class="second-icon fui-radio-checked"></span></span>
+                <input type="radio" name="flex-direction"
+                       value="column" data-toggle="radio">
+                column
+            </label>
+        </fieldset>
+
+        <!-- justify-content: flex-start | flex-end | center | space-between | space-around -->
+        <fieldset>
+            <strong>justify-content:</strong>
+            <label class="radio"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span
+                    class="second-icon fui-radio-checked"></span></span>
+                <input type="radio" name="justify-content"
+                       value="flex-start"
+                       data-toggle="radio">
+                flex-start
+            </label>
+            <label class="radio"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span
+                    class="second-icon fui-radio-checked"></span></span>
+                <input type="radio" name="justify-content"
+                       value="center" data-toggle="radio">
+                center
+            </label>
+            <label class="radio checked"><span class="icons"><span
+                    class="first-icon fui-radio-unchecked"></span><span
+                    class="second-icon fui-radio-checked"></span></span>
+                <input type="radio" name="justify-content"
+                       value="space-between"
+                       data-toggle="radio">
+                space-between
+            </label>
+        </fieldset>
+
+        <!-- align-items: flex-start | flex-end | center | baseline | stretch-->
+        <fieldset>
+            <strong>align-items:</strong>
+            <label class="radio"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span
+                    class="second-icon fui-radio-checked"></span></span>
+                <input type="radio" name="align-items"
+                       value="flex-start"
+                       data-toggle="radio">
+                flex-start
+            </label>
+            <label class="radio"><span class="icons"><span class="first-icon fui-radio-unchecked"></span><span
+                    class="second-icon fui-radio-checked"></span></span>
+                <input type="radio" name="align-items"
+                       value="center" data-toggle="radio">
+                center
+            </label>
+            <label class="radio checked"><span class="icons"><span
+                    class="first-icon fui-radio-unchecked"></span><span
+                    class="second-icon fui-radio-checked"></span></span>
+                <input type="radio" name="align-items"
+                       value="stretch" data-toggle="radio">
+                stretch
+            </label>
+        </fieldset>
+    </form>
+
+    <p>my-flex-container</p>
+    <div class="my-flex-container">
+        <div class="my-flex-block">item1</div>
+        <div class="my-flex-block">item2</div>
+        <div class="my-flex-block">item3</div>
+    </div>
+</main>
+
+<footer>
+    <h3>footer</h3>
+</footer>
+
+<script>
+
+    window.onload = function () {
+        clearInputs();
+        inputsListener();
+        document.getElementById('options').addEventListener('change', inputsListener);
+    };
+
+    function inputsListener() {
+        let inputs = document.querySelectorAll('#options input');
+        inputs = Array.prototype.slice.call(inputs);
+        let resultClasses = inputs.reduce((acc, inp) => {
+            if (inp.checked) {
+                acc = `${acc} ${inp.name}-${inp.value}`;
+            }
+            return acc;
+        }, 'my-flex-container');
+        let container = document.getElementsByClassName('my-flex-container')[0];
+        container.setAttribute('class', resultClasses);
+    }
+
+    function clearInputs() {
+        let inputs = document.querySelectorAll('#options input');
+        inputs = Array.prototype.slice.call(inputs);
+        inputs.forEach((inp) => {
+            inp.checked = false;
+        });
+        //Выставляем дефолтные
+        document.querySelector('input[name="flex-direction"][value="row"]').checked = true;
+        document.querySelector('input[name="justify-content"][value="flex-start"]').checked = true;
+        document.querySelector('input[name="align-items"][value="stretch"]').checked = true;
+    }
+
+</script>
 
 </body>
 </html>
