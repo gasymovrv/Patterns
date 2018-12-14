@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Block grid</title>
+    <style>
+        header, footer {
+            font-size: 50px;
+            height: 80px;
+            width: 100%;
+            background: #3498db;
+        }
+        header {
+            margin-bottom: 20px;
+        }
+        footer {
+            margin-top: 20px;
+        }
+        section#centered {
+            display: grid;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        section#simple {
+            display: grid;
+            grid-gap: 5px;
+            /*3 столбца и 2 строки:*/
+            grid-template-columns: 200px 50px 100px;
+            grid-template-rows: 100px 30px;
+            width: 400px;
+            height: 300px;
+            border:  solid 1px #1f4fd2;
+        }
+
+        section#simple-fr {
+            display: grid;
+            grid-gap: 5px;
+            /*тоже самое что и #simple но с относительными размерами:*/
+            grid-template-columns: 4fr 1fr 2fr;
+            grid-template-rows: 10fr 3fr;
+            width: 400px;
+            height: 300px;
+            border:  solid 1px #1f4fd2;
+        }
+
+        section#repeatable {
+            display: grid;
+            grid-gap: 20px;
+
+            /*
+            auto-fit - авторасчет кол-ва столбцов,
+            minmax(400px, 1fr): 400px - минимальная ширина столбца, 1fr - максимальная ширина любая, но все столбцы одинаковые
+            */
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+
+            /*2 строки высотой по 400 пикселей*/
+            grid-template-rows: repeat(2, 400px);
+        }
+
+        .my-flex-container {
+            border: solid 2px #1f4fd2;
+            background-color: #3498db;
+        }
+    </style>
+</head>
+<body>
+<header>Header</header>
+<main>
+    <section id="centered">
+        <h3>simple grid px-size</h3>
+        <section id="simple">
+            <div class="my-flex-container">
+            </div>
+            <div class="my-flex-container">
+            </div>
+            <div class="my-flex-container">
+            </div>
+            <div class="my-flex-container">
+            </div>
+            <div class="my-flex-container">
+            </div>
+            <div class="my-flex-container">
+            </div>
+        </section>
+        <h3>simple grid fr-size</h3>
+        <section id="simple-fr">
+            <div class="my-flex-container">
+            </div>
+            <div class="my-flex-container">
+            </div>
+            <div class="my-flex-container">
+            </div>
+            <div class="my-flex-container">
+            </div>
+            <div class="my-flex-container">
+            </div>
+            <div class="my-flex-container">
+            </div>
+        </section>
+    </section>
+
+    <h3>repeatable grid</h3>
+    <section id="repeatable">
+        <div class="my-flex-container">
+        </div>
+        <div class="my-flex-container">
+        </div>
+        <div class="my-flex-container">
+        </div>
+        <div class="my-flex-container">
+        </div>
+        <div class="my-flex-container">
+        </div>
+        <div class="my-flex-container">
+        </div>
+    </section>
+</main>
+<footer>Footer</footer>
+</body>
+</html>
