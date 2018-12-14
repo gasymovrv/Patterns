@@ -1,0 +1,38 @@
+header, footer {
+    font-size: 50px;
+    height: 80px;
+    width: 100%;
+    background: #3498db;
+}
+main {
+    display: flex;
+    flex-flow: row wrap; /* - это для переноса строки*/
+    justify-content: space-around;
+    /*
+    это дефолтные значения:
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    */
+}
+
+.my-flex-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 400px;
+    height: 400px;
+    margin-top: 20px;
+    border: solid 2px #1f4fd2;
+}
+
+.my-flex-container:last-child {
+    margin-bottom: 20px;
+}
+
+.my-flex-block {
+    color: white;
+    background-color: #3498db;
+    width: 200px;
+}

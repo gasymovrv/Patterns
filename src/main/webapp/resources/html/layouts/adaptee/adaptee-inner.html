@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adaptee-inner</title>
+    <style>
+        header, footer {
+            font-size: 50px;
+            height: 80px;
+            width: 100%;
+            background: #3498db;
+        }
+        /*Для экранов НЕ менее 961px*/
+        @media screen and (min-width: 961px) {
+            main {
+                display: flex;
+                flex-flow: row wrap; /* - это для переноса строки*/
+                justify-content: space-around;
+                /*
+                это дефолтные значения:
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: flex-start;
+                */
+            }
+
+            .my-flex-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+                width: 400px;
+                height: 400px;
+                margin-top: 20px;
+                border: solid 2px #1f4fd2;
+            }
+
+            .my-flex-container:last-child {
+                margin-bottom: 20px;
+            }
+
+            .my-flex-block {
+                color: white;
+                background-color: #3498db;
+                width: 200px;
+            }
+        }
+        /*Для экранов менее 960px или печати*/
+        @media screen and (max-width: 960px), print {
+            main {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .my-flex-container {
+                display: flex;
+                flex-direction: row;
+                flex-flow: row wrap;
+                justify-content: space-around;
+                align-items: flex-start;
+                width: 99%;
+                margin-top: 10px;
+                border: solid 2px #1f4fd2;
+            }
+
+            .my-flex-container:last-child {
+                margin-bottom: 10px;
+            }
+
+            .my-flex-block {
+                color: white;
+                background-color: #3498db;
+                border: solid 1px #327edb;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>Header</header>
+<main>
+    <div class="my-flex-container">
+        <div class="my-flex-block">item1</div>
+        <div class="my-flex-block">item2</div>
+        <div class="my-flex-block">item3</div>
+        <div class="my-flex-block">item4</div>
+        <div class="my-flex-block">item5</div>
+        <div class="my-flex-block">item6</div>
+        <div class="my-flex-block">item7</div>
+        <div class="my-flex-block">item8</div>
+        <div class="my-flex-block">item9</div>
+        <div class="my-flex-block">item10</div>
+    </div>
+    <div class="my-flex-container">
+        <div class="my-flex-block">item1</div>
+        <div class="my-flex-block">item2</div>
+        <div class="my-flex-block">item3</div>
+        <div class="my-flex-block">item4</div>
+        <div class="my-flex-block">item5</div>
+        <div class="my-flex-block">item6</div>
+        <div class="my-flex-block">item7</div>
+        <div class="my-flex-block">item8</div>
+        <div class="my-flex-block">item9</div>
+        <div class="my-flex-block">item10</div>
+    </div>
+    <div class="my-flex-container">
+        <div class="my-flex-block">item1</div>
+        <div class="my-flex-block">item2</div>
+        <div class="my-flex-block">item3</div>
+        <div class="my-flex-block">item4</div>
+        <div class="my-flex-block">item5</div>
+        <div class="my-flex-block">item6</div>
+        <div class="my-flex-block">item7</div>
+        <div class="my-flex-block">item8</div>
+        <div class="my-flex-block">item9</div>
+        <div class="my-flex-block">item10</div>
+    </div>
+    <div class="my-flex-container">
+        <div class="my-flex-block">item1</div>
+        <div class="my-flex-block">item2</div>
+        <div class="my-flex-block">item3</div>
+        <div class="my-flex-block">item4</div>
+        <div class="my-flex-block">item5</div>
+        <div class="my-flex-block">item6</div>
+        <div class="my-flex-block">item7</div>
+        <div class="my-flex-block">item8</div>
+        <div class="my-flex-block">item9</div>
+        <div class="my-flex-block">item10</div>
+    </div>
+    <div class="my-flex-container">
+        <div class="my-flex-block">item1</div>
+        <div class="my-flex-block">item2</div>
+        <div class="my-flex-block">item3</div>
+        <div class="my-flex-block">item4</div>
+        <div class="my-flex-block">item5</div>
+        <div class="my-flex-block">item6</div>
+        <div class="my-flex-block">item7</div>
+        <div class="my-flex-block">item8</div>
+        <div class="my-flex-block">item9</div>
+        <div class="my-flex-block">item10</div>
+    </div>
+    <div class="my-flex-container">
+        <div class="my-flex-block">item1</div>
+        <div class="my-flex-block">item2</div>
+        <div class="my-flex-block">item3</div>
+        <div class="my-flex-block">item4</div>
+        <div class="my-flex-block">item5</div>
+        <div class="my-flex-block">item6</div>
+        <div class="my-flex-block">item7</div>
+        <div class="my-flex-block">item8</div>
+        <div class="my-flex-block">item9</div>
+        <div class="my-flex-block">item10</div>
+    </div>
+</main>
+<footer>Footer</footer>
+</body>
+</html>
