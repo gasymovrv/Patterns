@@ -1,0 +1,60 @@
+# Основные команды GIT
+
+### Устанавливаем git.
++ После установки пакета git
+в контекстном меню появляются пункты "Git Bash Here", "Git Gui Here".
+
++ Задаем настройки git в Git Bash:
+```
+git config --global user.name "ваше имя"
+git config --global user.email "ваша почта"
+git config --global core.autocrlf true //если будут возникать ошибки при добавлении файлов,
+git config --global core.safecrlf true //то надо заменить эти параметры на false
+```
++ Чтобы подключить необходимую директорию к git:
+    + нажимаем в ней правой кнопкой
+    + выбираем 'Git Bash Here' в контекстном меню
+    + прописываем следующую команду в появившемся окне: ```git init```
+
+
+### Вариант добавления на GitHub #1:
++ в нужной папке нажимаем на 'Git Bash Here' в контекстном меню
++ прописываем следующие команды в появившемся окне:
+```
+git add . //добавить все файлы директории
+git commit -a -m 'first commit' //закоммитить их с комментарием
+git remote add origin https://github.com/gasymovrv/имя_репозитория.git //указываем адрес репозитория
+git push -u origin master //загрузить на сервер
+```
+
+
+### Вариант добавления на GitHub #2:
++ в нужной папке нажимаем на 'Git Gui Here' в контекстном меню
++ работаем в появившемся окне:
+    + перемещаем необходимые файлы из Unstaged Changes в Staged Changes
+    + пишем комментарий коммита в окне Initial Commit Message, жмем Commit
+    + жмем Push и указываем url-адрес репозитория (```https://github.com/gasymovrv/имя_репозитория.git```)
+
+
+
+### Получение репозитория с GitHub:
++ в нужной папке нажимаем на 'Git Bash Here' в контекстном меню
++ прописываем следующую команду в появившемся окне:
+```
+git clone https://github.com/gasymovrv/имя_репозитория.git
+```
+
+
+### Слияение локального проекта с репозиторием:
+```
+git init
+git remote add repo https://github.com/gasymovrv/GitTestRepo.git
+//repo - это имя репозитория, может быть любым но обычно называют origin
+//например при команде clone гит автоматически называет origin
+git add .
+git fetch repo
+git checkout master
+git pull repo
+```
+
+
