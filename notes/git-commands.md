@@ -37,7 +37,7 @@ git push -u origin master //загрузить на сервер
 
 
 
-### Получение репозитория с GitHub:
+### Получение репозитория с GitHub #1:
 + в нужной папке нажимаем на 'Git Bash Here' в контекстном меню
 + прописываем следующую команду в появившемся окне:
 ```
@@ -45,16 +45,31 @@ git clone https://github.com/gasymovrv/имя_репозитория.git
 ```
 
 
-### Слияение локального проекта с репозиторием:
+### Получение репозитория с GitHub #2:
 ```
 git init
 git remote add repo https://github.com/gasymovrv/GitTestRepo.git
-//repo - это имя репозитория, может быть любым но обычно называют origin
-//например при команде clone гит автоматически называет origin
-git add .
-git fetch repo
-git checkout master
 git pull repo
+git checkout master
 ```
++ repo - это имя репозитория, может быть любым, но обычно называют origin
++ например при команде clone гит автоматически называет origin
+
+
+### Получение изменений из GitHub #1:
+```
+git pull origin
+```
+
+### Получение изменений из GitHub #1:
+```
+git fetch origin
+git checkout master //переключаем на локальную master если еще не была переключена
+git merge origin/master //делаем merge из удаленной
+```
++ git pull — это, по сути, команда git fetch, после которой сразу же следует git merge. 
++ git fetch получает изменения с сервера и сохраняет их в каталог refs/remotes/. Это никак не влияет на локальные ветки и текущие изменения. 
++ А git merge уже вливает все эти изменения в локальную копию.
+
 
 
