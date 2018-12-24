@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Evernote-edit</title>
+    <script src="resources/js/en-note-sort.js"></script>
+</head>
+<body>
+<p>
+    Пример редактирования заметки из Evernote.
+    Чтобы редактировать реальную заметку она должна соответствовать шаблону как в этой html, т.е.:
+</p>
+<ul>
+    <li>Див с названием мини блока</li>
+    <li>Дивы с контентом к этому мини-блоку</li>
+    <li>Див с дочерним тэгом br</li>
+</ul>
+<p>
+    Если скопировать текст без форматирвоания например из блокнота и вставить в заметку, то Evernote автоматически вставит каждую строку в div.
+</p>
+<p>
+   Чтобы запустить данный скрипт, необходимо вставить его прямо в консоль браузера, когда будет открыта необходимая заметка в Evernote
+</p>
+<en-note id="en-note" class="editable" g_editable="true" contenteditable="true">
+    <div>ONE</div>
+    <div>ONE-text1</div>
+    <div>ONE-text2.1: <a href="#">text2.2</a></div>
+    <div><br></div>
+    <div><br></div>
+    <div><br></div>
+    <div>two</div>
+    <div>two-text1</div>
+    <div><br></div>
+    <div>THREE</div>
+    <div>THREE-text1</div>
+    <div>THREE-text2</div>
+    <div>THREE-text2.1: <a href="#">text2.2</a></div>
+    <div>THREE-text3</div>
+    <div><br></div>
+    <div>Один</div>
+    <div>Один-text1.1: <a href="#">text1.2</a></div>
+    <div>Один-text2</div>
+    <div>Один-text3</div>
+    <div><br></div>
+    <div>два</div>
+    <div>два-text1</div>
+    <div>два-text2</div>
+    <div><br></div>
+    <div>ТРИ</div>
+    <div>ТРИ-text1</div>
+    <div>ТРИ-text2</div>
+</en-note>
+</body>
+<script>
+    function getNoteObjects(root) {
+        let notes = root.children;
+        notes = Array.prototype.slice.call(notes);
+        let noteObjects = [{
+            noteName: '',
+            noteNameNode: '',
+            noteContentNodes: []
+        }];
+        notes.forEach((elem) => {
+            const elemBrChildren = elem.getElementsByTagName('br');
+            if (elemBrChildren.length <= 0) {
+                let noteObj = noteObjects.pop();
+                if (!noteObj.noteName && !noteObj.noteNameNode) {
+                    noteObj.noteName = elem.textContent;
+                    noteObj.noteNameNode = elem;
+                } else {
+                    noteObj.noteContentNodes.push(elem);
+                }
+                noteObjects.push(noteObj);
+            } else {
+                noteObjects.push({
+                    noteName: '',
+                    noteNameNode: '',
+                    noteContentNodes: []
+                });
+            }
+        });
+        return noteObjects;
+    }
+
+    function sortByNoteName(noteObjects) {
+        noteObjects.sort((el1, el2)=>{
+            if(el1.noteName.toLowerCase() > el2.noteName.toLowerCase()){
+                return 1;
+            } else {
+                return -1;
+            }
+        });
+        return noteObjects;
+    }
+
+    function formatAndWriteToRoot(noteObjects, root) {
+        if(noteObjects && noteObjects.length > 0){
+            root.innerHTML = '';
+        }
+        noteObjects.forEach((note)=>{
+            if(!note.noteName){
+                return;
+            }
+            let headDiv = document.createElement('div');
+            let b = document.createElement('b');
+            b.textContent = note.noteName;
+            headDiv.appendChild(b);
+            root.appendChild(headDiv);
+            note.noteContentNodes.forEach((el)=>{
+                root.appendChild(el);
+            });
+            let br = document.createElement('br');
+            root.appendChild(br)
+        });
+    }
+
+    function writeToRoot(noteObjects, root) {
+        if(noteObjects && noteObjects.length > 0){
+            root.innerHTML = '';
+        }
+        noteObjects.forEach((note)=>{
+            if(!note.noteName){
+                return;
+            }
+            root.appendChild(note.noteNameNode);
+            note.noteContentNodes.forEach((el)=>{
+                root.appendChild(el);
+            });
+            let br = document.createElement('br');
+            root.appendChild(br)
+        });
+    }
+
+
+    function runAll() {
+        const root = document.getElementById('en-note');
+        let noteObjects = getNoteObjects(root);
+        sortByNoteName(noteObjects);
+        formatAndWriteToRoot(noteObjects, root)
+    }
+
+
+    function runSort() {
+        const root = document.getElementById('en-note');
+        let noteObjects = getNoteObjects(root);
+        sortByNoteName(noteObjects);
+        writeToRoot(noteObjects, root)
+    }
+
+
+    function runFormat() {
+        const root = document.getElementById('en-note');
+        let noteObjects = getNoteObjects(root);
+        formatAndWriteToRoot(noteObjects, root)
+    }
+    // runFormat();
+    // runAll();
+    runSort();
+</script>
+</html>
