@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Evernote-edit</title>
-    <script src="resources/js/en-note-sort.js"></script>
 </head>
 <body>
 <p>
@@ -22,49 +21,82 @@
    Чтобы запустить данный скрипт, необходимо вставить его прямо в консоль браузера, когда будет открыта необходимая заметка в Evernote
 </p>
 <en-note id="en-note" class="editable" g_editable="true" contenteditable="true">
-    <div>ONE</div>
-    <div>ONE-text1</div>
-    <div>ONE-text2.1: <a href="#">text2.2</a></div>
+    <div>B</div>
+    <div>B-text1</div>
+    <div>B-text2.1: <a href="#">text2.2</a></div>
     <div><br></div>
     <div><br></div>
     <div><br></div>
-    <div>two</div>
-    <div>two-text1</div>
+    <div>a</div>
+    <div>a-text1</div>
     <div><br></div>
-    <div>THREE</div>
-    <div>THREE-text1</div>
-    <div>THREE-text2</div>
-    <div>THREE-text2.1: <a href="#">text2.2</a></div>
-    <div>THREE-text3</div>
+    <div>в</div>
+    <div>в-текст1</div>
+    <div>в-текст2</div>
     <div><br></div>
-    <div>Один</div>
-    <div>Один-text1.1: <a href="#">text1.2</a></div>
-    <div>Один-text2</div>
-    <div>Один-text3</div>
+    <div>Г</div>
+    <div>Г-текст1</div>
+    <div>Г-текст2</div>
     <div><br></div>
-    <div>два</div>
-    <div>два-text1</div>
-    <div>два-text2</div>
+    <div>D</div>
+    <div>D-text1</div>
+    <div>D-text2</div>
+    <div>D-text2.1: <a href="#">text2.2</a></div>
+    <div>D-text3</div>
     <div><br></div>
-    <div>ТРИ</div>
-    <div>ТРИ-text1</div>
-    <div>ТРИ-text2</div>
+    <div>Б</div>
+    <div>Б-текст1.1: <a href="#">текст1.2</a></div>
+    <div>Б-текст2</div>
+    <div>Б-текст3</div>
 </en-note>
 </body>
 <script>
+
+    class NoteObject {
+        constructor(root){
+            this.root = root;
+            this.noteName = '';
+            this.noteNameNode = null;
+            this.noteContentNodes = [];
+        }
+        print(){
+            if(!this.noteName || !this.root){
+                return;
+            }
+            this.root.appendChild(this.noteNameNode);
+            this.noteContentNodes.forEach((el)=>{
+                this.root.appendChild(el);
+            });
+            let br = document.createElement('br');
+            this.root.appendChild(br)
+        }
+        formattedPrint(){
+            if(!this.noteName || !this.root){
+                return;
+            }
+            let headDiv = document.createElement('div');
+            let b = document.createElement('b');
+            b.textContent = this.noteName;
+            headDiv.appendChild(b);
+            this.root.appendChild(headDiv);
+            this.noteContentNodes.forEach((el)=>{
+                this.root.appendChild(el);
+            });
+            let br = document.createElement('br');
+            this.root.appendChild(br)
+        }
+    }
+
+
     function getNoteObjects(root) {
         let notes = root.children;
         notes = Array.prototype.slice.call(notes);
-        let noteObjects = [{
-            noteName: '',
-            noteNameNode: '',
-            noteContentNodes: []
-        }];
+        let noteObjects = [new NoteObject(root)];
         notes.forEach((elem) => {
             const elemBrChildren = elem.getElementsByTagName('br');
-            if (elemBrChildren.length <= 0) {
+            if (elem.tagName === 'br' || elemBrChildren.length <= 0) {
                 let noteObj = noteObjects.pop();
-                if (!noteObj.noteName && !noteObj.noteNameNode) {
+                if (!noteObj.noteName) {
                     noteObj.noteName = elem.textContent;
                     noteObj.noteNameNode = elem;
                 } else {
@@ -72,11 +104,7 @@
                 }
                 noteObjects.push(noteObj);
             } else {
-                noteObjects.push({
-                    noteName: '',
-                    noteNameNode: '',
-                    noteContentNodes: []
-                });
+                noteObjects.push(new NoteObject(root));
             }
         });
         return noteObjects;
@@ -97,64 +125,37 @@
         if(noteObjects && noteObjects.length > 0){
             root.innerHTML = '';
         }
-        noteObjects.forEach((note)=>{
-            if(!note.noteName){
-                return;
-            }
-            let headDiv = document.createElement('div');
-            let b = document.createElement('b');
-            b.textContent = note.noteName;
-            headDiv.appendChild(b);
-            root.appendChild(headDiv);
-            note.noteContentNodes.forEach((el)=>{
-                root.appendChild(el);
-            });
-            let br = document.createElement('br');
-            root.appendChild(br)
-        });
+        noteObjects.forEach((note)=>{note.formattedPrint()});
     }
 
     function writeToRoot(noteObjects, root) {
         if(noteObjects && noteObjects.length > 0){
             root.innerHTML = '';
         }
-        noteObjects.forEach((note)=>{
-            if(!note.noteName){
-                return;
-            }
-            root.appendChild(note.noteNameNode);
-            note.noteContentNodes.forEach((el)=>{
-                root.appendChild(el);
-            });
-            let br = document.createElement('br');
-            root.appendChild(br)
-        });
+        noteObjects.forEach((note)=>{note.print()});
     }
 
 
-    function runAll() {
+    function runSortAndFormat() {
         const root = document.getElementById('en-note');
         let noteObjects = getNoteObjects(root);
         sortByNoteName(noteObjects);
         formatAndWriteToRoot(noteObjects, root)
     }
-
-
     function runSort() {
         const root = document.getElementById('en-note');
         let noteObjects = getNoteObjects(root);
         sortByNoteName(noteObjects);
         writeToRoot(noteObjects, root)
     }
-
-
     function runFormat() {
         const root = document.getElementById('en-note');
         let noteObjects = getNoteObjects(root);
         formatAndWriteToRoot(noteObjects, root)
     }
+
     // runFormat();
-    // runAll();
-    runSort();
+    // runSort();
+    runSortAndFormat();
 </script>
 </html>
