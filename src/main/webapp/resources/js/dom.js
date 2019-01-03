@@ -781,6 +781,30 @@ function mouseMoveInfo(event) {
     document.body.appendChild(div);
 }
 
+//------------------------------Работа со скроллами---------------------------------------
+
+//не самые корректные способы получить высоту страницы с учетом скролла
+console.log('высота страницы : document.body.scrollHeight='+document.body.scrollHeight);
+console.log('высота страницы : document.body.offsetHeight='+document.body.offsetHeight);
+
+//корректно определяем высоту страницы с учетом прокрутки
+var scrollHeight = Math.max(
+    document.body.scrollHeight, document.documentElement.scrollHeight,
+    document.body.offsetHeight, document.documentElement.offsetHeight,
+    document.body.clientHeight, document.documentElement.clientHeight
+);
+console.log('высота страницы : scrollHeight=' + scrollHeight);
+
+console.log('положение верт скролла : window.pageYOffset='+window.pageYOffset);
+console.log('высота видимой части окна : document.documentElement.clientHeight='+document.documentElement.clientHeight);
+console.log('scrollHeight - document.documentElement.clientHeight='+(scrollHeight-document.documentElement.clientHeight));
+window.onscroll = function() {
+    //Когда прокрутили до самого низа
+    if(window.pageYOffset >= (scrollHeight-document.documentElement.clientHeight)){
+        alert("---------------------------end of page-----------------------------")
+    }
+};
+
 
 
 //------------------------------------------------Тестовое задание из JL------------------------------------------------
