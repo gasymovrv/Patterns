@@ -1,4 +1,4 @@
-import {log} from "./resources/js/helpers/consoleLog";
+import {log} from "./helpers/consoleLog";
 
 log('--------------------------------------------begin code from bundle.js---------------------------------------------------');
 

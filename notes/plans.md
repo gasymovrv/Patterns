@@ -1,8 +1,7 @@
 # Общие профессиональные планы
 
-+ Spring-Boot, Hibernate - освоить глубже
++ Spring-Boot, Hibernate - освоить глубже (транзакции, наследование в хибернейте, кеши)
 + Изучить поверхностно AngularJS/VueJS
-+ Размещение Java-приложений на хостинге
 + Получить сертификат ```Oracle Certified Associate, Java SE 8 Programmer Certification```
 + Получить сертификат ```Oracle Certified Professional, Java SE 8 Programmer Certification```
 + Изучить джаву 9,10
