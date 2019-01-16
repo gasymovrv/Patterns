@@ -61,7 +61,7 @@ git checkout master
 git pull origin
 ```
 
-### Получение изменений из GitHub #1:
+### Получение изменений из GitHub #2:
 ```
 git fetch origin
 git checkout master //переключаем на локальную master если еще не была переключена
@@ -70,6 +70,29 @@ git merge origin/master //делаем merge из удаленной
 + git pull — это, по сути, команда git fetch, после которой сразу же следует git merge. 
 + git fetch получает изменения с сервера и сохраняет их в каталог refs/remotes/. Это никак не влияет на локальные ветки и текущие изменения. 
 + А git merge уже вливает все эти изменения в локальную копию.
+
+
+### Вложенный репозиторий (слияние поддеревьев):
++ На примере подключения в этот проект репозитория ```react-tests``` в папку```webpack_node_react_tests```
+```
+git remote add react_tests_remote https://github.com/gasymovrv/react-tests.git //подключаем 2ой удаленный репозиторий 
+git fetch react_tests_remote //вытягиваем из него все коммиты
+git branch react_tests_branch react_tests_remote/master //создаем для него ветку
+git read-tree --prefix=src/main/webapp/webpack_node_react_tests/ -u react_tests_branch //клонируем ветку в папку webpack_node_react_tests ветки master основного проекта
+git commit -a -m 'init webpack_node_react_tests' //или коммитим через идею
+```
++ Перенос изменений из react_tests_branch в master:
+```
+git checkout master
+git merge -s subtree react_tests_branch //это сработает правильно, но тогда Git, кроме того, объединит вместе истории
+git merge --squash -s subtree --no-commit react_tests_branch
+```
++ Перенос изменений из master в react_tests_branch:
+```
+git checkout react_tests_branch
+git merge -s subtree master //это сработает правильно, но тогда Git, кроме того, объединит вместе истории
+git merge --squash -s subtree --no-commit master
+```
 
 
 
