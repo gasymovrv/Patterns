@@ -100,3 +100,61 @@
     
 
 # Продвинутый CSS
+
+## CSS модули
+
++ Импортируется и юзается:
+```jsx harmony
+import styles from './GlobalSelectors.css';
+<div className={ styles.root }>
+```
+
++ При сборке webpack будет создавать уникальные имена классов, например ```GlobalSelectors__root___xFJPw```. Вырезка из настроек webpack:
+```js
+module.exports = {
+    module: {
+    loaders: [
+      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader') },
+    ]
+    }
+}
+```
+
++ Global:
+    + CSS
+    ```css
+    .root {
+      border-width: 2px;
+      border-style: solid;
+      border-color: brown;
+    }
+    
+    .root2 :global .text {
+      color: brown;
+      font-size: 24px;
+    }
+    ```
+    + JS/JSX
+    ```jsx harmony
+    <div className={ styles.root }>
+        <div className={styles.root2}>
+            <p className="text">Global Selectors</p>
+        </div>
+    </div>
+    ```
+
++ Импорт внутри css (composes - ключевое слово):
+    + Где юзается импорт:
+    ```css
+    .root {
+      composes: box from "shared/styles/layout.css";
+      border-color: red;
+    }
+    ```
+    + Импортируемое:
+    ```css
+    .box {
+      border-width: 2px;
+      border-style: solid;
+    }
+    ```
