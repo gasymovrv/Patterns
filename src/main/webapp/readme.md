@@ -1,16 +1,16 @@
-### Тестирование примеров из ```advanced.js```, ```base.js``` или ```ES6.js```
+### index.html - тестирование примеров из ```advanced.js```, ```base.js``` или ```ES6.js```
 + Для тестирования выбранного куска кода,
 необходимо перенести его из указанных файлов
 в ```test.js```
 и открыть в браузере ```index.html```
 
-### Тестирование примеров из ```dom.js```
+### indexDOM.html - тестирование примеров из ```dom.js```
 + Для тестирования выбранного куска кода, 
 необходимо перенести его из указанного файла
 в ```testDOM.js``` в глобальную ф-ию ```run()```
 и открыть в браузере ```indexDOM.html```
 
-### Тестирование примеров из ```advanced.js```, ```base.js``` или ```ES6.js``` через webpack-сборку
+### webpack_node_simple - Тестирование примеров из ```advanced.js```, ```base.js``` или ```ES6.js``` через webpack-сборку
 + Для использования нужен ```Node.JS```
 + Если папки ```webpack_node_simple/node_modules``` нет, то нужно запустить ```npm install``` в ```src\main\webapp\webpack_node_simple```
 + Все собирается в файл ```dist/bundle.js```
@@ -32,7 +32,14 @@
 "watch": "webpack --watch --mode production" //сжатый файл, авто сборка
 ```
 
-### Запуск примеров css модулей
+### webpack_node_react_cssmodules - примеры css модулей
 + Для использования нужен ```Node.JS```
 + Если папки ```webpack_node_react_cssmodules/node_modules``` нет, то нужно запустить ```npm install``` в ```src\main\webapp\webpack_node_react_cssmodules```
 + Запуск сборки и дев-сервера: ```npm start & open http://localhost:8080```
+
+
+### webpack_node_react - react и примеры различных нюансов
++ Для использования нужен ```Node.JS```
++ Если папки ```webpack_node_react/node_modules``` нет, то нужно запустить ```npm install``` в ```src\main\webapp\webpack_node_react```
++ Запуск сборки и дев-сервера: ```npm start``` (http://localhost:3000 - автоматически открывается в браузере)
++ Каждый компонент - это пример с использованием определенного функционала. Чтобы попробовать - нужно раскоментить в App.js
