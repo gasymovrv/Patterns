@@ -12,6 +12,10 @@
     ```
     src\main\webapp\resources\js
     ```
++ Примеры проектов с webpack (JS)
+    ```
+    src\main\webapp\webpack_[имя]
+    ```
 + Вспоминаем нюансы по Java
     ```
     src\main\java\tests

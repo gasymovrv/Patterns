@@ -43,3 +43,11 @@
 + Если папки ```webpack_node_react/node_modules``` нет, то нужно запустить ```npm install``` в ```src\main\webapp\webpack_node_react```
 + Запуск сборки и дев-сервера: ```npm start``` (http://localhost:3000 - автоматически открывается в браузере)
 + Каждый компонент - это пример с использованием определенного функционала. Чтобы попробовать - нужно раскоментить в App.js
+
+
+### webpack_node_react_tests - тесты на react
++ Для использования нужен ```Node.JS```
++ Если папки ```webpack_node_react_tests/node_modules``` нет, то нужно запустить ```npm install``` в ```src\main\webapp\webpack_node_react_tests```
++ Запуск сборки и дев-сервера: ```npm start``` (http://localhost:3000 - автоматически открывается в браузере)
++ Данный модуль подключен в git как subproject и имеет отдельную ветку с историей ```react_tests_branch```
+    + Например на втором коммите ```подготовки к тестам + 1ый тест Ticker.js``` можно увидеть как делал тесты со снепшотами
