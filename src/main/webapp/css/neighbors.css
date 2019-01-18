@@ -1,0 +1,24 @@
+#neighbors li:nth-child(2n){ /* чётные */
+    background: #eee;
+}
+
+#neighbors li:nth-child(3) {  /* 3-ий потомок */
+    color: red;
+}
+
+#neighbors-of-type > dt:nth-of-type(2n){ /* чётные dt (соседи с другими тегами игнорируются) */
+    background: #eee;
+}
+
+#neighbors-of-type > dd:nth-last-of-type(2) {  /* второй dd снизу */
+    color: red;
+}
+
+#neighbors-div div:nth-of-type(2n){ /* чётные div*/
+    background: #eee;
+}
+
+#neighbors-div div:nth-child(3) {  /* 3-ий потомок  (несмотря на то что указан div, другие теги тоже посчитаются)*/
+    color: red;
+}
+

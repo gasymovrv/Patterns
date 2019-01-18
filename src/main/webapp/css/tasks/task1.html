@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>task1</title>
+    <style>
+        /* 1 */
+        input[type="checkbox"] + label {
+            background-color: red;
+        }
+
+        /* 2 */
+        /*input[type="checkbox"]:not(:checked) + label{*/
+            /*background-color: green;*/
+        /*}*/
+
+        /* 3 */
+        /*[id|="message"]{*/
+            /*background-color: blue;*/
+        /*}*/
+
+        /* 4 */
+        /*[id^="message-"]{*/
+            /*background-color: blue;*/
+        /*}*/
+
+        /* 5 */
+        /*a[href$=".zip"]{*/
+            /*background-color: red;*/
+        /*}*/
+
+        /* 6 */
+        /*[data-action~="delete"]{*/
+            /*background-color: red;*/
+        /*}*/
+
+        /* 7 */
+        /*[data-action]:not([data-action~="delete"]){*/
+            /*background-color: red;*/
+        /*}*/
+
+        /* 8 */
+        /*#messages li:nth-child(2n){*/
+            /*background-color: red;*/
+        /*}*/
+
+        /* 9 */
+        /*h3#widget-title + *{*/
+            /*background-color: red;*/
+        /*}*/
+
+        /* 10 */
+        /*h3#widget-title ~ a{*/
+            /*background-color: red;*/
+        /*}*/
+
+        /* 11 */
+        /*#messages li:last-child a{*/
+            /*background-color: red;*/
+        /*}*/
+    </style>
+</head>
+
+<body>
+<h3>Выберите элементы селектором</h3>
+<h4>Задания:</h4>
+<ul>
+    <li>Выбрать input типа checkbox.</li>
+    <li>Выбрать input типа checkbox, НЕ отмеченный.</li>
+    <li>Найти все элементы с id=message или message-*.</li>
+    <li>Найти все элементы с id=message-*.</li>
+    <li>Найти все ссылки с расширением href="...zip".</li>
+    <li>Найти все элементы с атрибутом data-action, содержащим delete в списке (через пробел).</li>
+    <li>Найти все элементы, у которых ЕСТЬ атрибут data-action, но он НЕ содержит delete в списке (через пробел).</li>
+    <li>Выбрать все чётные элементы списка #messages.</li>
+    <li>Выбрать один элемент сразу за заголовком h3#widget-title на том же уровне вложенности.</li>
+    <li>Выбрать все ссылки, следующие за заголовком h3#widget-title на том же уровне вложенности.</li>
+    <li>Выбрать ссылку внутри последнего элемента списка #messages.</li>
+</ul>
+<hr/>
+
+<input type="checkbox">
+<input type="checkbox" checked>
+<input type="text" id="message">
+
+<h3 id="widget-title">Сообщения:</h3>
+<ul id="messages">
+    <li id="message-1">Сообщение 1</li>
+    <li id="message-2">Сообщение 2</li>
+    <li id="message-3" data-action="delete">Сообщение 3</li>
+    <li id="message-4" data-action="edit do-not-delete">Сообщение 4</li>
+    <li id="message-5" data-action="edit delete">Сообщение 5</li>
+    <li><a href="#">...</a></li>
+</ul>
+
+<a href="http://site.com/list.zip">Ссылка на архив</a>
+<a href="http://site.com/list.pdf">..И на PDF</a>
+
+</body>
+
+<script>
+    // тестовая функция для селекторов
+    // проверяет, чтобы элементов по селектору selector было ровно count
+    function test(selector, count) {
+        let elems = document.querySelectorAll(selector);
+        let ok = (elems.length == count);
+
+        if (!ok) alert(selector + ": " + elems.length + " != " + count);
+    }
+
+    // ------------- селекторы --------------
+
+    //1 Выбрать input типа checkbox
+    test('input[type="checkbox"]', 2);
+
+    //2 Выбрать input типа checkbox, НЕ отмеченный
+    test('input[type="checkbox"]:not(:checked)', 1);
+
+    //3 Найти все элементы с id=message или message-*
+    test('[id|="message"]', 6);
+
+    //4 Найти все элементы с id=message-*
+    test('[id^="message-"]', 5);
+
+    //5 Найти все ссылки с расширением href="...zip"
+    test('a[href$=".zip"]', 1);
+
+    //6 Найти все элементы с data-action, содержащим delete в списке (через пробел)
+    test('[data-action~="delete"]', 2);
+
+    //7 Найти все элементы, у которых ЕСТЬ атрибут data-action,
+    // но он НЕ содержащит delete в списке (через пробел)
+    test('[data-action]:not([data-action~="delete"])', 1);
+
+    //8 Выбрать все чётные элементы списка #messages
+    test('#messages li:nth-child(2n)', 3);
+
+    //9 Выбрать один элемент сразу за заголовком h3#widget-title
+    // на том же уровне вложенности
+    test('h3#widget-title + *', 1);
+
+    //10 Выбрать все ссылки, следующие за заголовком h3#widget-title
+    // на том же уровне вложенности
+    test('h3#widget-title ~ a', 2);
+
+    //11 Выбрать ссылку внутри последнего элемента списка #messages
+    test('#messages li:last-child a', 1);
+</script>
+
+</html>

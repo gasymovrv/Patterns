@@ -1,0 +1,35 @@
+#languages li {
+    color: brown;   /* потомки #languages, подходящие под селектор  LI */
+}
+
+#languages > li {
+    color: black;   /* первый уровень детей #languages подходящих под LI */
+}
+
+#e-slavic { font-style: italic; }
+
+#e-slavic ~ li {  /* правые соседи #e-slavic с селектором LI */
+    color: red;
+}
+
+#latvian {
+    font-style: italic;
+}
+
+#latvian * {      /* потомки #latvian, подходяще под * (т.е. любые) */
+     font-style: normal;
+}
+
+#latvian + li {  /* первый правый сосед #latvian с селектором LI */
+    color: green;
+}
+
+a[href|="#val"]{
+    background-color: red;
+}
+a[href^="#val"]:not([href|="#val"]){
+    background-color: green;
+}
+a:target {
+    background-color: #282c34;
+}

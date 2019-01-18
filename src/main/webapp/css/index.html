@@ -2,16 +2,100 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>JS-common</title>
-    <link rel="stylesheet" type="text/css" href="resources/css/styles.css">
+    <title>Css examples</title>
+    <link rel="stylesheet" type="text/css" href="selectors.css">
+    <link rel="stylesheet" type="text/css" href="neighbors.css">
+    <style>
+        p#anim {
+            animation: slidein 3s infinite;
+        }
+
+        @keyframes slidein {
+            from {
+                margin-left: 100%;
+                width: 300%;
+            }
+
+            to {
+                margin-left: 0%;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <h1 style="text-align: center">Css examples</h1>
+<h3>Селекторы</h3>
+<ol id="languages">
+    <li>Славянские языки
+        <ol>
+            <li>Славянские микроязыки</li>
+            <li>Праславянский язык</li>
+            <li id="e-slavic">Восточнославянские языки <code>#e-slavic</code></li>
+            <li>Западнославянские языки <code>#e-slavic ~ li</code></li>
+            <li>Южнославянские языки <code>#e-slavic ~ li</code></li>
+            <li> ... <code>#e-slavic ~ li</code></li>
+        </ol>
+    </li>
+    <li>Балтийские языки
+        <ol>
+            <li>Литовский язык</li>
+            <li id="latvian">Латышский язык <code>#latvian</code>
+                <ol>
+                    <li>Латгальский язык <code>#latvian *</code>
+                        <ol>
+                            <li>Еще один потомок 1 <code>#latvian *</code> </li>
+                            <li>Еще один потомок 2 <code>#latvian *</code> </li>
+                            <li>Еще один потомок 3 <code>#latvian *</code> </li>
+                        </ol>
+                    </li>
+                </ol>
+            </li>
+            <li>Прусский язык <code>#latvian + li </code></li>
+            <li>... (следующий элемент уже не <code>#latvian + li</code>)</li>
+        </ol>
+    </li>
+</ol>
 
-<div id="root"></div>
+<h3>Фильтр по месту среди соседей</h3>
+<ul id="neighbors">
+    <li>Древнерусский язык</li>
+    <li>Древненовгородский диалект <code>li:nth-child(2n)</code></li>
+    <li>Западнорусский письменный язык <code>li:nth-child(3)</code></li>
+    <li>Украинский язык <code>li:nth-child(2n)</code></li>
+    <li>Белорусский язык</li>
+    <li>Другие языки <code>li:nth-child(2n)</code></li>
+</ul>
 
+<h3>Фильтр по месту среди соседей с тем же тегом</h3>
+<dl id="neighbors-of-type">
+    <dt>Первый dt</dt>
+    <dd>Описание dd</dd>
+    <dt>Второй dt <code>dt:nth-of-type(2n)</code></dt>
+    <dd>Описание dd</dd>
+    <dt>Третий dt</dt>
+    <dd>Описание dd <code>dd:nth-last-of-type(2)</code></dd>
+    <dt>Четвёртый dt <code>dt:nth-of-type(2n)</code></dt>
+    <dd>Описание dd</dd>
+</dl>
+<h3>Фильтр по месту среди соседей с тем же тегом 2</h3>
+<div id="neighbors-div">
+    <div>div1</div>
+    <a href="#val-1" class="for-not">a1</a>
+    <div>div2 <code>div:nth-child(3)</code></div>
+    <a href="#val-2" class="for-not">a2</a>
+    <div>div3</div>
+    <a href="#val-3" class="for-not">a3</a>
+    <div>div4</div>
+    <a href="#valfgh4">a4</a>
+    <div>div5</div>
+    <a href="#val676k">a5</a>
+    <div>div6</div>
+    <a id="target">target</a>
+</div>
+<p id="anim">dfshfdshsfghsfghsfghsfghssfggggggggggggggggggggggggggggggggdfshfdshsfghsfghsfghsfghssfgggggggggggggggggggggggggggggggg</p>
 </body>
 
 </html>
