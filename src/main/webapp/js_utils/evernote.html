@@ -5,6 +5,7 @@
     <title>Evernote-edit</title>
 </head>
 <body>
+<h3>Здесь скрипт для форматирования и сортирования заметок в evernote</h3>
 <p>
     Пример редактирования заметки из Evernote.
     Чтобы редактировать реальную заметку она должна соответствовать шаблону как в этой html, т.е.:
@@ -136,26 +137,27 @@
     }
 
 
-    function runSortAndFormat() {
-        const root = document.getElementById('en-note');
+    function runSortAndFormat(rootId) {
+        const root = document.getElementById(rootId);
         let noteObjects = getNoteObjects(root);
         sortByNoteName(noteObjects);
         formatAndWriteToRoot(noteObjects, root)
     }
-    function runSort() {
-        const root = document.getElementById('en-note');
+    function runSort(rootId) {
+        const root = document.getElementById(rootId);
         let noteObjects = getNoteObjects(root);
         sortByNoteName(noteObjects);
         writeToRoot(noteObjects, root)
     }
-    function runFormat() {
-        const root = document.getElementById('en-note');
+    function runFormat(rootId) {
+        const root = document.getElementById(rootId);
         let noteObjects = getNoteObjects(root);
         formatAndWriteToRoot(noteObjects, root)
     }
 
-    // runFormat();
-    // runSort();
-    runSortAndFormat();
+    //Указываем id корневого элемента в котором лежат все заметки
+    // runFormat('en-note');
+    // runSort('en-note');
+    runSortAndFormat('en-note');
 </script>
 </html>
