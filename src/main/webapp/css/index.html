@@ -6,20 +6,73 @@
     <link rel="stylesheet" type="text/css" href="selectors.css">
     <link rel="stylesheet" type="text/css" href="neighbors.css">
     <style>
+        /*Анимация*/
         p#anim {
             animation: slidein 3s infinite;
         }
-
         @keyframes slidein {
             from {
                 margin-left: 100%;
                 width: 300%;
             }
-
             to {
-                margin-left: 0%;
+                margin-left: 0;
                 width: 100%;
             }
+        }
+
+        /*Анимация 2*/
+        .loading {
+            width: 240px;
+            margin: auto;
+            padding: 20px 0 10px;
+            background: #333;
+            color: #fff;
+            text-align: center;
+        }
+        .spin {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 10px solid #ccc;
+            /*делаем круг*/
+            /*border-radius: 30px;*/
+            /*вырезаем кусок круга*/
+            /*border-right: 10px solid transparent;*/
+            /* Анимация */
+            animation: spin 2s linear 0s infinite normal;
+        }
+        /* Задаём вращение */
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        /*Цвета*/
+        #colors { background-color: #F9F2E3; }
+        #colors h2 {
+            background-color: rgb(214,86,43);
+            color: rgba(255,255,255,.5);
+            padding: 10px;
+        }
+        #colors p { color: green; }
+        #colors div {
+            background-color: hsl(60,100%,25%);
+            color: hsla(120,100%,50%,0.1);
+        }
+
+        /*Относительные размеры, градусы и градиент*/
+        #degs {
+            margin-top: 5vh;
+            width: 100vw;
+            height: 20vh;
+            background: #b3dced;
+            background: linear-gradient(45deg, #b3dced, #29b8e5 50%, #bce0ee);
         }
     </style>
 </head>
@@ -96,6 +149,23 @@
     <a id="target">target</a>
 </div>
 <p id="anim">dfshfdshsfghsfghsfghsfghssfggggggggggggggggggggggggggggggggdfshfdshsfghsfghsfghsfghssfgggggggggggggggggggggggggggggggg</p>
+<div class="loading">
+    <div class="spin"></div>
+</div>
+
+<div id="colors">
+    <h2>Предупреждение</h2>
+    <p>Все перечисленные на сайте методы ловли льва являются теоретическими
+        и базируются на вычислительных методах. Авторы не гарантируют вашей
+        безопасности при их использовании и снимают с себя всякую
+        ответственность за результат. Помните, лев это хищник и
+        опасное животное!
+    </p>
+    <div>Арррргх!</div>
+</div>
+
+<div id="degs">
+</div>
 </body>
 
 </html>
