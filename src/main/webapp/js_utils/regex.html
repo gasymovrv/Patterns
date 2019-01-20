@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Average</title>
+    <style>
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+
+        ol {
+            counter-reset: section;
+            list-style-type: none;
+        }
+
+        ol li::before {
+            counter-increment: section;
+            content: counter(section) ".";
+        }
+
+        #numbers li {
+            display: flex;
+        }
+
+        #numbers li input, .delete-button {
+            margin-left: 5px;
+        }
+
+        .box {
+            display: flex;
+            justify-content: center;
+        }
+
+        #numbers input { /* Контекстный селектор */
+            color: green; /* Зеленый цвет текста */
+        }
+    </style>
+</head>
+
+<body>
+
+<h1 style="text-align: center">Регулярные выражения</h1>
+<form style="text-align: center; font-size: large">
+    E-mail адреса
+    <div class="outer-box">
+        <div class="box">
+            <ol type="a" id="emails">
+                <li>
+                    <input type="text" value="04gas90@mail.ru"  class="correct">
+                    <button class="delete-button" onclick="deleteEmail(event)">Удалить</button>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div>
+        <button onclick="addNewEmail(event)">Добавить еще e-mail</button>
+    </div>
+</form>
+
+<script>
+    let reg = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i;
+    document.getElementById('emails').addEventListener('keyup', inputsListener);
+
+    function inputsListener(e, element) {
+        if (e && e.target && e.target.value) {
+            let str = e.target.value;
+            console.log(str);
+            if(str.match(reg)){
+                e.target.className = 'correct';
+            } else {
+                e.target.className = 'incorrect';
+            }
+        } else if (element){
+            let str = element.value;
+            console.log(str);
+            if(str.match(reg)){
+                element.className = 'correct';
+            } else {
+                element.className = 'incorrect';
+            }
+        }
+    }
+
+    function addNewEmail(e) {
+        e.preventDefault();
+        let ol = document.getElementById('emails');
+        let li = document.createElement('li');
+        let input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.setAttribute('value', '04gas90@mail.ru');
+        let deleteButton = document.createElement('button');
+        deleteButton.setAttribute('class', 'delete-button');
+        deleteButton.textContent = 'Удалить';
+        deleteButton.addEventListener('click', deleteEmail);
+        li.appendChild(input);
+        li.appendChild(deleteButton);
+        ol.appendChild(li);
+        inputsListener(null, input);
+    }
+
+    function deleteEmail(e) {
+        e.preventDefault();
+        e.target.parentElement.remove();
+        inputsListener();
+    }
+</script>
+
+</body>
+
+</html>

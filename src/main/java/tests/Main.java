@@ -5,9 +5,11 @@ public class Main {
         Test doubleTest = new DoubleTest();
         Test finallyTest = new FinallyTest();
         Test randomTest = new RandomTest();
+        RegexTest regexTest = new RegexTest();
         doubleTest.go();
         finallyTest.go();
         randomTest.go();
+        regexTest.go();
     }
 
 }
