@@ -1,11 +1,2 @@
-var oscar = {
-    name: 'Oscar',
-    meow: function() {
-        console.log(this.name + ' meows!');
-        console.log(this);
-    }
-};
-
-var m = oscar.meow;
-oscar.meow();//здесь this=oscar
-m();//а здесь this=window
+var re = /\d\d[:-]\d\d/g;
+lg( "Завтрак в 09:00. Обед - в 21-30".match(re) ); // 09:00, 21-30
