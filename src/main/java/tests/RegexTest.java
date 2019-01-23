@@ -46,6 +46,7 @@ public class RegexTest extends Test {
 
         System.out.println("\n---------- Сверхжадный режим квантификатора ----------");
         Pattern pattern2 = Pattern.compile("А.++а");
+//        Pattern pattern2 = Pattern.compile("А.++$"); - тут будет результат
         Matcher matcher2 = pattern2.matcher(text);
         printMatcherResult(matcher2, 0);
 
@@ -73,6 +74,10 @@ public class RegexTest extends Test {
         System.out.println("Before: "+wordsAllLang);
         System.out.println("After: "+wordsAllLang.replaceAll(regAllLang, "$1$2$3<strong>$4</strong>"));
 
+
+        //[a-d[m-p]]    объединение символов (от a до d и от m до p)
+        //[a-z&&[def]]	пересечение символов (символы d,e,f)
+        //[a-z&&[^bc]]	вычитание символов (символы a, d-z)
 
     }
 
