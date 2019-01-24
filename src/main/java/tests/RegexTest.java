@@ -75,9 +75,28 @@ public class RegexTest extends Test {
         System.out.println("After: "+wordsAllLang.replaceAll(regAllLang, "$1$2$3<strong>$4</strong>"));
 
 
-        //[a-d[m-p]]    объединение символов (от a до d и от m до p)
-        //[a-z&&[def]]	пересечение символов (символы d,e,f)
-        //[a-z&&[^bc]]	вычитание символов (символы a, d-z)
+        System.out.println("\n---------- Опережающие проверки (Предпросмотр) ----------");
+        String wordsAllLang2 = " Se cat КОТовасия Gecat Po Po2 Po3 cat Cat Service cat кот cat cat КОТ ";
+        final String regPreView = "(\\s|^|\\G)(?!cat|кот)(\\S+)(\\s|$)";
+        //CASE_INSENSITIVE почему-то не работает при сравнениях со скобочной группой
+        Pattern pattern6 = Pattern.compile(regPreView, Pattern.CASE_INSENSITIVE);
+        Matcher matcher6 = pattern6.matcher(wordsAllLang2);
+        printMatcherResult(matcher6, 0);
+
+
+        String alphabet = "ETAOINSHRDLCUMWFGYPBVKXJQZ";
+
+        System.out.println("\n---------- Объединение символов ----------");
+        printMatcherResult(Pattern.compile("[a-c[m-o]]", Pattern.CASE_INSENSITIVE).matcher(alphabet), 0);
+
+        System.out.println("\n---------- Слияние диапазонов (то же что и объединение) ----------");
+        printMatcherResult(Pattern.compile("[a-cm-o]", Pattern.CASE_INSENSITIVE).matcher(alphabet), 0);
+
+        System.out.println("\n---------- Пересечение символов ----------");
+        printMatcherResult(Pattern.compile("[a-z&&[def]]", Pattern.CASE_INSENSITIVE).matcher(alphabet), 0);
+
+        System.out.println("\n---------- Вычитание символов ----------");
+        printMatcherResult(Pattern.compile("[a-f&&[^bc]]", Pattern.CASE_INSENSITIVE).matcher(alphabet), 0);
 
     }
 
