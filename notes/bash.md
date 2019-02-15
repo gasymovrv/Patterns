@@ -151,8 +151,292 @@
     
     
 ## Команды для использования в пакетных файлах, передача параметров в пакетный файл
+1. **Передача параметров в пакетный файл:**
+    + ```$1```, ```$2``` - доступ к 1му, 2му и т.д. параметрам
+    + ```$#``` - количество параметров с которыми вызван файл
+    + ```$*``` - все параметры через пробел с которыми вызван файл
+1. **Переменные**
+   
+   Имя переменной может начинаться с буквы или символа подчереркивания
+   знак равенства(=) это оператор присваиивания
+   
+   _var=1
+   _word =slovo
+   value="t ak aia dli nna iain epo niat naia str oka"
+   
+   Тип данных переменных shell это всегда строка символов!
+   
+   $ cat sample
+   _string="Hello from Perm"
+   echo $_string
+   $ /home/sgww/sample
+   Hello from Perm
+   
+   результат выполения команды в переменную (команда обрамляется обратными апострофами)
+   
+   $cat sample
+   _date=`date`
+   echo $_date
+   $/home/sgww/sample
+   Tue Mar 2 11:41:30 YEKT 201
+   
+   ввод значения переменной в консоли
+   
+   $ cat sample
+   echo Enter data:
+   read data1
+   read data2
+   echo Your data:  $data1 and  $data2
+   $ /home/sgww/sample
+   Enter data:
+   Linux
+   Windows
+   Your data: Linux and Windows
+   
+1. **Системные переменные**
+   
+   $ cat sample
+   echo $PATH
+   echo $HOME
+   echo $MAIL
+   echo $SHELL
+   $ /home/sgww/sample
+   /usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games
+   /home/sgww
+   /var/mail/sgww
+   /bin/bash
+   
+   PATH - пути поиска исполняемых файло (так как каталога /home/sgww/ там нет, постояно приходилось писать полный путь /home/sgww/sample для выполнения команды)
+   HOME - домашний каталог
+   MAIL - файл электронной почты
+   SHELL - оболочка в которой работаем 
+   
+   Добавим к переменной PATH каталог HOME что бы не приходилось постоянно писать полный путь
+   
+   $ cat sample
+   PATH=$PATH:$HOME
+   Эти строки следует добавить в ~/.profile или ~/.bash_profile
+   теперь нет необходимости писать полный путь до команды 
+   
+1. **Специальные символы**
+   
+   * - любая последовательность, любых символов
+   ? - один любой символ
+   [...] - любой из символов диапазона
+   
+   Двойные кавычки ""
+   
+   $echo *
+   cpp file.txt mydaemon net_sh perl php sample
+   $ echo "*"
+   *
+   
+   Апострофы ''
+   
+   
+   $ cat sample
+   text="This is a text"
+   echo '$text'
+   $ sample
+   $text
+   
+   Обратный слэшь \
+   
+   $ cat sample
+   text="This is a text"
+   echo \$text
+   $ sample
+   $text
+   
+   Обратный апостроф ``
+   
+   $ cat sample
+   text=`pwd`
+   echo $text
+   $ sample
+   /home/sgww
+   
+1. **Арифметические операции**
+   
+   Для выполнения арифметических операций в командном файле понадобиться команда expr
+   
+   $ expr 7 + 96
+   103
+   $ expr 87 - 555
+   -468
+   $  expr 18 / 2
+   9
+   $ expr 19 / 2
+   9
+   $ expr 19 % 2
+   1
+   $ expr 6 \* 32
+   192
+   $ expr 6 '*' 32
+   192
+   $ expr 6 * 32
+   expr: syntax error
+   
+   
+   Если при умножении не поставить  \ или '' то * будет восприниматься как любой символ
+   
+   Стоит отметить, что \ - это не деление, а целая часть от деления, операция % дает остаток от деления
+   
+   $ cat sample
+   read x
+   read y
+   echo `expr $x '*' $y + 7`
+   $ sample
+   4
+   5
+   27
+   
+1. **Переменные окружения, команда export и unset**
+   
+   Для взаимодейстивя с другими процессами могут пригодияться переменные окружения
+   
+   Их полный списко можно посмотреть командой export
+   
+   $ export
+   declare -x HISTCONTROL="ignoreboth"
+   declare -x HOME="/home/sgww"
+   declare -x LESSCLOSE="/usr/bin/lesspipe %s %s"
+   declare -x LESSOPEN="| /usr/bin/lesspipe %s"
+   declare -x LOGNAME="sgww"
+   ...
+   
+   Задать свою переменную
+   
+   $ name=Pavel && export name
+   $ echo $name
+   Pavel
+   
+   Удалить
+   
+   $ unset name
+   $ echo name
+   
+1. **Условие IF**
+   
+   Для составления условных выражений оператора if очень полезна программа test.
+   
+   $ cat sample
+   if test -r sample
+   then
+      echo True
+   else
+      echo False
+   fi
+   $ sample
+   True
+   
+   В этом примере test -r sample - это условие
+   echo True выполняется если условие истино
+   echo False если ложно
+   
+   Программа test предназначена для проверки типов файлов и сравнения значений
+   
+   $test -r file # Истино если файл file существует и доступен для чтения
+   $test -w file # Истино если файл file существует и доступен для записи
+   $test -x file # Истино если файл file существует и доступен для выполнения
+   
+   $ x=32 && export x
+   $ y=32 && export y
+   
+   $test $x -eq $y # Истино если $x равен $y
+   $test $x -en $y # Истино если $x не равен $y
+   $test $x -ge $y # Истино если $x больше или равен $y
+   $test $x -gt $y # Истино если $x больше $y
+   $test $x -le $y # Истино если $x меньше или равен $y
+   $test $x -lt $y # Истино если $x меньше $y
+   
+   Остальные параметры можно посмотреть в man test
+   
+1. **Цикл FOR**
+   
+   $ cat sample
+   for x in  1 two 3
+   do
+    echo $x
+   done
+   $ sample
+   1
+   two
+   3
+   
+   В этом цикле код между do и done выполниться 3 раза, при этом первый раз
+   x=1, второй раз x=two и последний x=3
+   
+   Другой интересный пример
+   
+   $ cat sample
+   for x in *
+   do
+    echo $x
+   done
+   $ sample
+   cpp
+   demo
+   file.txt
+   mydaemon
+   net_sh
+   perl
+   php
+   sample
+   
+   * в списке переменных цикла, заставляет for использовать в качестве значения $x элементы текущего каталога
+   
+1. **Циклы WHILE и UNTIL**
+   
+   $ cat sample
+   while test -r file
+   do
+    sleep 10
+    echo file exists
+   done
+   echo file does not exist
+   
+   $ touch file
+   $ sample
+   file exists
+   file exists
+   Ctr+Z
+   [1]+  Stopped                 sample
+   $ rm file
+   $ fg
+   sample
+   file exists
+   file does not exist
+   
+   
+   $ cat sample
+   until test -r file
+   do
+   sleep 5
+   echo file does not exist
+   done
+   echo file exists
+   $ sample
+   file does not exist
+   file does not exist
+   Ctr+Z
+   [1]+  Stopped                 sample
+   $ touch file
+   $ fg
+   sample
+   file does not exist
+   file exists
+   $
 
 
 ## Работа с процессами
-
-
+1. ```kill```
+    + Эта команда служит для принудительного завершения процессов. 
+    + Нужно ввести kill PID_процесса. PID процесса можно узнать, введя ```top```.
+1. ```xkill```
+    + Ещё одна команда для завершения процессов. Введите её, затем щёлкните по тому окну, которое нужно закрыть.
+1. ```killall```
+    + Убивает процессы c определённым именем. К примеру, killall firefox.
+1. ```top```
+    + Отображает перечень запущенных процессов, сортируя в зависимости от потребления ресурсов CPU. 
+    + Своего рода терминальный «Системный монитор».
