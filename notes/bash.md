@@ -90,7 +90,7 @@
     + Если нужно перенаправить вывод одной команды на вход другой используется оператор |.
     + ```locate bin | less```
 
-1. **grep** - поиск по содержимому файлов (работает и с regex)
+1. **grep** - поиск по содержимому файлов
     + ```grep [opts] "pattern" file```
     + ```cat file | grep [opts] "pattern"```
     + opts:
@@ -101,7 +101,7 @@
     + -E - расширенные регулярные выражения
     + -o - вывести только совпадающую с образцом часть строки
 
-1. **egrep** - тоже что и ```grep```, но работает с regex быстрее
+1. **egrep** - тоже что и ```grep```, но работает с regex
     + ```egrep [opts] "pattern" file```
     + ```cat file | egrep [opts] "pattern"```
     + pattern - регулярное выражение
@@ -155,127 +155,135 @@
     + ```$1```, ```$2``` - доступ к 1му, 2му и т.д. параметрам
     + ```$#``` - количество параметров с которыми вызван файл
     + ```$*``` - все параметры через пробел с которыми вызван файл
+
 1. **Переменные**
-   
-   Имя переменной может начинаться с буквы или символа подчереркивания
+   + Имя переменной может начинаться с буквы или символа подчереркивания
    знак равенства(=) это оператор присваиивания
+       ```
+       _var=1
+       _word =slovo
+       value="t ak aia dli nna iain epo niat naia str oka"
+       ```
    
-   _var=1
-   _word =slovo
-   value="t ak aia dli nna iain epo niat naia str oka"
+   + Тип данных переменных shell это всегда строка символов! (заранее создан исполняемый файл sample)
+       ```
+       $ cat sample
+       _string="Hello from Perm"
+       echo $_string
+       ```
+       ```
+       $ /home/sgww/sample
+       Hello from Perm
+       ```
    
-   Тип данных переменных shell это всегда строка символов!
-   
-   $ cat sample
-   _string="Hello from Perm"
-   echo $_string
-   $ /home/sgww/sample
-   Hello from Perm
-   
-   результат выполения команды в переменную (команда обрамляется обратными апострофами)
-   
-   $cat sample
-   _date=`date`
-   echo $_date
-   $/home/sgww/sample
-   Tue Mar 2 11:41:30 YEKT 201
-   
-   ввод значения переменной в консоли
-   
-   $ cat sample
-   echo Enter data:
-   read data1
-   read data2
-   echo Your data:  $data1 and  $data2
-   $ /home/sgww/sample
-   Enter data:
-   Linux
-   Windows
-   Your data: Linux and Windows
+   + Результат выполения команды в переменную (команда обрамляется обратными апострофами)
+       ```
+       $ cat sample
+       _date=`date`
+       echo $_date
+       ```
+       ```
+       $ /home/sgww/sample
+       Tue Mar 2 11:41:30 YEKT 201
+       ```
+  
+   + Ввод значения переменной в консоли
+       ```
+       $ cat sample
+       echo Enter data:
+       read data1
+       read data2
+       echo Your data:  $data1 and  $data2
+       ```
+       ```
+       $ /home/sgww/sample
+       Enter data:
+       Linux
+       Windows
+       Your data: Linux and Windows
+       ```
    
 1. **Системные переменные**
-   
-   $ cat sample
-   echo $PATH
-   echo $HOME
-   echo $MAIL
-   echo $SHELL
-   $ /home/sgww/sample
-   /usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games
-   /home/sgww
-   /var/mail/sgww
-   /bin/bash
-   
-   PATH - пути поиска исполняемых файло (так как каталога /home/sgww/ там нет, постояно приходилось писать полный путь /home/sgww/sample для выполнения команды)
-   HOME - домашний каталог
-   MAIL - файл электронной почты
-   SHELL - оболочка в которой работаем 
-   
-   Добавим к переменной PATH каталог HOME что бы не приходилось постоянно писать полный путь
-   
-   $ cat sample
-   PATH=$PATH:$HOME
-   Эти строки следует добавить в ~/.profile или ~/.bash_profile
-   теперь нет необходимости писать полный путь до команды 
-   
+    + PATH - пути поиска исполняемых файлов (так как каталога /home/sgww/ там нет, постояно приходилось писать полный путь /home/sgww/sample для выполнения команды)
+    + HOME - домашний каталог
+    + MAIL - файл электронной почты
+    + SHELL - оболочка в которой работаем 
+        
+        ```$ cat sample```
+        ```
+        echo $PATH
+        echo $HOME
+        echo $MAIL
+        echo $SHELL
+        ```
+        ```$ /home/sgww/sample```
+        ```
+        /usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games
+        /home/sgww
+        /var/mail/sgww
+        /bin/bash
+        ```
+
+    + Добавим к переменной PATH каталог HOME что бы не приходилось постоянно писать полный путь
+        ```PATH=$PATH:$HOME```
+
 1. **Специальные символы**
-   
-   * - любая последовательность, любых символов
-   ? - один любой символ
-   [...] - любой из символов диапазона
-   
-   Двойные кавычки ""
-   
-   $echo *
-   cpp file.txt mydaemon net_sh perl php sample
-   $ echo "*"
-   *
-   
-   Апострофы ''
-   
-   
-   $ cat sample
-   text="This is a text"
-   echo '$text'
-   $ sample
-   $text
-   
-   Обратный слэшь \
-   
-   $ cat sample
-   text="This is a text"
-   echo \$text
-   $ sample
-   $text
-   
-   Обратный апостроф ``
-   
-   $ cat sample
-   text=`pwd`
-   echo $text
-   $ sample
-   /home/sgww
-   
+    + ```*``` - любая последовательность, любых символов
+    + ```?``` - один любой символ
+    + ```[...]``` - любой из символов диапазона
+    + Двойные кавычки ``` "" ```
+        + Одиночный символ * означает любое имя файла в заданном каталоге
+        ```
+        $echo *
+        cpp file.txt mydaemon net_sh perl php sample
+        $ echo "*"
+        *
+        ```
+    + Апострофы ``` '' ```
+        ```
+        $ cat sample
+        text="This is a text"
+        echo '$text'
+        $ sample
+        $text
+        ```
+    + Обратный слэш ``` \ ```
+        ```
+        $ cat sample
+        text="This is a text"
+        echo \$text
+        $ sample
+        $text
+        ```
+    + Обратный апостроф ``` `` ```
+        ```
+        $ cat sample
+        text=`pwd`
+        echo $text
+        $ sample
+        /home/sgww
+        ```
+
 1. **Арифметические операции**
-   
-   Для выполнения арифметических операций в командном файле понадобиться команда expr
-   
-   $ expr 7 + 96
-   103
-   $ expr 87 - 555
-   -468
-   $  expr 18 / 2
-   9
-   $ expr 19 / 2
-   9
-   $ expr 19 % 2
-   1
-   $ expr 6 \* 32
-   192
-   $ expr 6 '*' 32
-   192
-   $ expr 6 * 32
-   expr: syntax error
+    + Для выполнения арифметических операций в командном файле понадобиться команда ```expr```
+        ```
+        $ expr 7 + 96
+        103
+        $ expr 87 - 555
+        -468
+        $  expr 18 / 2
+        9
+        $ expr 19 / 2
+        9
+        $ expr 19 % 2
+        1
+        $ expr 6 \* 32
+        192
+        $ expr 6 '*' 32
+        192
+        $ expr 6 * 32
+        expr: syntax error
+        ```
    
    
    Если при умножении не поставить  \ или '' то * будет восприниматься как любой символ
