@@ -170,6 +170,8 @@
        $ cat sample
        _string="Hello from Perm"
        echo $_string
+       #или так на случай если пишем переменную в тексте:
+       ${_string}
        ```
        ```
        $ /home/sgww/sample
@@ -284,81 +286,104 @@
         $ expr 6 * 32
         expr: syntax error
         ```
-   
-   
-   Если при умножении не поставить  \ или '' то * будет восприниматься как любой символ
-   
-   Стоит отметить, что \ - это не деление, а целая часть от деления, операция % дает остаток от деления
-   
-   $ cat sample
-   read x
-   read y
-   echo `expr $x '*' $y + 7`
-   $ sample
-   4
-   5
-   27
+        + Если при умножении не поставить  \ или ' ' то *, будет восприниматься как любой символ
+        + Стоит отметить, что / - это не деление, а целая часть от деления, операция % дает остаток от деления
+    + Пример
+        ```
+        $ cat sample
+        read x
+        read y
+        echo `expr $x '*' $y + 7`
+        $ sample
+        4
+        5
+        27
+        ```
    
 1. **Переменные окружения, команда export и unset**
-   
-   Для взаимодейстивя с другими процессами могут пригодияться переменные окружения
-   
-   Их полный списко можно посмотреть командой export
-   
-   $ export
-   declare -x HISTCONTROL="ignoreboth"
-   declare -x HOME="/home/sgww"
-   declare -x LESSCLOSE="/usr/bin/lesspipe %s %s"
-   declare -x LESSOPEN="| /usr/bin/lesspipe %s"
-   declare -x LOGNAME="sgww"
-   ...
-   
-   Задать свою переменную
-   
-   $ name=Pavel && export name
-   $ echo $name
-   Pavel
-   
-   Удалить
-   
-   $ unset name
-   $ echo name
-   
+    + Для взаимодейстивя с другими процессами могут пригодиться переменные окружения
+    + Их полный списко можно посмотреть командой export
+        ```
+        $ export
+        declare -x HISTCONTROL="ignoreboth"
+        declare -x HOME="/home/sgww"
+        declare -x LESSCLOSE="/usr/bin/lesspipe %s %s"
+        declare -x LESSOPEN="| /usr/bin/lesspipe %s"
+        declare -x LOGNAME="sgww"
+        ...
+        ```
+    + Задать свою переменную
+        ```
+        $ name=Pavel && export name
+        $ echo $name
+        Pavel
+        ```
+    + Удалить
+        ```
+        $ unset name
+        $ echo name
+        ```
+    
 1. **Условие IF**
-   
-   Для составления условных выражений оператора if очень полезна программа test.
-   
-   $ cat sample
-   if test -r sample
-   then
-      echo True
-   else
-      echo False
-   fi
-   $ sample
-   True
-   
-   В этом примере test -r sample - это условие
-   echo True выполняется если условие истино
-   echo False если ложно
-   
-   Программа test предназначена для проверки типов файлов и сравнения значений
-   
-   $test -r file # Истино если файл file существует и доступен для чтения
-   $test -w file # Истино если файл file существует и доступен для записи
-   $test -x file # Истино если файл file существует и доступен для выполнения
-   
-   $ x=32 && export x
-   $ y=32 && export y
-   
-   $test $x -eq $y # Истино если $x равен $y
-   $test $x -en $y # Истино если $x не равен $y
-   $test $x -ge $y # Истино если $x больше или равен $y
-   $test $x -gt $y # Истино если $x больше $y
-   $test $x -le $y # Истино если $x меньше или равен $y
-   $test $x -lt $y # Истино если $x меньше $y
-   
-   Остальные параметры можно посмотреть в man test
+    + Команда ```test``` (или ```[ ]```).
+    + Команда test проверяет выполнение некоторого условия. С использованием этой (встроенной) команды
+    формируются операторы выбора и циклы.
+    + Есть два возможных формата команды:
+        ```
+        test условие
+        ```
+        или
+        ```
+        [ условие ]
+        ```
+        + Между скобками и содержащимся в них условием обязательно должны быть пробелы.
+    + Условия проверки файлов:
+        + ```-f имя``` Файл ```имя``` является обычным (регулярным) файлом.
+        + ```-d имя``` Файл ```имя``` - папка.
+        + ```-L имя``` Файл ```имя``` - символьная ссылка.
+        + ```-r имя``` Имеется разрешение на чтение файла ```имя```.
+        + ```-w имя``` Имеется разрешение на запись в файл ```имя```.
+        + ```-x имя``` Имеется разрешение на выполнение файла ```имя```.
+        + ```-s имя``` Файл ```имя``` не пустой.
+    + Условия проверки строк:
+        + ```str1 = str2``` Строки "str1" и "str2" совпадают.
+        + ```str1 != str2``` Строки "str1" и "str2" не совпадают.
+        + ```-n str1``` Строка "str1" существует (непустая).
+        + ```-z str1``` Строка "str1" не существует (пустая, имеет нулевую длину).
+    + Условия сравнения целых чисел:
+        + ```x -eq y``` x = y
+        + ```x -ne y``` x не равно y
+        + ```x -gt y``` x > y
+        + ```x -ge y``` x >= y
+        + ```x -lt y``` x < y
+        + ```x -le y``` x <= y
+    + Объединение и отрицание при проверке.
+        + ```t1 -a t2``` Логическое И.
+        + ```t1 -o t2``` Логическое ИЛИ.
+        + ```! t1``` Отрицание.
+    + Пример
+        ```
+        if [ "$age" -ge 18 ]
+        then
+         echo You are grownup.
+        else
+         echo You are juvenile.
+        fi
+        ```
+        ```
+        if [ -z $1 ]
+        then echo There must be two params. No one param specified. Re-enter with two params.
+        elif [ -z $2 ]
+        then echo There must be two params. One param specified only. Re-enter with two params.
+        elif [ $1 -lt $2 ]
+        then echo The \"$1\" param is less than the \"$2\" param.
+        elif [ $1 -gt $2 ]
+        then echo The \"$1\" param is greater than the \"$2\" param.
+        elif [ $1 -eq $2 ]
+        then echo Both params are equal.
+        else echo Values cannot be compared.
+        fi
+        ```
    
 1. **Цикл FOR**
    
