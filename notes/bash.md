@@ -104,7 +104,9 @@
 1. **egrep** - тоже что и ```grep```, но работает с regex
     + ```egrep [opts] "pattern" file```
     + ```cat file | egrep [opts] "pattern"```
-    + pattern - регулярное выражение
+
+1. **touch** - Обновляет время доступа и модификации файла.
+    + ```touch hello-world``` -  Создание пустого файла hello-world, если он не существовал.
 
 ПРИМЕРЫ:
 + ```cd -```	перейти в директорию, в которой находились до перехода в текущую директорию
@@ -119,7 +121,7 @@
 + ```cp -a /tmp/dir1 .```	копировать директорию dir1 со всем содержимым в текущую директорию
 + ```cp -a dir1 dir2```	копировать директорию dir1 в директорию dir2
 + ```ln -s file1 lnk1```	создать символическую ссылку на файл или директорию
-+ ```touch -t 0712250000 fileditest```	модифицировать дату и время создания файла, при его отсутствии, создать файл с указанными датой и временем (YYMMDDhhmm)
++ ```touch -t 0712250000 filename```	модифицировать дату и время создания файла, при его отсутствии, создать файл с указанными датой и временем (YYMMDDhhmm)
 + ```find / -name file1```	найти файлы и директории с именем file1. Поиск начать с корня (/)
     
     
@@ -227,7 +229,10 @@
         ```
 
     + Добавим к переменной PATH каталог HOME что бы не приходилось постоянно писать полный путь
-        ```PATH=$PATH:$HOME```
+        ```
+        PATH=$PATH:$HOME
+        ```
+        + Если это прописать прямо в консоли, то после перезапуска оно сотрется. Чтобы навсегда надо добавить в ```~/.profile```
 
 1. **Специальные символы**
     + ```*``` - любая последовательность, любых символов
@@ -386,80 +391,91 @@
         ```
    
 1. **Цикл FOR**
-   
-   $ cat sample
-   for x in  1 two 3
-   do
-    echo $x
-   done
-   $ sample
-   1
-   two
-   3
-   
-   В этом цикле код между do и done выполниться 3 раза, при этом первый раз
-   x=1, второй раз x=two и последний x=3
-   
-   Другой интересный пример
-   
-   $ cat sample
-   for x in *
-   do
-    echo $x
-   done
-   $ sample
-   cpp
-   demo
-   file.txt
-   mydaemon
-   net_sh
-   perl
-   php
-   sample
-   
-   * в списке переменных цикла, заставляет for использовать в качестве значения $x элементы текущего каталога
-   
+    + Пример 1
+        ```
+        $ cat sample
+        for x in  1 two 3
+        do
+         echo $x
+        done
+        
+        $ sample
+        1
+        two
+        3
+        ```
+        + В этом цикле код между do и done выполниться 3 раза, при этом первый раз
+        x=1, второй раз x=two и последний x=3
+    
+    + Пример 2
+        ```
+        $ cat sample
+        for x in *
+        do
+         echo $x
+        done
+        
+        $ sample
+        cpp
+        demo
+        file.txt
+        mydaemon
+        net_sh
+        perl
+        php
+        sample
+        ```
+        + ```*``` в списке переменных цикла, заставляет for использовать в качестве значения $x элементы текущего каталога
+    + Пример 3
+        ``` 
+        FILES=/Users/username/dev/*
+        for file in $FILES
+        do
+           echo $(basename $file) # basename Выводит имя файла без пути с папками.
+        done
+        ```
+    + Пример 4
+        ```
+        for (( count=1; count<5; count++ ))
+        do
+        echo "$count"
+        done
+        
+        $ sample
+        1
+        2
+        3
+        4
+        ```
+
 1. **Циклы WHILE и UNTIL**
-   
-   $ cat sample
-   while test -r file
-   do
-    sleep 10
-    echo file exists
-   done
-   echo file does not exist
-   
-   $ touch file
-   $ sample
-   file exists
-   file exists
-   Ctr+Z
-   [1]+  Stopped                 sample
-   $ rm file
-   $ fg
-   sample
-   file exists
-   file does not exist
-   
-   
-   $ cat sample
-   until test -r file
-   do
-   sleep 5
-   echo file does not exist
-   done
-   echo file exists
-   $ sample
-   file does not exist
-   file does not exist
-   Ctr+Z
-   [1]+  Stopped                 sample
-   $ touch file
-   $ fg
-   sample
-   file does not exist
-   file exists
-   $
+    + Пример цикла ```WHILE``` от 0 до 10
+        ```
+        count=0
+        while [ $count -lt 10 ]
+        do
+        (( count++ ))
+        echo $count
+        done
+        ```
+    
+    + Пример бесконечного цикла ```WHILE```
+        ```
+        while [ 1 = 1 ]
+        do
+        (( count++ ))
+        echo $count
+        sleep 0.1 #ожидание 100мс
+        done
+        ```
+    + Аналогично, но «в обратную сторону» работает и цикл ```UNTIL```:
+        ```
+        until [ $count -gt 10 ]
+        do
+        (( count++ ))
+        echo $count
+        done
+        ```
 
 
 ## Работа с процессами
