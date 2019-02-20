@@ -37,11 +37,11 @@ sudo nano /etc/mysql/my.cnf
 ```
 Вместо: 
 ```
-bind address=127.0.0.1
+bind-address=127.0.0.1
 ```
 Вписываем: 
 ```
-bind address=0.0.0.0
+bind-address=0.0.0.0
 ```
 
 И в файле ```/etc/mysql/mysql.conf.d/mysqld.cnf``` добавляем строку:
