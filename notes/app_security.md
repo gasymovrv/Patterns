@@ -88,6 +88,7 @@
     + Кодирование входных данных
     + Экранирование спецсимволов HTML
     + Отображение на UI информации НЕ через innerHTML, а через textContent
+    + На JSP использовать станд. тэг ```<c:out value="${object.field}"/>```
 
 
 ## Insecure Direct Object References
