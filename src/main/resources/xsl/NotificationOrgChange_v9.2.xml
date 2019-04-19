@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="NotificationOrgChange_v9.2.xsl"?>
+<ns2:fcsNotificationOrgChange schemeVersion="9.2" xmlns="http://zakupki.gov.ru/oos/types/1"
+                              xmlns:ns2="http://zakupki.gov.ru/oos/printform/1">
+    <id>2319</id>
+    <docNumber>Уведомление об изменении организации, осуществляющей закупку от 15.06.2018 №1</docNumber>
+    <docPublishDate>2018-06-15T16:27:13.658+03:00</docPublishDate>
+    <baseChange>
+        <changeType>C</changeType>
+    </baseChange>
+    <notifRespOrg>
+        <regNum>99111111113</regNum>
+        <consRegistryNum>99111113</consRegistryNum>
+        <fullName>Тестовая организация 3</fullName>
+        <postAddress>117418, Москва Город, Цюрупы Улица, дом 11, офис (квартира) 5</postAddress>
+        <factAddress>Российская Федерация, 420000, Карелия Респ</factAddress>
+        <INN>4444444442</INN>
+        <KPP>444444442</KPP>
+        <responsibleRole>CU</responsibleRole>
+    </notifRespOrg>
+    <purchase>
+        <purchaseNumber>0160500000118000059</purchaseNumber>
+        <purchaseObjectInfo>Аэродром ✈ ✈</purchaseObjectInfo>
+    </purchase>
+    <previousRespOrg>
+        <regNum>01605000001</regNum>
+        <consRegistryNum>98998002</consRegistryNum>
+        <fullName>Тестовая организация 18</fullName>
+        <postAddress>Российская Федерация, 163002, Архангельская обл, Архангельск г, ПР-КТ ЛОМОНОСОВА, 30</postAddress>
+        <factAddress>Российская Федерация, 163002, Архангельская обл, Архангельск г, ПР-КТ ЛОМОНОСОВА, 30</factAddress>
+        <INN>6450030341</INN>
+        <KPP>645001001</KPP>
+        <responsibleRole>AI</responsibleRole>
+    </previousRespOrg>
+    <newRespOrg>
+        <regNum>99111111113</regNum>
+        <consRegistryNum>99111113</consRegistryNum>
+        <fullName>Тестовая организация 3</fullName>
+        <postAddress>117418, Москва Город, Цюрупы Улица, дом 11, офис (квартира) 5</postAddress>
+        <factAddress>Российская Федерация, 420000, Карелия Респ</factAddress>
+        <INN>4444444442</INN>
+        <KPP>444444442</KPP>
+        <responsibleRole>CU</responsibleRole>
+    </newRespOrg>
+    <href>http://eis6.lanit.ru/epz/order/notice/ep44/view/documents.html?regNumber=0160500000118000059</href>
+    <printForm>
+        <url>http://eis6.lanit.ru/epz/order/notice/printForm/viewXml.html?organizationChangeID=2319</url>
+    </printForm>
+    <attachments>
+        <attachment>
+            <publishedContentId>6EAE5D90C99460CEE0533BE8A8C03A3D</publishedContentId>
+            <fileName>Medicine.xls</fileName>
+            <fileSize>6 Кб</fileSize>
+            <docDescription>Medicine</docDescription>
+            <url>
+                http://eis6.lanit.ru/44fz/filestore/public/1.0/download/priz/file.html?uid=6EAE5D90C99460CEE0533BE8A8C03A3D
+            </url>
+        </attachment>
+    </attachments>
+</ns2:fcsNotificationOrgChange>
