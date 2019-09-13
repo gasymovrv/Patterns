@@ -1,7 +1,12 @@
 package tests;
 
+import tests.lambda.MyClassCreator;
+import tests.lambda.MyClassGetter;
+import tests.lambda.Printer;
+import tests.multiparents.MyInterface1;
 import tests.multiparents.MyInterfaceImpl;
 
+import java.security.Principal;
 import java.util.*;
 
 public class Main {
@@ -70,6 +75,7 @@ public class Main {
         long l1 = 425L;
         Object o1 = l1;
         System.out.println("Object o1 = 425L, o1.getClass()="+o1.getClass());
+        System.out.println();
 
         //присваивание на лету
         MyClass mc = null;
@@ -79,9 +85,31 @@ public class Main {
         }
         System.out.println();
 
+        //Наследование
+        MyClass mcc = new MyClassChild(1L, "child");
+        System.out.println(mcc);
+        mcc.printSomething("что-то");
+        System.out.println();
+
         //Множественно наследование (абстрактный класс и 2 интерфейса с одинаковым реализованным методом)
-        MyInterfaceImpl myInterfaceImpl = new MyInterfaceImpl();
+        MyInterface1 myInterfaceImpl = new MyInterfaceImpl();
         myInterfaceImpl.print();
+        System.out.println();
+
+        //Функциональные интерфейсы
+        MyClassGetter myClassGetter = mc::getInfo; //не статический
+        mc.setInfo("new");
+        myClassGetter.func();
+
+        Printer printer = MyClass::printSomething; //статический
+        printer.func("static method from MyClass");
+
+        MyClassCreator myClassCreator = MyClass::new; //конструктор
+        myClassCreator.func(1L,"gjkl");
+        mc=myClassCreator.func(2L,"gjkl2");
+        System.out.println(mc);
+        System.out.println(mc.getId());
     }
+
 
 }

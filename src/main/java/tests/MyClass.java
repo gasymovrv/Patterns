@@ -25,6 +25,7 @@ public class MyClass {
     }
 
     public String getInfo() {
+        System.out.println(info);
         return info;
     }
 
@@ -45,5 +46,9 @@ public class MyClass {
         return "MyClass{" +
                 "info='" + info + '\'' +
                 '}';
+    }
+
+    public static void printSomething(String s){
+        System.out.println("printSomething="+s);
     }
 }
