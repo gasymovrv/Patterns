@@ -1,5 +1,7 @@
 package tests;
 
+import tests.multiparents.MyInterfaceImpl;
+
 import java.util.*;
 
 public class Main {
@@ -69,6 +71,17 @@ public class Main {
         Object o1 = l1;
         System.out.println("Object o1 = 425L, o1.getClass()="+o1.getClass());
 
+        //присваивание на лету
+        MyClass mc = null;
+        MyClass mc2=new MyClass("mc2");
+        if((mc=mc2)!=null){
+            System.out.println(mc);
+        }
+        System.out.println();
+
+        //Множественно наследование (абстрактный класс и 2 интерфейса с одинаковым реализованным методом)
+        MyInterfaceImpl myInterfaceImpl = new MyInterfaceImpl();
+        myInterfaceImpl.print();
     }
 
 }
