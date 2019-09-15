@@ -6,6 +6,7 @@
 
     <groupId>com.javapro.learn</groupId>
     <artifactId>Education_project</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
 
@@ -22,5 +23,8 @@
             </plugin>
         </plugins>
     </build>
+    <modules>
+        <module>hibertest</module>
+    </modules>
 
 </project>
