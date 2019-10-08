@@ -77,6 +77,7 @@ public class Main {
         System.out.println("Object o1 = 425L, o1.getClass()="+o1.getClass());
         System.out.println();
 
+
         //присваивание на лету
         MyClass mc = null;
         MyClass mc2=new MyClass("mc2");
@@ -85,16 +86,19 @@ public class Main {
         }
         System.out.println();
 
+
         //Наследование
         MyClass mcc = new MyClassChild(1L, "child");
         System.out.println(mcc);
         mcc.printSomething("что-то");
         System.out.println();
 
+
         //Множественно наследование (абстрактный класс и 2 интерфейса с одинаковым реализованным методом)
         MyInterface1 myInterfaceImpl = new MyInterfaceImpl();
         myInterfaceImpl.print();
         System.out.println();
+
 
         //Функциональные интерфейсы
         MyClassGetter myClassGetter = mc::getInfo; //не статический
@@ -109,6 +113,7 @@ public class Main {
         mc=myClassCreator.func(2L,"gjkl2");
         System.out.println(mc);
         System.out.println(mc.getId());
+        System.out.println();
     }
 
 
