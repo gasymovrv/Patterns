@@ -17,26 +17,26 @@ public class HibertestMain {
         SingleTableStrategy singleTableStrategy = new SingleTableStrategy();
         JoinedTableStrategy joinedTableStrategy = new JoinedTableStrategy();
 
-        //MAPPED_SUPERCLASS
+        //MAPPED_SUPERCLASS (hibertest_db1)
         // Одна таблица для каждого класса кроме родителя (его поля будут в таблицах БД)
         //Полиморфные запросы (через вызов родителя) будут через отдельные селекты - плохо для производительности
         strategyExecutor.setStrategy(mappedSuperclassStrategy);
         strategyExecutor.executeStrategy();
 
-        //TABLE_PER_CLASS
+        //TABLE_PER_CLASS (hibertest_db2)
         // Одна таблица для каждого класса кроме родителя (его поля будут в таблицах БД)
         //Полиморфные запросы будут через UNION - лучше для производительности
         //Id обязательно должен быть вынесен в родителя
         strategyExecutor.setStrategy(tablePerClassStrategy);
         strategyExecutor.executeStrategy();
 
-        //SINGLE_TABLE
+        //SINGLE_TABLE (hibertest_db3)
         //Единая таблица для всей иерархии классов, поля всех классов собраны в кучу
         //Очень плохо для структуры БД и поддержки, но очень быстро
         strategyExecutor.setStrategy(singleTableStrategy);
         strategyExecutor.executeStrategy();
 
-        //JOINED_TABLE
+        //JOINED_TABLE (hibertest_db4)
         //Одна таблица для каждого класса (даже для родителя)
         //Родитель с детьми в БД будут иметь связь по внешнему ключу
         //Полиморфные запросы будут через JOIN - возможны проблемы с производительностью
