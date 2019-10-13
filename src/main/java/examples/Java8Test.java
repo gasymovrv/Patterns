@@ -43,6 +43,9 @@ public class Java8Test extends Test {
 
         NumberedExamples.printNumberOfExample(5, "Свой функ-ый интерфейс с дженериком для геттеров");
         ClassWithLambdaMethod.handle(new Pojo(9L, "Pojo 9")::getInfo);
+
+        NumberedExamples.printNumberOfExample(6, "Свой функ-ый интерфейс с дженериком для геттеров (странная херня где добавляется аргумент)");
+        MyKeyExtractor.printKey(Pojo::getInfo, new Pojo(10L, "pojo10"));
     }
 
     public static void main(String[] args) {
