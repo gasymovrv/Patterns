@@ -1,28 +1,25 @@
-package tests;
+package examples;
 
-import tests.lambda.MyClassCreator;
-import tests.lambda.MyClassGetter;
-import tests.lambda.Printer;
-import tests.multiparents.MyInterface1;
-import tests.multiparents.MyInterfaceImpl;
+import examples.multiparents.MyInterface1;
+import examples.multiparents.MyInterfaceImpl;
+import examples.utils.NumberedExamples;
 
-import java.security.Principal;
 import java.util.*;
 
-public class Main {
+public class Main{
     public static void main(String[] args) {
-        Test doubleTest = new DoubleTest();
-        Test finallyTest = new FinallyTest();
-        Test randomTest = new RandomTest();
-        RegexTest regexTest = new RegexTest();
-        doubleTest.go();
-        finallyTest.go();
-        randomTest.go();
-        regexTest.go();
-        System.out.println();
+        new DoubleTest().go();
+        new FinallyTest().go();
+        new RandomTest().go();
+        new RegexTest().go();
+        new Java8Test().go();
 
+        System.out.println(
+                "---------------------------------------------------- Разное - BEGIN ---------------------------------------------------"
+        );
 
         //Ручной toString в цикле
+        NumberedExamples.printNumberOfExample(1,"Ручной toString в цикле");
         List<MyClass> myClasses = new ArrayList<>();
         myClasses.add(new MyClass(1L,"info1"));
         myClasses.add(new MyClass(2L,"info2"));
@@ -33,10 +30,10 @@ public class Main {
         ArrayList<String> strings = new ArrayList<>();
         myClasses.forEach((mc)-> strings.add(String.format("{id=%s; info=%s}",mc.getId(), mc.getInfo())));
         System.out.println("strings="+strings);
-        System.out.println();
 
 
         //Вывод сета енамов
+        NumberedExamples.printNumberOfExample(2, "Вывод сета енамов");
         Set<MyClass.OrderType> myClasses2 = new HashSet<>();
         myClasses2.add(MyClass.OrderType.CU);
         myClasses2.add(MyClass.OrderType.PO);
@@ -44,10 +41,10 @@ public class Main {
         myClasses2.add(MyClass.OrderType.PRO);
         myClasses2.add(MyClass.OrderType.SO);
         System.out.println("enums="+myClasses2);
-        System.out.println();
 
 
         //substring последних 2х цифр и удаление нуля
+        NumberedExamples.printNumberOfExample(3, "substring последних 2х цифр и удаление нуля");
         String spz = "1234507";
         String str = "";
         str = spz.substring(spz.length()-2, spz.length());
@@ -55,10 +52,10 @@ public class Main {
             str = str.substring(1, str.length());
         }
         System.out.println("2 последние цифры из "+spz+" без нуля = "+str);
-        System.out.println();
 
 
         //Мапы и null
+        NumberedExamples.printNumberOfExample(4,"Мапы и null");
         Map<String, MyClass> map = new HashMap<>();
         map.put("str1", new MyClass("info1"));
         map.put("str2", null);
@@ -68,52 +65,40 @@ public class Main {
         System.out.println("map.get(\"str2\") = "+map.get("str2"));
         System.out.println("map.get(\"str3\") = "+map.get("str3"));
         System.out.println("map.get(null) = "+map.get(null));
-        System.out.println();
 
 
         //Боксинг long в Long при сохранении в Object
+        NumberedExamples.printNumberOfExample(5, "Боксинг long в Long при сохранении в Object");
         long l1 = 425L;
         Object o1 = l1;
         System.out.println("Object o1 = 425L, o1.getClass()="+o1.getClass());
-        System.out.println();
 
 
         //присваивание на лету
+        NumberedExamples.printNumberOfExample(6,"присваивание на лету if((mc=mc2)!=null)");
         MyClass mc = null;
         MyClass mc2=new MyClass("mc2");
         if((mc=mc2)!=null){
             System.out.println(mc);
         }
-        System.out.println();
 
 
         //Наследование
+        NumberedExamples.printNumberOfExample(7,"Наследование");
         MyClass mcc = new MyClassChild(1L, "child");
         System.out.println(mcc);
         mcc.printSomething("что-то");
-        System.out.println();
 
 
         //Множественно наследование (абстрактный класс и 2 интерфейса с одинаковым реализованным методом)
+        NumberedExamples.printNumberOfExample(8,"Множественно наследование (абстрактный класс и 2 интерфейса с одинаковым реализованным методом)");
         MyInterface1 myInterfaceImpl = new MyInterfaceImpl();
         myInterfaceImpl.print();
-        System.out.println();
 
 
-        //Функциональные интерфейсы
-        MyClassGetter myClassGetter = mc::getInfo; //не статический
-        mc.setInfo("new");
-        myClassGetter.func();
-
-        Printer printer = MyClass::printSomething; //статический
-        printer.func("static method from MyClass");
-
-        MyClassCreator myClassCreator = MyClass::new; //конструктор
-        myClassCreator.func(1L,"gjkl");
-        mc=myClassCreator.func(2L,"gjkl2");
-        System.out.println(mc);
-        System.out.println(mc.getId());
-        System.out.println();
+        System.out.println(
+                "---------------------------------------------------- Разное - END ---------------------------------------------------"
+        );
     }
 
 

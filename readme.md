@@ -18,7 +18,7 @@
     ```
 + Вспоминаем нюансы по Java
     ```
-    src\main\java\tests
+    src\main\java\examples
     ```
 + XSD
     ```

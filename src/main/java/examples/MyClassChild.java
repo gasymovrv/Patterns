@@ -1,4 +1,4 @@
-package tests;
+package examples;
 
 public class MyClassChild extends MyClass{
     public static void printSomething(String s){

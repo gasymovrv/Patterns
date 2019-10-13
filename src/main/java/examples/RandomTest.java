@@ -1,10 +1,12 @@
-package tests;
+package examples;
 
 import java.util.Random;
 /**
  * Методы генерации в определенных диапазонах
  */
 public class RandomTest extends Test {
+    private static Test thisOne = new RandomTest();
+
     @Override
     public void contentGo(){
         System.out.println("От 0 до 100 - целые");
@@ -40,5 +42,9 @@ public class RandomTest extends Test {
             throw new IllegalArgumentException("max must be greater than min");
         }
         return (Math.random() * (max - min)) + min;
+    }
+
+    public static void main(String[] args) {
+        thisOne.go();
     }
 }

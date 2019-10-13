@@ -1,8 +1,9 @@
-package tests;
+package examples;
 /**
 * Возвращаем finally и получаем корневое исключение
  */
 public class FinallyTest extends Test {
+    private static Test thisOne = new FinallyTest();
 
     @Override
     public void contentGo() {
@@ -41,5 +42,9 @@ public class FinallyTest extends Test {
             message += " from finally";
             return message;
         }
+    }
+
+    public static void main(String[] args) {
+        thisOne.go();
     }
 }

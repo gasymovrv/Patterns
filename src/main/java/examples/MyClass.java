@@ -1,4 +1,4 @@
-package tests;
+package examples;
 
 public class MyClass {
     private Long id;

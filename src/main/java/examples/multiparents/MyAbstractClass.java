@@ -1,4 +1,4 @@
-package tests.multiparents;
+package examples.multiparents;
 
 public abstract class MyAbstractClass {
     public void print(){

@@ -1,4 +1,4 @@
-package tests;
+package examples;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +11,8 @@ import java.util.regex.PatternSyntaxException;
  * Регулярные выражения
  */
 public class RegexTest extends Test {
+    private static Test thisOne = new RegexTest();
+
     private final Pattern EMAIL_REGEX = Pattern.compile(
             "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
             Pattern.CASE_INSENSITIVE
@@ -118,5 +120,9 @@ public class RegexTest extends Test {
             System.err.println("Index: " + pse.getIndex());
             System.err.println("Incorrect pattern: " + pse.getPattern());
         }
+    }
+
+    public static void main(String[] args) {
+        thisOne.go();
     }
 }

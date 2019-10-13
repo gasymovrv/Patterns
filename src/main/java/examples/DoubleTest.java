@@ -1,4 +1,4 @@
-package tests;
+package examples;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -6,6 +6,7 @@ import java.math.RoundingMode;
  * Методы сравнения и округления double
  */
 public class DoubleTest extends Test {
+    private static Test thisOne = new DoubleTest();
 
     @Override
     public void contentGo(){
@@ -23,5 +24,9 @@ public class DoubleTest extends Test {
         System.out.println("y1(BigDecimal)="+y1);
 
         System.out.println("y(rounding double)=" + new BigDecimal(y).setScale(6, RoundingMode.UP).doubleValue());
+    }
+
+    public static void main(String[] args) {
+        thisOne.go();
     }
 }

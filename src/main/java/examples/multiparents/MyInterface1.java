@@ -1,4 +1,4 @@
-package tests.multiparents;
+package examples.multiparents;
 
 public interface MyInterface1 {
     default void print(){
