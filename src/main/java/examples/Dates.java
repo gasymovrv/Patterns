@@ -35,6 +35,7 @@ public class Dates {
         dates.add(LocalDateTime.of(2020, 5, 1, 12, 24));
         dates.add(LocalDateTime.of(2020, 12, 31, 12, 24));
         dates.add(LocalDateTime.of(2018, 6, 15, 12, 24));
+        dates.add(LocalDateTime.of(2021, 1, 5, 12, 24));
 
         for (LocalDateTime date : dates) {
             System.out.println("----- currentDate = " + date + "-----");
@@ -115,7 +116,7 @@ public class Dates {
                 .minusWeeks(1)
                 .withHour(0).withMinute(0);
 
-        LocalDateTime endDate = startDate.plusWeeks(1).minusDays(1);
+        LocalDateTime endDate = startDate.plusWeeks(1).minusMinutes(1);
         return new DatesPair(startDate, endDate);
     }
 
@@ -125,7 +126,7 @@ public class Dates {
                 .minusMonths(1)
                 .withHour(0).withMinute(0);
 
-        LocalDateTime endDate = startDate.plusMonths(1).minusDays(1);
+        LocalDateTime endDate = startDate.plusMonths(1).minusMinutes(1);
         return new DatesPair(startDate, endDate);
     }
 
@@ -135,7 +136,7 @@ public class Dates {
         int year = prevQuarterValue == Q4 ? date.getYear() - 1 : date.getYear();
 
         LocalDateTime startDate = LocalDateTime.of(year, prevQuarter[0], 1, 0, 0);
-        LocalDateTime endDate = startDate.withMonth(prevQuarter[2]).plusMonths(1).minusDays(1);
+        LocalDateTime endDate = startDate.withMonth(prevQuarter[2]).plusMonths(1).minusMinutes(1);
         return new DatesPair(startDate, endDate);
     }
 
@@ -145,7 +146,7 @@ public class Dates {
                 .minusYears(1)
                 .withHour(0).withMinute(0);
 
-        LocalDateTime endDate = startDate.plusYears(1).minusDays(1);
+        LocalDateTime endDate = startDate.plusYears(1).minusMinutes(1);
         return new DatesPair(startDate, endDate);
     }
 
