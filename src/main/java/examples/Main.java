@@ -13,6 +13,7 @@ public class Main{
         new RandomTest().go();
         new RegexTest().go();
         new Java8Test().go();
+        new ListPerformanceTest().go();
 
         System.out.println(
                 "---------------------------------------------------- Разное - BEGIN ---------------------------------------------------"
