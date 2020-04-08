@@ -3,7 +3,6 @@ package examples;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class ListPerformanceTest extends Test {
     private static Test thisOne = new ListPerformanceTest();
@@ -46,7 +45,7 @@ public class ListPerformanceTest extends Test {
         System.out.format("\tLinkedList, add(0, T), count=%d, time:%d\n", million1, testInsertFirst(linkedList, million1));
 
         ArrayList<Integer> arrayList = new ArrayList<>();
-        long copyTime = measureTime(arg -> arrayList.addAll(linkedList));
+        long copyTime = measureTime(() -> arrayList.addAll(linkedList));
         System.out.format("\tCopy from LinkedList to ArrayList, count=%d, time:%d\n", linkedList.size(), copyTime);
 
         System.out.format("\tArrayList, get(size/2), count=%d, time:%d\n", arrayList.size(), testGet(arrayList, arrayList.size()));
@@ -55,15 +54,15 @@ public class ListPerformanceTest extends Test {
     private long testGet(List<Integer> list, int count) {
         prepareList(list, count);
 
-        return measureTime(arg -> {
+        return measureTime(() -> {
             for (int i = 0; i < count; i++) {
-                list.get(list.size()/2);
+                list.get(list.size() / 2);
             }
         });
     }
 
     private long testAdd(List<Integer> list, int count) {
-        return measureTime(arg -> {
+        return measureTime(() -> {
             for (int i = 0; i < count; i++) {
                 list.add(i);
             }
@@ -71,7 +70,7 @@ public class ListPerformanceTest extends Test {
     }
 
     private long testInsertFirst(List<Integer> list, int count) {
-        return measureTime(arg -> {
+        return measureTime(() -> {
             for (int i = 0; i < count; i++) {
                 list.add(0, i);
             }
@@ -81,7 +80,7 @@ public class ListPerformanceTest extends Test {
     private long testInsertInMiddle(List<Integer> list, int count) {
         prepareList(list, count);
 
-        return measureTime(arg -> {
+        return measureTime(() -> {
             for (int i = 0; i < count; i++) {
                 list.add(list.size() / 2, i);
             }
@@ -91,7 +90,7 @@ public class ListPerformanceTest extends Test {
     private long testInsertInBeginning(List<Integer> list, int count) {
         prepareList(list, count);
 
-        return measureTime(arg -> {
+        return measureTime(() -> {
             for (int i = 0; i < count; i++) {
                 list.add(list.size() / 5, i);
             }
@@ -105,9 +104,9 @@ public class ListPerformanceTest extends Test {
     }
 
     @SuppressWarnings("unchecked")
-    private long measureTime(Consumer function) {
+    private long measureTime(Runnable function) {
         long l1 = System.currentTimeMillis();
-        function.accept(null);
+        function.run();
         long l2 = System.currentTimeMillis();
         return l2 - l1;
     }
