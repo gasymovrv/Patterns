@@ -11,7 +11,7 @@ public class Java8Test extends Test {
     private static Test thisOne = new Java8Test();
 
     @Override
-    void contentGo() {
+    public void contentGo() {
         Pojo pojo = new Pojo(1L, "Pojo object from variable 'pojo'");
 
         //Функциональные интерфейсы

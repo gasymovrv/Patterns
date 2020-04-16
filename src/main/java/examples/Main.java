@@ -1,5 +1,6 @@
 package examples;
 
+import examples.collections.ListPerformanceTest;
 import examples.multiparents.MyInterface1;
 import examples.multiparents.MyInterfaceImpl;
 import examples.utils.NumberedExamples;

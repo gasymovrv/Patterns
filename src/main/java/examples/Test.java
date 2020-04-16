@@ -13,5 +13,5 @@ public abstract class Test {
                 "----------------------------------------------------%s - END---------------------------------------------------\n\n", name);
     }
 
-    abstract void contentGo();
+    abstract public void contentGo();
 }
