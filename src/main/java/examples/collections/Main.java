@@ -1,5 +1,8 @@
 package examples.collections;
 
+import java.util.HashMap;
+import examples.MyClass;
+
 public class Main {
     public static void main(String[] args) {
         MyList myArrList = new MyArrayList();
@@ -19,5 +22,11 @@ public class Main {
         for (int i = 0; i < myLinkList.size(); i++) {
             System.out.println(myLinkList.get(i));
         }
+
+        MyClass myClass = new MyClass();
+
+        HashMap<MyClass, String> map = new HashMap<>();
+        map.put(myClass, "first");
+        System.out.println(map.get(myClass));
     }
 }
