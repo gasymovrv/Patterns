@@ -1,5 +1,9 @@
 package examples.collections.map;
 
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("-".repeat(7) + " MyHashMap test " + "-".repeat(7));
@@ -31,8 +35,29 @@ public class Main {
         System.out.println(map2.get(null));
 
         System.out.println();
-        System.out.println("-".repeat(7) + "Пример расчета индекса корзин мапы" + "-".repeat(7));
+        System.out.println("-".repeat(7) + "Пример расчета индекса корзин HashMap" + "-".repeat(7));
         hash();
+
+        System.out.println();
+        System.out.println("-".repeat(7) + " TreeMap test " + "-".repeat(7));
+        SortedMap<ClassWithGoodHash, String> sortedMap = new TreeMap<>();
+        sortedMap.put(new ClassWithGoodHash(2L), "second");
+        sortedMap.put(new ClassWithGoodHash(5L), "second");
+        sortedMap.put(new ClassWithGoodHash(3L), "second");
+        sortedMap.put(new ClassWithGoodHash(1L), "first");
+        sortedMap.put(new ClassWithGoodHash(4L), "second");
+        sortedMap.put(new ClassWithGoodHash(4L), "second");
+        sortedMap.put(new ClassWithGoodHash(4L), "second");
+
+        System.out.println(sortedMap.entrySet());
+        ClassWithGoodHash highestKey = sortedMap.lastKey();
+        ClassWithGoodHash lowestKey = sortedMap.firstKey();
+        System.out.println("highestKey="+highestKey);
+        System.out.println("lowestKey="+lowestKey);
+        Set<ClassWithGoodHash> keysLessThan3 = sortedMap.headMap(new ClassWithGoodHash(3L)).keySet();
+        System.out.println("keysLessThan3="+keysLessThan3);
+        Set<ClassWithGoodHash> keysGreaterThanEqTo3 = sortedMap.tailMap(new ClassWithGoodHash(3L)).keySet();
+        System.out.println("keysGreaterThanEqTo3="+keysGreaterThanEqTo3);
     }
 
     /**

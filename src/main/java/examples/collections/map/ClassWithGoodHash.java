@@ -2,7 +2,7 @@ package examples.collections.map;
 
 import java.util.Objects;
 
-public class ClassWithGoodHash {
+public class ClassWithGoodHash implements Comparable<ClassWithGoodHash> {
     private Long id;
 
     public ClassWithGoodHash(Long id) {
@@ -27,5 +27,10 @@ public class ClassWithGoodHash {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public int compareTo(ClassWithGoodHash o) {
+        return id.compareTo(o.id);
     }
 }
