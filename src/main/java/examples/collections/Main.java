@@ -18,11 +18,14 @@ public class Main {
         myLinkList.add("str1");
         myLinkList.add("str2");
         myLinkList.add("str3");
+        myLinkList.add("str4");
         System.out.println("-".repeat(7) + " MyLinkedList test " + "-".repeat(7));
         for (int i = 0; i < myLinkList.size(); i++) {
             System.out.println(myLinkList.get(i));
         }
 
+
+        System.out.println("-".repeat(7) + " HashMap test " + "-".repeat(7));
         MyClass myClass = new MyClass();
 
         HashMap<MyClass, String> map = new HashMap<>();

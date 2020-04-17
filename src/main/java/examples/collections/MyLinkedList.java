@@ -41,11 +41,21 @@ public class MyLinkedList implements MyList {
     }
 
     private Entry getEntry(int index) {
-        Entry x = first;
-        for (int i = 0; i < index; i++) {
-            x = x.next;
+        if(index < (size >> 1)) {
+            //Если индекс ближе к началу
+            Entry x = first;
+            for (int i = 0; i < index; i++) {
+                x = x.next;
+            }
+            return x;
+        } else {
+            //Если индекс ближе к концу
+            Entry x = last;
+            for (int i = size - 1; i > index; i--) {
+                x = x.prev;
+            }
+            return x;
         }
-        return x;
     }
 
     private static class Entry {
