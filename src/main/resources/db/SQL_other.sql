@@ -114,3 +114,13 @@ SELECT code+1, CHR(code+1) FROM Letters
 WHERE code+1 <= ASCII('Z')
 )
 SELECT letter FROM Letters;
+
+#Пример группировки по месяцам из дат (для postrgesql)
+SELECT EXTRACT(MONTH FROM create_date), SUM(product_group_code) FROM task
+GROUP BY EXTRACT(MONTH FROM create_date);
+
+#Пример группировки по месяцам из дат (для postrgesql) + создание алиаса
+SELECT MONTH, SUM(product_group_code) FROM task
+JOIN LATERAL EXTRACT(MONTH FROM create_date) MONTH ON TRUE
+GROUP BY MONTH
+HAVING SUM(product_group_code) > 5
