@@ -12,24 +12,17 @@ public class Main {
         //Чем больше корзин, тем меньше коллизий - меньше итераций внутри корзин, но больше памяти потребуется
         //Чем меньше корзин, тем больше коллизий - меньше памяти, но больше итераций при поиске.
         MyHashMap<ClassWithBadHash, String> map = new MyHashMap<>(4, 0.5f);
-        map.put(new ClassWithBadHash(1L), "first");
-        map.put(new ClassWithBadHash(2L), "second");
-        //map.put(new ClassWithBadHash(3L), "second");
-        //map.put(new ClassWithBadHash(4L), "second");
-        //map.put(new ClassWithBadHash(5L), "second");
+        for (long i = 0; i < 2; i++) {
+            map.put(new ClassWithBadHash(i), "value_"+i);
+            map.put(new ClassWithBadHash(i), "value_"+i);
+        }
         System.out.println(map);
 
         MyHashMap<ClassWithGoodHash, String> map2 = new MyHashMap<>();
-        map2.put(new ClassWithGoodHash(1L), "first");
-        map2.put(new ClassWithGoodHash(2L), "second");
-        map2.put(new ClassWithGoodHash(3L), "second");
-        map2.put(new ClassWithGoodHash(4L), "second");
-        map2.put(new ClassWithGoodHash(5L), "second");
-        map2.put(new ClassWithGoodHash(6L), "second");
-        map2.put(new ClassWithGoodHash(7L), "second");
-        map2.put(new ClassWithGoodHash(8L), "second");
-        map2.put(new ClassWithGoodHash(9L), "second");
-        map2.put(new ClassWithGoodHash(10L), "second");
+        for (long i = 0; i < 10; i++) {
+            map2.put(new ClassWithGoodHash(i), "value_"+i);
+            map2.put(new ClassWithGoodHash(i), "value_"+i);
+        }
         map2.put(null, "NULL!!!");
         System.out.println(map2);
         System.out.println(map2.get(null));
