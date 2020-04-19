@@ -1,5 +1,6 @@
 package examples.collections.map;
 
+import java.util.NavigableMap;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -43,7 +44,7 @@ public class Main {
         //--------------------------------------------------------------------------------------------------------------
         System.out.println();
         System.out.println("-".repeat(7) + " TreeMap test " + "-".repeat(7));
-        SortedMap<ClassWithGoodHash, String> sortedMap = new TreeMap<>();
+        NavigableMap<ClassWithGoodHash, String> sortedMap = new TreeMap<>();
         sortedMap.put(new ClassWithGoodHash(2L), "second");
         sortedMap.put(new ClassWithGoodHash(5L), "second");
         sortedMap.put(new ClassWithGoodHash(3L), "second");
@@ -53,6 +54,7 @@ public class Main {
         sortedMap.put(new ClassWithGoodHash(4L), "second");
 
         System.out.println(sortedMap.entrySet());
+        System.out.println(sortedMap.descendingMap().entrySet());
         ClassWithGoodHash highestKey = sortedMap.lastKey();
         ClassWithGoodHash lowestKey = sortedMap.firstKey();
         System.out.println("highestKey="+highestKey);
