@@ -8,6 +8,7 @@ public class MyHashMap<V, K> extends HashMap<V, K> {
 
 
     public MyHashMap() {
+        super();
     }
 
     public MyHashMap(int initialCapacity) {
@@ -37,7 +38,7 @@ public class MyHashMap<V, K> extends HashMap<V, K> {
     }
 
     /**
-     * Получить массив (поле table), хранящий корзины из HashMap через рефлексию
+     * Получить через рефлексию массив (поле table), хранящий корзины из HashMap
      */
     private Object[] getTable() {
         Field field;

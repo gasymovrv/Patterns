@@ -8,18 +8,26 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("-".repeat(7) + " MyHashMap test " + "-".repeat(7));
 
-        //Capacity (кол-во корзин) + LoadFactor (отношение кол/ва элементов к размеру массива при котором произойдет содание нового массива)
-        //Чем больше корзин, тем меньше коллизий - меньше итераций внутри корзин, но больше памяти потребуется
-        //Чем меньше корзин, тем больше коллизий - меньше памяти, но больше итераций при поиске.
+        // Capacity (начальная емкость - кол-во корзин)
+        // LoadFactor (отношение кол/ва элементов к размеру массива при котором произойдет содание нового массива)
+        // LoadFactor и Capacity – два главных фактора, от которых зависит производительность операций.
+        // LoadFactor, равный 0,75, в среднем обеспечивает хорошую производительность.
+        // Если этот параметр увеличить, тогда уменьшится нагрузка на память (так как это уменьшит количество операций ре-хэширования и перестраивания),
+        // но ухудшит скорость операций добавления и поиска (так как с маленьким количеством корзин кол-во элементов в них увеличивается и придется их обходить в цикле)
+
+        //Чем больше корзин, тем меньше коллизий - меньше итераций внутри корзин, но больше памяти потребуется (когда loadFactor меньше)
+        //Чем меньше корзин, тем больше коллизий - меньше памяти, но больше итераций при поиске. (когда loadFactor больше)
+        System.out.println("Пример хэш мапы, все элементы которой имеют неверно переопределенный hashCode (одинаковый)");
         MyHashMap<ClassWithBadHash, String> map = new MyHashMap<>(4, 0.5f);
-        for (long i = 0; i < 2; i++) {
+        for (long i = 0; i < 3; i++) {
             map.put(new ClassWithBadHash(i), "value_"+i);
             map.put(new ClassWithBadHash(i), "value_"+i);
         }
         System.out.println(map);
 
-        MyHashMap<ClassWithGoodHash, String> map2 = new MyHashMap<>();
-        for (long i = 0; i < 10; i++) {
+        System.out.println("Пример хэш мапы, все элементы которой имеют правильный hashCode");
+        MyHashMap<ClassWithGoodHash, String> map2 = new MyHashMap<>(4, 1f);
+        for (long i = 0; i < 3; i++) {
             map2.put(new ClassWithGoodHash(i), "value_"+i);
             map2.put(new ClassWithGoodHash(i), "value_"+i);
         }
@@ -27,10 +35,12 @@ public class Main {
         System.out.println(map2);
         System.out.println(map2.get(null));
 
+        //--------------------------------------------------------------------------------------------------------------
         System.out.println();
         System.out.println("-".repeat(7) + "Пример расчета индекса корзин HashMap" + "-".repeat(7));
         hash();
 
+        //--------------------------------------------------------------------------------------------------------------
         System.out.println();
         System.out.println("-".repeat(7) + " TreeMap test " + "-".repeat(7));
         SortedMap<ClassWithGoodHash, String> sortedMap = new TreeMap<>();
@@ -51,6 +61,16 @@ public class Main {
         System.out.println("keysLessThan3="+keysLessThan3);
         Set<ClassWithGoodHash> keysGreaterThanEqTo3 = sortedMap.tailMap(new ClassWithGoodHash(3L)).keySet();
         System.out.println("keysGreaterThanEqTo3="+keysGreaterThanEqTo3);
+
+        //--------------------------------------------------------------------------------------------------------------
+        System.out.println();
+        System.out.println("-".repeat(7) + " MyTreeMap test " + "-".repeat(7));
+        SortedMap<Integer, String> myTreeMap = new MyTreeMap<>();
+        for (int i = 0; i < 8; i++) {
+            myTreeMap.put(1000 + i, "v_"+i);
+            myTreeMap.put(1000 + i, "v_"+i);
+        }
+        System.out.println(myTreeMap);
     }
 
     /**
