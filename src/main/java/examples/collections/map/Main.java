@@ -3,12 +3,15 @@ package examples.collections.map;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import examples.MyClass;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         System.out.println("-".repeat(7) + " MyHashMap test " + "-".repeat(7));
 
         // Capacity (начальная емкость - кол-во корзин)
@@ -88,6 +91,33 @@ public class Main {
             myTreeMap.put(1000 + i, "v_"+i);
         }
         System.out.println(myTreeMap);
+
+        //--------------------------------------------------------------------------------------------------------------
+        System.out.println();
+        System.out.println("-".repeat(7) + " PriorityQueue test " + "-".repeat(7));
+        Queue<MyClass> priorityQueue = new PriorityQueue<>((c1,c2)->{
+            if(c1.getId().equals(c2.getId())){
+                return c1.getInfo().compareTo(c2.getInfo());
+            } else {
+                return c1.getId().compareTo(c2.getId());
+            }
+        });
+        priorityQueue.add(new MyClass(4L, "inf7"));
+        priorityQueue.add(new MyClass(1L));
+        priorityQueue.add(new MyClass(4L, "inf6"));
+        priorityQueue.add(new MyClass(3L));
+        priorityQueue.add(new MyClass(4L, "inf5"));
+        priorityQueue.add(new MyClass(5L));
+        priorityQueue.add(new MyClass(4L, "inf4"));
+        priorityQueue.add(new MyClass(4L, "inf3"));
+        priorityQueue.add(new MyClass(4L, "inf2"));
+        priorityQueue.add(new MyClass(4L, "inf1"));
+        while (true) {
+            if (priorityQueue.isEmpty()) {
+                break;
+            }
+            System.out.println(priorityQueue.poll());
+        }
     }
 
     /**

@@ -12,6 +12,10 @@ public class MyClass {
         CU
     }
 
+    public MyClass(Long id) {
+        this.id = id;
+    }
+
     public MyClass(String info) {
         this.info = info;
     }
@@ -25,7 +29,7 @@ public class MyClass {
     }
 
     public String getInfo() {
-        System.out.println(info);
+        //System.out.println(info);
         return info;
     }
 
@@ -44,7 +48,8 @@ public class MyClass {
     @Override
     public String toString() {
         return "MyClass{" +
-                "info='" + info + '\'' +
+                "id=" + id +
+                ", info='" + info + '\'' +
                 '}';
     }
 
