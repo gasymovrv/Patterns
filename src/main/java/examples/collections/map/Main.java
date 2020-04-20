@@ -1,5 +1,7 @@
 package examples.collections.map;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.SortedMap;
@@ -19,27 +21,40 @@ public class Main {
         //Чем больше корзин, тем меньше коллизий - меньше итераций внутри корзин, но больше памяти потребуется (когда loadFactor меньше)
         //Чем меньше корзин, тем больше коллизий - меньше памяти, но больше итераций при поиске. (когда loadFactor больше)
         System.out.println("Пример хэш мапы, все элементы которой имеют неверно переопределенный hashCode (одинаковый)");
-        MyHashMap<ClassWithBadHash, String> map = new MyHashMap<>(4, 0.5f);
+        MyHashMap<ClassWithBadHash, String> myHashMap1 = new MyHashMap<>(4, 0.5f);
         for (long i = 0; i < 3; i++) {
-            map.put(new ClassWithBadHash(i), "value_"+i);
-            map.put(new ClassWithBadHash(i), "value_"+i);
+            myHashMap1.put(new ClassWithBadHash(i), "value_"+i);
+            myHashMap1.put(new ClassWithBadHash(i), "value_"+i);
         }
-        System.out.println(map);
+        System.out.println(myHashMap1);
 
         System.out.println("Пример хэш мапы, все элементы которой имеют правильный hashCode");
-        MyHashMap<ClassWithGoodHash, String> map2 = new MyHashMap<>(4, 1f);
+        MyHashMap<ClassWithGoodHash, String> myHashMap2 = new MyHashMap<>(4, 1f);
         for (long i = 0; i < 3; i++) {
-            map2.put(new ClassWithGoodHash(i), "value_"+i);
-            map2.put(new ClassWithGoodHash(i), "value_"+i);
+            myHashMap2.put(new ClassWithGoodHash(i), "value_"+i);
+            myHashMap2.put(new ClassWithGoodHash(i), "value_"+i);
         }
-        map2.put(null, "NULL!!!");
-        System.out.println(map2);
-        System.out.println(map2.get(null));
+        myHashMap2.put(null, "NULL!!!");
+        System.out.println(myHashMap2);
+        System.out.println(myHashMap2.get(null));
 
         //--------------------------------------------------------------------------------------------------------------
         System.out.println();
         System.out.println("-".repeat(7) + "Пример расчета индекса корзин HashMap" + "-".repeat(7));
         hash();
+
+        //--------------------------------------------------------------------------------------------------------------
+        System.out.println();
+        System.out.println("-".repeat(7) + " LinkedHashMap test " + "-".repeat(7));
+        Map<ClassWithGoodHash, String> linkedHashMap = new LinkedHashMap<>();
+        for (long i = 0; i < 3; i++) {
+            linkedHashMap.put(new ClassWithGoodHash(i), "value_"+i);
+            linkedHashMap.put(new ClassWithGoodHash(i), "value_"+i);
+        }
+        linkedHashMap.put(null, "NULL!!!");
+        System.out.println(linkedHashMap.entrySet());
+        System.out.println(linkedHashMap.values());
+
 
         //--------------------------------------------------------------------------------------------------------------
         System.out.println();
