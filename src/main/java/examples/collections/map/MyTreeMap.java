@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/**
+ * Моя реализация TreeMap для доступа к дереву элементов через рефлексию
+ */
 public class MyTreeMap<V, K> extends TreeMap<V, K> {
 
 

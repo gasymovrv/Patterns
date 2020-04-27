@@ -4,6 +4,9 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Моя реализация HashMap для доступа к массиву корзин через рефлексию
+ */
 public class MyHashMap<V, K> extends HashMap<V, K> {
 
 
