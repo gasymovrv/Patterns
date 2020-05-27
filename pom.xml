@@ -33,6 +33,7 @@
     </build>
     <modules>
         <module>hibertest</module>
+        <module>kotlintest</module>
     </modules>
 
 </project>
