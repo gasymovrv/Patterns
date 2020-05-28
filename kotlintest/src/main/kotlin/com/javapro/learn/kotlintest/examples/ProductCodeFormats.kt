@@ -1,4 +1,4 @@
-package com.javapro.learn.examples.package1
+package com.javapro.learn.kotlintest.examples
 
 import org.apache.commons.codec.binary.Hex
 import org.apache.commons.lang3.StringUtils
@@ -72,7 +72,7 @@ fun gs1(codeGs1: String) {
     val gtin = codeGs1.substring(2, 16).toLong()
     val sn = codeGs1.substring(18)
     val snHex = sn.chars()
-            .mapToObj { i: Int -> i.toString(16) }
+            .mapToObj { it.toString(16) }
             .collect(Collectors.joining(""))
     val hex = ("444d" + StringUtils.leftPad(gtin.toString(16), 12, "00")) + snHex
     printHex(hex)
@@ -91,7 +91,7 @@ fun rf(codeRf: String) {
     printSummary("Изделия из натурального меха (RF)", codeRf)
     println("-".repeat(10) + " ENCODE " + "-".repeat(10))
     val snHex = codeRf.chars()
-            .mapToObj { i: Int -> i.toString(16) }
+            .mapToObj { it.toString(16) }
             .collect(Collectors.joining(""))
     val hex = "5246$snHex"
     printHex(hex)

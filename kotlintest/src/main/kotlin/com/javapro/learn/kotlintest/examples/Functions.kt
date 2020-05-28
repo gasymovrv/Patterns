@@ -1,4 +1,4 @@
-package com.javapro.learn.examples.package1
+package com.javapro.learn.kotlintest.examples
 
 import org.apache.commons.codec.binary.Hex
 import java.util.*

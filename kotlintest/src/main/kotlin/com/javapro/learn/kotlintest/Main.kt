@@ -1,8 +1,8 @@
-package com.javapro.learn.examples
+package com.javapro.learn.kotlintest
 
-import com.javapro.learn.examples.package1.getNullableClass
-import com.javapro.learn.examples.package1.ifElse
-import com.javapro.learn.examples.package1.myUtil
+import com.javapro.learn.kotlintest.examples.getNullableClass
+import com.javapro.learn.kotlintest.examples.ifElse
+import com.javapro.learn.kotlintest.examples.myUtil
 
 fun main() {
     func(1)
@@ -19,9 +19,37 @@ fun main() {
 
     println(Vec(2f, 3f) + Vec(4f, 1f))
 
+    println("-".repeat(30))
+
     for (i in 3 downTo 1) {
         println(i)
     }
+    for (i in 6 downTo 1 step 2) {
+        println(i)
+    }
+    for (i in setOf("apple", "banana", "kiwi", "orange")) {
+        println(i)
+    }
+    for (i in listOf(1234, 135, 2467, 648, 5) intersect listOf(135, 2467, 5)) {
+        println(i)
+    }
+    println("-".repeat(30))
+
+    val nums = 1..5
+    val decimals = 0.5..1.0
+    for (n in nums) {
+        val random = Math.random()
+        if(random in decimals) {
+            println(random)
+        }
+    }
+
+    val chars = 'а'..'я'
+    for (ch in chars step 5) {
+        println(ch)
+    }
+
+    println("-".repeat(30))
 
     println("sdg sdgs hgfj jmuo, ry".format())
     try {
@@ -31,10 +59,18 @@ fun main() {
     println(Extensions().set("nsdlfk"))
     println("without suffix.txt".removeSuffix(".txt"))
 
+
+    println("-".repeat(30))
+
     myUtil()
+
+
+    println("-".repeat(30))
 
     println(StaticFieldsTest.companionField)
     println(StaticFieldsTest.companionFun("sdf"))
+
+    println("-".repeat(30))
 
     val sum = { x: Int, y: Int -> x + y }
     println(sum(238, 139))
@@ -42,11 +78,15 @@ fun main() {
     println(ifElse(4))
     println(ifElse(32))
 
+    println("-".repeat(30))
+
     val items = setOf("apple", "banana", "kiwi", "orange")
     when {
         "orange" in items -> println("set contains orange")
         "apple" in items -> println("set contains apple")
     }
+
+    println("-".repeat(30))
 
     println(mapOf(Pair("123", 100), Pair("123", 123), Pair("124", 124), Pair("125", 125)))
 
