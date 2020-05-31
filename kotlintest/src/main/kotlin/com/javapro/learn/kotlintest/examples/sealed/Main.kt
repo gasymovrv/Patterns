@@ -1,13 +1,14 @@
 package com.javapro.learn.kotlintest.examples.sealed
 
 fun main() {
-    println(eval(Expr.Const(235.1)))
-    println(eval(Expr.Sum(235.1, 5687.3)))
-    println(eval(Expr.NotNumber))
-}
+    println(eval(Const(235.1)))
+    println(eval(Sum(Const(235.1), Const(566.632))))
+    println(eval(NotNumber))
 
-fun eval(expr: Expr): Double = when(expr) {
-    is Expr.Const -> expr.num
-    is Expr.Sum -> expr.a1 + expr.a2
-    Expr.NotNumber -> Double.NaN
+    val result: Optional<Double> = randomValue()
+
+    println("result.isPresent() = ${result.isPresent()}")
+    if(result is Some) {
+        println("result.value = ${result.value}")
+    }
 }

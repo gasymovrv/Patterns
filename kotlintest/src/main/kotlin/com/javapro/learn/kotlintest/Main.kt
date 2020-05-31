@@ -2,7 +2,6 @@ package com.javapro.learn.kotlintest
 
 import com.javapro.learn.kotlintest.examples.getNullableClass
 import com.javapro.learn.kotlintest.examples.ifElse
-import com.javapro.learn.kotlintest.examples.myUtil
 
 fun main() {
     func(1)
@@ -59,12 +58,6 @@ fun main() {
     println(Extensions().set("nsdlfk"))
     println("without suffix.txt".removeSuffix(".txt"))
 
-
-    println("-".repeat(30))
-
-    myUtil()
-
-
     println("-".repeat(30))
 
     println(StaticFieldsTest.companionField)
@@ -92,6 +85,17 @@ fun main() {
 
     println("get field from nullable object = ${getNullableClass(null)?.str?.length}")
     println("get field from nullable object = ${getNullableClass("str")?.str?.length}")
+
+    println("-".repeat(30))
+
+    loop@ for (i in 1..10) {
+        println("i=$i")
+        for (j in 1..100) {
+            println("\tj=$j")
+            if (j > 5)
+                break@loop
+        }
+    }
 }
 
 fun func(arg1: Int, arg2: Int = 0, arg3: String = "sdf") {
