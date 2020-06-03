@@ -1,4 +1,4 @@
-package com.javapro.learn.kotlintest.examples
+package com.javapro.learn.kotlintest.examples.receipts.utils
 
 import org.apache.commons.codec.binary.Hex
 import org.apache.commons.lang3.StringUtils
@@ -6,12 +6,14 @@ import java.util.*
 import java.util.stream.Collectors
 
 fun main() {
-    ean8("46198488")
-    ean13("4606203090785")
-    itf14("14601234567890")
-    gs1("010460406000600021N4N57RSCBUZTQ24030040029101612181724010191ffd092tIAF/YVoU4roQS3M/m4z78yFq0fc/WsSmLeX5QkF/YVWwy8IMYAeiQ91Xa2z/fFSJcOkb2N+uUUmfr4n0mOX0Q==")
-    rf("RU-401301-AAA02770301")
-    tnved("2710124190")
+//    ean8("46198488")
+//    ean13("4606203090785")
+//    itf14("14601234567890")
+//    gs1("010460406000600021N4N57RSCBUZTQ24030040029101612181724010191ffd092tIAF/YVoU4roQS3M/m4z78yFq0fc/WsSmLeX5QkF/YVWwy8IMYAeiQ91Xa2z/fFSJcOkb2N+uUUmfr4n0mOX0Q==")
+//    rf("RU-401301-AAA02770301")
+//    tnved("2710124190")
+    //AAUAAALAiXRUVDN2WVRy
+    decodeAndPrint("RE0ENgOJOfxBR21oSjJOMXQ1WnZq")
 }
 
 fun ean8(codeEan8: String) {
