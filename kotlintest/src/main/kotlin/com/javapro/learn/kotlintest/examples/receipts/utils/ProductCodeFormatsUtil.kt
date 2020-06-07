@@ -12,8 +12,11 @@ fun main() {
 //    gs1("010460406000600021N4N57RSCBUZTQ24030040029101612181724010191ffd092tIAF/YVoU4roQS3M/m4z78yFq0fc/WsSmLeX5QkF/YVWwy8IMYAeiQ91Xa2z/fFSJcOkb2N+uUUmfr4n0mOX0Q==")
 //    rf("RU-401301-AAA02770301")
 //    tnved("2710124190")
-    //AAUAAALAiXRUVDN2WVRy
-    decodeAndPrint("RE0ENgOJOfxBR21oSjJOMXQ1WnZq")
+//    decodeAndPrint("AAWv4KispeA")
+    gs1("010474146890763521N4N57RS")//лп
+    gs1("010474146890741321N4N57RS")//лп
+    gs1("010000004621831521N4N57RS")//табак
+    gs1("010000004621215321N4N57RS")//табак
 }
 
 fun ean8(codeEan8: String) {
@@ -72,10 +75,14 @@ fun gs1(codeGs1: String) {
     println("-".repeat(10) + " ENCODE " + "-".repeat(10))
 
     val gtin = codeGs1.substring(2, 16).toLong()
-    val sn = codeGs1.substring(18)
-    val snHex = sn.chars()
-            .mapToObj { it.toString(16) }
-            .collect(Collectors.joining(""))
+    val snHex = if (codeGs1.length > 18) {
+        val sn = codeGs1.substring(18)
+        sn.chars()
+                .mapToObj { it.toString(16) }
+                .collect(Collectors.joining(""))
+    } else {
+        ""
+    }
     val hex = ("444d" + StringUtils.leftPad(gtin.toString(16), 12, "00")) + snHex
     printHex(hex)
 
@@ -144,7 +151,7 @@ fun decodeAndPrint(base64: String) {
 
     println("${hexFrom0to4.withSpaces(2)} - первые 2 байта в hex")
     println("${hexFrom4to16.withSpaces(2)} - с 3 по 8 байт в hex")
-    println("${hexFrom4to16.toLong(16)} - с 3 по 8 байт в dec")
+    println("${hexFrom4to16.toLong(16)} - с 3 по 8 байт в dec (GTIN)")
     println()
 }
 
