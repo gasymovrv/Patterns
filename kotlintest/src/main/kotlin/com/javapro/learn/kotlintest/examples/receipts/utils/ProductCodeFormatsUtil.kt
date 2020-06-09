@@ -5,18 +5,46 @@ import org.apache.commons.lang3.StringUtils
 import java.util.*
 import java.util.stream.Collectors
 
-fun main() {
-//    ean8("46198488")
-//    ean13("4606203090785")
-//    itf14("14601234567890")
-//    gs1("010460406000600021N4N57RSCBUZTQ24030040029101612181724010191ffd092tIAF/YVoU4roQS3M/m4z78yFq0fc/WsSmLeX5QkF/YVWwy8IMYAeiQ91Xa2z/fFSJcOkb2N+uUUmfr4n0mOX0Q==")
-//    rf("RU-401301-AAA02770301")
-//    tnved("2710124190")
-//    decodeAndPrint("AAWv4KispeA")
-    gs1("010474146890763521N4N57RS")//лп
-    gs1("010474146890741321N4N57RS")//лп
-    gs1("010000004621831521N4N57RS")//табак
-    gs1("010000004621215321N4N57RS")//табак
+fun main(args: Array<String>) {
+    if (args.isNotEmpty()) {
+        when (args[0]) {
+            "-dp" -> {
+                if (args.size == 2) {
+                    decodeAndPrint(args[1])
+                } else printIfIncorrectArgs()
+            }
+            "-edp" -> {
+                if (args.size == 3 && args[1].length <= 5) {
+                    when(args[1]) {
+                        "ean8" -> ean8(args[2])
+                        "ean13" -> ean13(args[2])
+                        "itf14" -> itf14(args[2])
+                        "gs1" -> gs1(args[2])
+                        "tnved" -> tnved(args[2])
+                    }
+                } else printIfIncorrectArgs()
+            }
+            "-help" -> {
+                println("Use one of these ways:")
+                println("-dp <product code as base64 string> - decode and print")
+                println("-edp <product code format> <gtin>- encode, decode and print steps info.")
+                println("\tAvailable product code formats: ean8, ean13, itf14, gs1, tnved")
+                println("Examples:")
+                println("-ed ean8 46198488")
+                println("-ed ean13 4606203090785")
+                println("-ed itf14 14601234567890")
+                //println("-ed rf \"RU-401301-AAA02770301\"")
+                println("-ed gs1 \"010460406000600021N4N57RSCBUZTQ24030040029101612181724010191ffd092tIAF/YVoU4roQS3M/m4z78yFq0fc/WsSmLeX5QkF/YVWwy8IMYAeiQ91Xa2z/fFSJcOkb2N+uUUmfr4n0mOX0Q==\"")
+                println("-ed tnved 2710124190")
+                println("-ed gs1 \"010474146890763521N4N57RS\"")//лп
+                println("-ed gs1 \"010474146890741321N4N57RS\"")//лп
+                println("-ed gs1 \"010000004621831521N4N57RS\"")//табак
+                println("-ed gs1 \"010000004621215321N4N57RS\"")//табак
+                println("-dp \"AAUAAAKTdbRUTXF0cjVR\"")
+            }
+            else -> printIfIncorrectArgs()
+        }
+    }
 }
 
 fun ean8(codeEan8: String) {
