@@ -101,5 +101,5 @@
     ```
 + Portainer (GUI для докера)
     ```
-    sudo docker run -d -p 9001:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+    sudo docker run -d -p 9001:9000 --name portainer -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
     ```

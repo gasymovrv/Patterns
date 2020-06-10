@@ -30,7 +30,7 @@ fun main(args: Array<String>) {
             "-rt" -> {
                 if (args.size == 3 && args[1].length <= 12) {
                     val refreshedToken = refreshToken(args[1], args[2])
-                    println("Refreshed token by key and in:\n$refreshedToken")
+                    println("Refreshed token by key and inn:\n$refreshedToken")
                 } else printIfIncorrectArgs()
             }
             "-ct" -> {
