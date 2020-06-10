@@ -30,16 +30,16 @@ fun main(args: Array<String>) {
                 println("-edp <product code format> <gtin>- encode, decode and print steps info.")
                 println("\tAvailable product code formats: ean8, ean13, itf14, gs1, tnved")
                 println("Examples:")
-                println("-ed ean8 46198488")
-                println("-ed ean13 4606203090785")
-                println("-ed itf14 14601234567890")
-                //println("-ed rf \"RU-401301-AAA02770301\"")
-                println("-ed gs1 \"010460406000600021N4N57RSCBUZTQ24030040029101612181724010191ffd092tIAF/YVoU4roQS3M/m4z78yFq0fc/WsSmLeX5QkF/YVWwy8IMYAeiQ91Xa2z/fFSJcOkb2N+uUUmfr4n0mOX0Q==\"")
-                println("-ed tnved 2710124190")
-                println("-ed gs1 \"010474146890763521N4N57RS\"")//лп
-                println("-ed gs1 \"010474146890741321N4N57RS\"")//лп
-                println("-ed gs1 \"010000004621831521N4N57RS\"")//табак
-                println("-ed gs1 \"010000004621215321N4N57RS\"")//табак
+                println("-edp ean8 46198488")
+                println("-edp ean13 4606203090785")
+                println("-edp itf14 14601234567890")
+                //println("-edp rf \"RU-401301-AAA02770301\"")
+                println("-edp gs1 \"010460406000600021N4N57RSCBUZTQ24030040029101612181724010191ffd092tIAF/YVoU4roQS3M/m4z78yFq0fc/WsSmLeX5QkF/YVWwy8IMYAeiQ91Xa2z/fFSJcOkb2N+uUUmfr4n0mOX0Q==\"")
+                println("-edp tnved 2710124190")
+                println("-edp gs1 \"010474146890763521N4N57RS\"")//лп
+                println("-edp gs1 \"010474146890741321N4N57RS\"")//лп
+                println("-edp gs1 \"010000004621831521N4N57RS\"")//табак
+                println("-edp gs1 \"010000004621215321N4N57RS\"")//табак
                 println("-dp \"AAUAAAKTdbRUTXF0cjVR\"")
             }
             else -> printIfIncorrectArgs()
