@@ -1,7 +1,9 @@
 package examples;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -75,6 +77,8 @@ public class Dates {
 
         System.out.println(getListOfDays(dates.get(2), dates.get(3)));
 
+        System.out.println(LocalDateTime.now(Clock.systemUTC()));
+        System.out.println(LocalDateTime.now(ZoneId.of("UTC")));
     }
 
     private static List<LocalDate> getListOfDays(LocalDateTime start, LocalDateTime end) {
