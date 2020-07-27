@@ -9,7 +9,8 @@ import java.util.Set;
 import examples.collections.ListPerformanceTest;
 import examples.multiparents.MyInterface1;
 import examples.multiparents.MyInterfaceImpl;
-import examples.utils.NumberedExamples;
+
+import static examples.utils.NumberedExamplesUtil.printNumberOfExample;
 
 public class Main{
     public static void main(String[] args) {
@@ -26,7 +27,7 @@ public class Main{
         );
 
         //Ручной toString в цикле
-        NumberedExamples.printNumberOfExample(1,"Ручной toString в цикле");
+        printNumberOfExample(1, "Ручной toString в цикле");
         List<MyClass> myClasses = new ArrayList<>();
         myClasses.add(new MyClass(1L,"info1"));
         myClasses.add(new MyClass(2L,"info2"));
@@ -40,7 +41,7 @@ public class Main{
 
 
         //Вывод сета енамов
-        NumberedExamples.printNumberOfExample(2, "Вывод сета енамов");
+        printNumberOfExample(2, "Вывод сета енамов");
         Set<MyClass.OrderType> myClasses2 = new HashSet<>();
         myClasses2.add(MyClass.OrderType.CU);
         myClasses2.add(MyClass.OrderType.PO);
@@ -51,7 +52,7 @@ public class Main{
 
 
         //substring последних 2х цифр и удаление нуля
-        NumberedExamples.printNumberOfExample(3, "substring последних 2х цифр и удаление нуля");
+        printNumberOfExample(3, "substring последних 2х цифр и удаление нуля");
         String spz = "1234507";
         String str = "";
         str = spz.substring(spz.length()-2, spz.length());
@@ -62,7 +63,7 @@ public class Main{
 
 
         //Мапы и null
-        NumberedExamples.printNumberOfExample(4,"Мапы и null");
+        printNumberOfExample(4, "Мапы и null");
         Map<String, MyClass> map = new HashMap<>();
         map.put("str1", new MyClass("info1"));
         map.put("str2", null);
@@ -75,14 +76,14 @@ public class Main{
 
 
         //Боксинг long в Long при сохранении в Object
-        NumberedExamples.printNumberOfExample(5, "Боксинг long в Long при сохранении в Object");
+        printNumberOfExample(5, "Боксинг long в Long при сохранении в Object");
         long l1 = 425L;
         Object o1 = l1;
         System.out.println("Object o1 = 425L, o1.getClass()="+o1.getClass());
 
 
         //присваивание на лету
-        NumberedExamples.printNumberOfExample(6,"присваивание на лету if((mc=mc2)!=null)");
+        printNumberOfExample(6, "присваивание на лету if((mc=mc2)!=null)");
         MyClass mc = null;
         MyClass mc2=new MyClass("mc2");
         if((mc=mc2)!=null){
@@ -91,14 +92,14 @@ public class Main{
 
 
         //Наследование
-        NumberedExamples.printNumberOfExample(7,"Наследование");
+        printNumberOfExample(7, "Наследование");
         MyClass mcc = new MyClassChild(1L, "child");
         System.out.println(mcc);
         mcc.printSomething("что-то");
 
 
         //Множественно наследование (абстрактный класс и 2 интерфейса с одинаковым реализованным методом)
-        NumberedExamples.printNumberOfExample(8,"Множественно наследование (абстрактный класс и 2 интерфейса с одинаковым реализованным методом)");
+        printNumberOfExample(8, "Множественно наследование (абстрактный класс и 2 интерфейса с одинаковым реализованным методом)");
         MyInterface1 myInterfaceImpl = new MyInterfaceImpl();
         myInterfaceImpl.print();
 

@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import examples.Test;
 
+import static examples.utils.TimeMeasurementUtil.measureTime;
+
 public class ListPerformanceTest extends Test {
     private static Test thisOne = new ListPerformanceTest();
 
@@ -105,13 +107,5 @@ public class ListPerformanceTest extends Test {
         for (int i = 0; i < size; i++) {
             list.add(i);
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    private long measureTime(Runnable function) {
-        long l1 = System.currentTimeMillis();
-        function.run();
-        long l2 = System.currentTimeMillis();
-        return l2 - l1;
     }
 }
