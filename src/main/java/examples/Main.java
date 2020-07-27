@@ -1,11 +1,15 @@
 package examples;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import examples.collections.ListPerformanceTest;
 import examples.multiparents.MyInterface1;
 import examples.multiparents.MyInterfaceImpl;
 import examples.utils.NumberedExamples;
-
-import java.util.*;
 
 public class Main{
     public static void main(String[] args) {
@@ -15,6 +19,7 @@ public class Main{
         new RegexTest().go();
         new Java8Test().go();
         new ListPerformanceTest().go();
+        new BCryptTest().go();
 
         System.out.println(
                 "---------------------------------------------------- Разное - BEGIN ---------------------------------------------------"
