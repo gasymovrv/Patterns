@@ -6,7 +6,7 @@
 6. Роль в проекте / Состав команды
 7. Методология разработки (скрам, канбан)
 
-# Ответы на типичные вопросы собеседования с Java-разработчиком
+# Ответы на типичные вопросы на собеседовании с Java-разработчиком
 ### Методы Object
 1. `int hashCode()` - возвращает хеш-код объекта
 1. `boolean equals(Object obj)` - определяет, равен ли текущий объект другому
@@ -120,6 +120,8 @@
 + Строитель – `StringBuilder`, `Appendable`  и др.
 + Цепочка обязанностей - `javax.servlet.Filter#doFilter()`
 + Фабричный метод - `java.util.EnumSet#of()`, `java.util.List#of()`
++ Примеры реализации всех паттернов ООП (GoF)
+    + [src/main/java/ru/unlimit/javapro/patterns](/src/main/java/ru/unlimit/javapro/patterns)
 
 ### Spring
 + Подробнее [тут](java/spring.md)
@@ -174,7 +176,9 @@
 + join (inner, outer left, outer right)
 + union
 + Группировка по месяцам из дат (для postgres функция EXTRACT)
-
++ Решения задач с http://sql-ex.ru
+    + [src/main/resources/db](/src/main/resources/db)
+    
 ### Высоконагруженнные сервисы
 + Масштабирование (модульные монолиты, микросервисы)
 + Микросервисы должны быть stateless, т.к. stateful приложение масштабировать очень сложно

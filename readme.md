@@ -1,34 +1,21 @@
 # Сборник обучающих материалов
 
 + Примеры реализации всех паттернов ООП (GoF)
-    ```
-    src\main\java\ru\unlimit\javapro\patterns 
-    ```
+    + [src/main/java/ru/unlimit/javapro/patterns](src/main/java/ru/unlimit/javapro/patterns)
 + Решения задач с http://sql-ex.ru
-    ```
-    src\main\resources\db
-    ```
+    + [src/main/resources/db](src/main/resources/db)
 + Примеры кода на JS (все базовые возможности + ES6)
-    ```
-    src\main\webapp\resources\js
-    ```
+    + [src/main/webapp/js](src/main/webapp/js)
 + Примеры проектов с webpack (JS)
-    ```
-    src\main\webapp\webpack_[имя]
-    ```
+    + [src/main/webapp/webpack_node_react](src/main/webapp/webpack_node_react)
+    + [src/main/webapp/webpack_node_react_cssmodules](src/main/webapp/webpack_node_react_cssmodules)
+    + [src/main/webapp/webpack_node_react_tests](src/main/webapp/webpack_node_react_tests)
+    + [src/main/webapp/webpack_node_simple](src/main/webapp/webpack_node_simple)
 + Вспоминаем нюансы по Java
-    ```
-    src\main\java\examples
-    ```
+    + [src/main/java/examples](src/main/java/examples)
 + XSD
-    ```
-    src\main\resources\xsd
-    ```
+    + [src/main/resources/xsd](src/main/resources/xsd)
 + XSL
-    ```
-    src\main\resources\xsl
-    ```
+    + [src/main/resources/xsl](src/main/resources/xsl)
 + Различные заметки
-    ```
-    notes
-    ```
+    + [notes](notes)
