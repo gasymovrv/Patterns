@@ -29,4 +29,24 @@ public class TimeMeasurementUtil {
         long l2 = System.nanoTime();
         return l2 - l1;
     }
+
+    /**
+     * Измеряет время выполнения фугкции {@param func} повторяя ее {@param iterations} раз
+     * и добавляя описание
+     *
+     * @param topic      заголовок или тема
+     * @param iterations количество повторений
+     * @param func       измеряемая функция
+     */
+    public static void measureTimeWithIterationsAndDescription(String topic, int iterations, Runnable func) {
+        System.out.println(topic);
+        long result = TimeMeasurementUtil.measureTime(() -> {
+            for (int i = 1; i <= iterations; i++) {
+                System.out.printf("Iteration #%d: %d\n",
+                        i,
+                        TimeMeasurementUtil.measureTime(func));
+            }
+        });
+        System.out.printf("Total time: %d\n", result);
+    }
 }
