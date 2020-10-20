@@ -9,7 +9,7 @@
 # Ответы на типичные вопросы на собеседовании с Java-разработчиком
 ### Вопросы Java и JVM
 + [Методы Object](java/java.md#Методы-Object)
-+ [Правила реализации equals/hashCode](java/java.md#Правила-реализации-equals/hashCode)
++ [Правила реализации equals/hashCode](java/java.md#Правила-реализации-equalshashCode)
 + [Java Collections API](java/java.md#Java-Collections-API)
 + [JVM компоненты](java/java.md#JVM-компоненты)
 + [Пул строк](java/java.md#Пул-строк)
