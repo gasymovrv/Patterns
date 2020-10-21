@@ -25,7 +25,7 @@
 ### Hibernate
 + [Lazy initialization, Transactions](java/hibernate.md#Важные-нюансы)
 + [Стратегии наследования](java/hibernate.md#Стратегии-наследования)
-+ [Проблема N+1](java/hibernate.md#Проблема-N+1)
++ [Проблема N+1](java/hibernate.md#Проблема-N1)
 
 ### Паттерны и их применения в JDK
 + Прототип – `Cloneable`
