@@ -1,6 +1,16 @@
 package hibertest.singletable;
 
-import javax.persistence.*;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+import lombok.Data;
+
+@Data
 
 @Entity
 @Table(name = "BILLING_DETAILS")
@@ -13,27 +23,4 @@ public abstract class BillingDetails {
     private int id;
 
     private String owner;
-
-    public BillingDetails() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    @Override
-    public String toString() {
-        return "BillingDetails{" +
-                "id=" + id +
-                ", owner='" + owner + '\'' +
-                '}';
-    }
 }

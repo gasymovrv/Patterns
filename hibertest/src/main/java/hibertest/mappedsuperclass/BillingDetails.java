@@ -4,6 +4,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import lombok.Data;
+
+@Data
 
 @MappedSuperclass
 public class BillingDetails {
@@ -13,22 +16,4 @@ public class BillingDetails {
     private int id;
 
     private String owner;
-
-    public BillingDetails() {
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    @Override
-    public String toString() {
-        return "BillingDetails{" +
-                "owner='" + owner + '\'' +
-                '}';
-    }
 }

@@ -1,12 +1,11 @@
 package hibertest.joinedtable;
 
-import hibertest.utils.HibernateUtil;
-import hibertest.utils.InheritanceStrategyExecutable;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
-import java.util.List;
+import hibertest.utils.HibernateUtil;
+import hibertest.utils.InheritanceStrategyExecutable;
 
 public class JoinedTableStrategy implements InheritanceStrategyExecutable {
     @Override
@@ -28,7 +27,7 @@ public class JoinedTableStrategy implements InheritanceStrategyExecutable {
         Transaction transaction = null;
         try {
             session = sessionFactory.getCurrentSession();
-            transaction  = session.beginTransaction();
+            transaction = session.beginTransaction();
             session.persist(creditCard);
             session.persist(bankAccount);
             transaction.commit();
@@ -41,7 +40,7 @@ public class JoinedTableStrategy implements InheritanceStrategyExecutable {
         Transaction transaction1 = null;
         try {
             session1 = sessionFactory.getCurrentSession();
-            transaction1  = session1.beginTransaction();
+            transaction1 = session1.beginTransaction();
             List billingDetails = session1.createQuery("select bd from hibertest.joinedtable.BillingDetails bd").list();
             for (int i = 0; i < billingDetails.size(); i++) {
                 System.out.println(billingDetails.get(i));

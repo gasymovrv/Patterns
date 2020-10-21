@@ -5,12 +5,8 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
 
-    public enum InheritanceStrategy{
-        MAPPED_SUPERCLASS, TABLE_PER_CLASS, SINGLE_TABLE, JOINED_TABLE
-    }
-
-    public static SessionFactory getSessionFactory(InheritanceStrategy is){
-        switch (is){
+    public static SessionFactory getSessionFactory(InheritanceStrategy is) {
+        switch (is) {
             case MAPPED_SUPERCLASS:
                 return new Configuration()
                         .configure("hibernate.cfg1.xml")
@@ -29,5 +25,9 @@ public class HibernateUtil {
                         .buildSessionFactory();
         }
         return null;
+    }
+
+    public enum InheritanceStrategy {
+        MAPPED_SUPERCLASS, TABLE_PER_CLASS, SINGLE_TABLE, JOINED_TABLE
     }
 }

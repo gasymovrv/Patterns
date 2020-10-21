@@ -1,0 +1,17 @@
+version: '2.4'
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 4
+    volumes:
+      - ./docker/local/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 1s
+      timeout: 5s
+      retries: 180
