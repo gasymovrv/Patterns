@@ -17,8 +17,8 @@
 + [Java Collections API](java/java.md#Java-Collections-API)
 + [JVM компоненты](java/java.md#JVM-компоненты)
 + [Пул строк](java/java.md#Пул-строк)
-+ [WeakReference, SoftReference и др.](java/java.md#WeakReference-SoftReference-и-др.)
-+ [Memory leaks](java/java.md#Утечки-памяти-(Memory-leaks))
++ [WeakReference, SoftReference и др.](java/java.md#weakreference-softreference-и-др)
++ [Memory leaks](java/java.md#утечки-памяти-memory-leaks)
 + [Многопоточность](java/java.md#Многопоточность)
 
 ### Spring
