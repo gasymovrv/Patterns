@@ -112,10 +112,7 @@ public class Main {
         priorityQueue.add(new MyClass(4L, "inf3"));
         priorityQueue.add(new MyClass(4L, "inf2"));
         priorityQueue.add(new MyClass(4L, "inf1"));
-        while (true) {
-            if (priorityQueue.isEmpty()) {
-                break;
-            }
+        while (!priorityQueue.isEmpty()) {
             System.out.println(priorityQueue.poll());
         }
     }
