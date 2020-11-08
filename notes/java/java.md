@@ -82,6 +82,7 @@
 ### Java Collections API
 + Иерархия коллекций:
 <img alt="CollectionsHierarchy.png" src="../img/CollectionsHierarchy.png">
+
 + Производительность коллекций см. [algorithms.md](../algorithms.md)
 + Пояснения о работе HashMap   
 	+ HashMap представляет из себя массив связных списков (корзин), дефолтный length которого = 16.
