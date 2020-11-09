@@ -6,13 +6,7 @@ import java.util.List;
 
 public class LuxoftRussianPost {
     public static void main(String[] args) {
-
-        try {
-            System.out.println(join(Arrays.asList("a", "bC7", null, "d")));  //expected "A,BC7,D"
-        } catch (Throwable e) {
-            System.out.println(e.getMessage());
-            ;
-        }
+        System.out.println(join(Arrays.asList("a", "bC7", null, "d")));  //expected "A,BC7,D"
     }
 
     /**
@@ -24,6 +18,9 @@ public class LuxoftRussianPost {
      * @return строки, сконкатенированные в одну через запятую
      */
     public static String join(List<String> list) {
+        if (list == null) {
+            throw new RuntimeException("Argument 'list' at method 'join' cannot be null");
+        }
         StringBuilder sb = new StringBuilder();
         Iterator<String> iterator = list.iterator();
         while (iterator.hasNext()) {
