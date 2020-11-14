@@ -16,15 +16,12 @@ public class FinallyTest extends Test {
             try {
                 throw new RuntimeException("Корневое исключение!");
             } catch (RuntimeException e) {
-
                 try {
                     throw new RuntimeException(e);
                 } catch (RuntimeException e1) {
-
                     try {
                         throw new RuntimeException(e1);
                     } catch (RuntimeException e2) {
-
                         throw new RuntimeException(e2);
                     }
                 }
@@ -37,8 +34,10 @@ public class FinallyTest extends Test {
             }
             //и сообщение из него
             message = t.getMessage();
+            System.out.println("Print from catch: " + message);
             return message;
         } finally {
+            System.out.println("Print from finally: " + message);
             message += " from finally";
             return message;
         }
