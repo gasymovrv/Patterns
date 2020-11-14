@@ -58,7 +58,7 @@
 + Строитель – `StringBuilder`, `Appendable`  и др.
 + Цепочка обязанностей - `javax.servlet.Filter#doFilter()`
 + Фабричный метод - `java.util.EnumSet#of()`, `java.util.List#of()`
-+ Примеры реализации всех паттернов ООП (GoF): [src/main/java/ru/unlimit/javapro/patterns](/src/main/java/ru/unlimit/javapro/patterns)
++ Примеры реализации всех паттернов ООП (GoF): [src/main/java/patterns](/patterns)
 
 ### AOP/aspectj
 + AOP - аспекты используемые в Spring. 

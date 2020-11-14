@@ -54,6 +54,7 @@
 + Класс java.lang.Error - технически такие исключения можно выбрасывать и перехватывать. 
     + Выбрасывать можно в редких случая когда нужно быстро вырубить приложение
     + Перехватывать лучше не стоит, т.к. нет гарантии что следующая строчка сможет выполниться
++ Wildcards PECS (Producer Extends Consumer Super) - [пример](../../src/main/java/examples/generics/WildcardsTest.java)
 
 ### JVM компоненты
 + Classloader - загрузка классов из classpath

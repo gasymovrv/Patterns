@@ -1,7 +1,7 @@
 # Сборник обучающих материалов
 
 + Примеры реализации всех паттернов ООП (GoF)
-    + [src/main/java/ru/unlimit/javapro/patterns](src/main/java/ru/unlimit/javapro/patterns)
+    + [src/main/java/patterns](src/main/java/patterns)
 + Решения задач с http://sql-ex.ru
     + [src/main/resources/db](src/main/resources/db)
 + Примеры кода на JS (все базовые возможности + ES6)
