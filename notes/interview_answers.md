@@ -16,30 +16,40 @@
 + [SOLID](OOP.md#SOLID)
 
 ### Вопросы Java и JVM
++ [Java EE](java/java.md#Java-EE)
 + [Методы Object](java/java.md#Методы-Object)
++ [Нюансы синтаксиса Java](java/java.md#Нюансы-синтаксиса-Java)
++ [JVM компоненты](java/java.md#JVM-компоненты)
 + [Правила реализации equals/hashCode](java/java.md#Правила-реализации-equalshashCode)
 + [Java Collections API](java/java.md#Java-Collections-API)
-+ [JVM компоненты](java/java.md#JVM-компоненты)
 + [Пул строк](java/java.md#Пул-строк)
 + [WeakReference, SoftReference и др.](java/java.md#weakreference-softreference-и-др)
-+ [Memory leaks](java/java.md#утечки-памяти-memory-leaks)
++ [Утечки памяти (Memory leaks)](java/java.md#утечки-памяти-memory-leaks)
 + [Многопоточность](java/java.md#Многопоточность)
 
 ### Spring
 + [Spring Core](java/spring.md#Spring-Core)
 + [Spring Boot](java/spring.md#Spring-Boot)
++ [Spring Security](java/spring.md#Spring-Security)
 + [Spring Webflux](java/spring.md#Spring-Webflux)
 
 ### Hibernate
-+ [Lazy initialization, Transactions](java/hibernate.md#Важные-нюансы)
++ [Важные нюансы](java/hibernate.md#Важные-нюансы)
 + [Стратегии наследования](java/hibernate.md#Стратегии-наследования)
 + [Проблема N+1](java/hibernate.md#Проблема-N1)
+
+### Базы данных
++ [Транзакции и ACID](databases.md#Транзакции-и-ACID)
++ [Теорема CAP](databases.md#Теорема-CAP)
++ [SQL](databases.md#SQL)
++ [Сравнение NoSQL с SQL](databases.md#Сравнение-NoSQL-с-SQL)
++ [NoSQL СУБД](databases.md#NoSQL-СУБД)
 
 ### Паттерны и их применения в JDK
 + Прототип – `Cloneable`
 + Адаптер – `InputStreamReader`, `OutputStreamWriter` и др.
 + Декоратор – все подклассы `java.io.InputStream`, `OutputStream`, `Reader` и `Writer` имеют конструктор, принимающий объекты этих же классов
-+ Прокси - все бины Spring или EJB
++ Прокси - все бины Spring или EJB, моки
 + Итератор – `java.util.Iterator` + внутренняя реализация его в коллекциях
 + Шаблонный метод - сервлеты (метод `service()`)
 + Легковес - `java.lang.Integer#valueOf(int)` – если значение есть в кэше (IntegerCache – от -128 до 127) то возвращет его, иначе новый объект (а также `Boolean`, `Byte`, `Character`, `Short`, `Long` и `BigDecimal`)
@@ -64,53 +74,14 @@
 		+ `read only` - Изменение данных при использовании этой стратегии приведёт к исключению.
 		+ `nonstrict read write` - доступ для изменений не ограничивается и есть вероятность чтения устаревших
 		+ `read write` - чтение из кеша блокируется (запрос идет в БД) при измении данных в данный момент
-
-### Транзакции, ACID
-
-#### Atomicity — Атомарность
-+ Должны быть выполнены либо все её подоперации, либо не выполнено ни одной
-
-#### Consistency — Согласованность
-+ Каждая успешная транзакция по определению фиксирует только допустимые результаты
-+ Пример не согласованности данных - отрицательный возраст, отрицательный баланс на счете
-
-#### Isolation — Изолированность
-+ Во время выполнения транзакции параллельные транзакции не должны оказывать влияния на её результат
-+ Проблемы плохой изолированности (параллельного доступа, где 1 - 1ая транзакция, 2 - 2ая):
-	+ Потерянное обновление (1:update(+=) + 2:update(+=))
-	+ «Грязное» чтение (1:update/insert + 2:select + 1:rollback)
-	+ Неповторяющееся чтение (1:select + 2:update/delete + 1:select)
-	+ Чтение «фантомов» (1:select + 2:insert + 1:select)
-	
-	+ Решения этих проблем специальными [уровнями изоляции в БД](https://ru.wikipedia.org/wiki/%D0%A3%D1%80%D0%BE%D0%B2%D0%B5%D0%BD%D1%8C_%D0%B8%D0%B7%D0%BE%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8_%D1%82%D1%80%D0%B0%D0%BD%D0%B7%D0%B0%D0%BA%D1%86%D0%B8%D0%B9):
-
-        | Уровень изоляции | Фантомное чтение | Неповторяющееся чтение | «Грязное» чтение | Потерянное обновление |
-        |:----------------:|:----------------:|:----------------------:|:----------------:|:---------------------:|
-        | READ UNCOMMITTED |         -        |            -           |         -        |           +           |
-        |  READ COMMITTED  |         -        |            -           |         +        |           +           |
-        |  REPEATABLE READ |         -        |            +           |         +        |           +           |
-        |   SERIALIZABLE   |         +        |            +           |         +        |           +           |
-        
-#### Durability — Стойкость
-+ Изменения, сделанные успешно завершённой транзакцией, должны остаться сохранёнными после возвращения системы в работу
-
-### SQL 
-+ select
-+ insert
-+ update
-+ delete
-+ join (inner, outer left, outer right)
-+ union
-+ Группировка по месяцам из дат (для postgres функция EXTRACT)
-+ Решения задач с http://sql-ex.ru
-    + [src/main/resources/db](/src/main/resources/db)
     
 ### Высоконагруженнные сервисы
 + Масштабирование (модульные монолиты, микросервисы)
 + Микросервисы должны быть stateless, т.к. stateful приложение масштабировать очень сложно
 + Обмен сообщениями/распределенные транзакции - связь между микросервисами обычно организуют через брокеры сообщений
+    + Транзакции между микросервисами с разными БД обеспечиваются такими паттернами как, например, Сага
 + Репликации и шардирование БД, но лучше чтобы у каждого сервиса была своя БД
-+ Переход на реактивщину - позволит ускорить работу сервиса при большом количестве запросов (используется асинхронный и неблокирующий код)
++ Переход на реактивщину - позволит обеспечить работу сервиса при большом количестве запросов (используется асинхронный и неблокирующий код) - см. [Spring Webflux](java/spring.md#Spring-Webflux)
 
 ### Web services
 #### REST

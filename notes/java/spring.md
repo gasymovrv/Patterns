@@ -30,6 +30,8 @@
     + Наличие автоконфигураций - стартеры (реализованы через @ConditionalOnProperty)
     + Встроенный контейнер сервлетов - для Spring-MVC - Tomcat, для Spring-Webflux - Netty
 
+## Spring Security
+
 ## Spring Webflux
 + Отличия от Spring MVC (подробно о Webflux [тут](https://habr.com/ru/company/funcorp/blog/350996/))
 	+ В основе WebFlux лежит библиотека Reactor
