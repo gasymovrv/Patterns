@@ -25,6 +25,7 @@
 + [Пул строк](java/java.md#Пул-строк)
 + [WeakReference, SoftReference и др.](java/java.md#weakreference-softreference-и-др)
 + [Утечки памяти (Memory leaks)](java/java.md#утечки-памяти-memory-leaks)
++ [Отличия Java IO от Java NIO](java/java.md#Отличия-Java-IO-от-Java-NIO)
 + [Многопоточность](java/java.md#Многопоточность)
 
 ### Spring
