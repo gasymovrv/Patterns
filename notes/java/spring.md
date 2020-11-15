@@ -31,6 +31,9 @@
     + Встроенный контейнер сервлетов - для Spring-MVC - Tomcat, для Spring-Webflux - Netty
 
 ## Spring Security
++ [Spring Security](https://habr.com/ru/post/203318/)
++ [Протокол OAuth 2.0](../security.md#Протокол-OAuth-20)
++ [Spring Boot OAuth2 и JWT](https://habr.com/ru/company/otus/blog/453664/)
 
 ## Spring Webflux
 + Отличия от Spring MVC (подробно о Webflux [тут](https://habr.com/ru/company/funcorp/blog/350996/))

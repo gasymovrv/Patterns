@@ -121,6 +121,15 @@
 	+ 4хх - клиентские ошибки (404 - не найден ресурс, 403 - сервер понял запрос но отказался обработать, 401 - unauthorized)
 	+ 5хх - серверные ошибки
 
+### Security
++ [Injections](security.md#Injections)
++ [Broken Authentication and Session Management](security.md#Broken-Authentication-and-Session-Management)
++ [XSS (Cross Site Scripting)](security.md#XSS-Cross-Site-Scripting)
++ [Insecure Direct Object References](security.md#Insecure-Direct-Object-References)
++ [Security Misconfiguration](security.md#Security-Misconfiguration)
++ [Cross-Site Request Forgery (CSRF)](security.md#Cross-Site-Request-Forgery-CSRF)
++ [Протокол OAuth 2.0](security.md#Протокол-OAuth-20)
+
 ### Разное
 + Зачем использовать Immutable объекты?
     + Для потокобезопасности
