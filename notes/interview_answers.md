@@ -46,6 +46,7 @@
 + [NoSQL СУБД](databases.md#NoSQL-СУБД)
 
 ### Паттерны и их применения в JDK
++ [Все паттерны со схемами, разбитые по категориям (C - creational, S - structural, B - behavioral)](resources/patterns_rus.pdf)
 + Прототип – `Cloneable`
 + Адаптер – `InputStreamReader`, `OutputStreamWriter` и др.
 + Декоратор – все подклассы `java.io.InputStream`, `OutputStream`, `Reader` и `Writer` имеют конструктор, принимающий объекты этих же классов
@@ -58,7 +59,7 @@
 + Строитель – `StringBuilder`, `Appendable`  и др.
 + Цепочка обязанностей - `javax.servlet.Filter#doFilter()`
 + Фабричный метод - `java.util.EnumSet#of()`, `java.util.List#of()`
-+ Примеры реализации всех паттернов ООП (GoF): [src/main/java/patterns](/patterns)
++ Примеры реализации всех паттернов ООП (GoF): [src/main/java/patterns](../src/main/java/patterns)
 
 ### AOP/aspectj
 + AOP - аспекты используемые в Spring. 
