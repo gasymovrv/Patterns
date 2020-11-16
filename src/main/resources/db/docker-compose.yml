@@ -1,0 +1,17 @@
+version: '2.4'
+services:
+  postgres:
+    container_name: education_project_postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 4
+      POSTGRES_DB: education_project_db
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 1s
+      timeout: 5s
+      retries: 180
