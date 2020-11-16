@@ -42,8 +42,7 @@
 ### Базы данных
 + [Транзакции и ACID](databases.md#Транзакции-и-ACID)
 + [Теорема CAP](databases.md#Теорема-CAP)
-+ [SQL](databases.md#SQL)
-+ [Сравнение NoSQL с SQL](databases.md#Сравнение-NoSQL-с-SQL)
++ [SQL СУБД](databases.md#SQL-СУБД)
 + [NoSQL СУБД](databases.md#NoSQL-СУБД)
 
 ### Паттерны и их применения в JDK
