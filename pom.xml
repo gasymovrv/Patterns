@@ -55,6 +55,7 @@
     <modules>
         <module>hibertest</module>
         <module>kotlintest</module>
+        <module>serialization</module>
     </modules>
 
 </project>

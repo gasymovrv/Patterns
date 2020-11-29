@@ -1,0 +1,63 @@
+<parkingCatalog>
+    <truckVehicleParkings>
+        <truckVehicleParking>
+            <vehiclesByName>
+                <MY_TRUCK1 _class="serialization.domain.Truck">
+                    <model>01</model>
+                    <maker>МАЗ</maker>
+                    <productionDate>29.11.2020</productionDate>
+                    <wagonSize>5</wagonSize>
+                </MY_TRUCK1>
+                <MY_TRUCK2 _class="serialization.domain.Truck">
+                    <model>57904</model>
+                    <maker>КАМАЗ</maker>
+                    <productionDate>29.11.2020</productionDate>
+                    <wagonSize>5</wagonSize>
+                </MY_TRUCK2>
+            </vehiclesByName>
+            <name>Truck station 1</name>
+            <phoneNumbers>
+                <phone>9911034731</phone>
+                <phone>9911033478</phone>
+            </phoneNumbers>
+            <vehicles>
+                <vehicle _class="serialization.domain.Truck">
+                    <model>01</model>
+                    <maker>МАЗ</maker>
+                    <productionDate>29.11.2020</productionDate>
+                    <wagonSize>5</wagonSize>
+                </vehicle>
+                <vehicle _class="serialization.domain.Truck">
+                    <model>57904</model>
+                    <maker>КАМАЗ</maker>
+                    <productionDate>29.11.2020</productionDate>
+                    <wagonSize>5</wagonSize>
+                </vehicle>
+            </vehicles>
+        </truckVehicleParking>
+    </truckVehicleParkings>
+    <carVehicleParkings>
+        <carVehicleParking>
+            <vehiclesByName>
+                <MY_CAR1 _class="serialization.domain.Car">
+                    <model>Sportage</model>
+                    <maker>KIA</maker>
+                    <productionDate>29.11.2020</productionDate>
+                    <numberOfPassengers>5</numberOfPassengers>
+                </MY_CAR1>
+            </vehiclesByName>
+            <name>Car station 1</name>
+            <phoneNumbers>
+                <phone>1234567890</phone>
+            </phoneNumbers>
+            <vehicles>
+                <vehicle _class="serialization.domain.Car">
+                    <model>Sportage</model>
+                    <maker>KIA</maker>
+                    <productionDate>29.11.2020</productionDate>
+                    <numberOfPassengers>5</numberOfPassengers>
+                </vehicle>
+            </vehicles>
+        </carVehicleParking>
+    </carVehicleParkings>
+</parkingCatalog>
