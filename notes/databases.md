@@ -91,6 +91,25 @@
                 }
            }');
         ```
+        + Примеры запросов получения данных из JSONB столбца:
+            ```postgresql
+            --Получаем только те записи, в которых в объекте entity имеется поле contractId=1001
+            select data from event_log
+            WHERE data-> 'entity' -> 'contractId' = '1001';
+            
+            --Фильтруем записи по наличию в data объектов с status=WARNING (только 1ый уровень вложенности)
+            select * from event_log WHERE data @> '{"status": "WARNING"}';
+            
+            --Фильтруем записи по наличию в массиве errors объектов с shortName=OrgInfoProxyException
+            select * from event_log
+            WHERE data @> '{"errors":[{"shortName": "OrgInfoProxyException"}]}';
+            
+            --Получаем значение объекта entity (только на 1ом уровне вложенности)
+            select data::json->>'entity' as entity from event_log;
+            
+            --Получаем значения поля id вложенного в объект entity
+            select data::json#>'{entity, id}' as id from event_log;
+            ```
     + JSON — Если вы обрабатываете логи, вам не часто приходится запрашивать данные или не нужно использовать их как что-то большее чем для задач логирования.
     + Hstore — отлично работает с текстовыми данными на основе представления ключ-значение, но в целом JSONB также отлично справляется с этой задачей.
     + Подробнее [тут](https://habr.com/ru/post/306602/)
