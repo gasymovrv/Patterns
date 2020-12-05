@@ -9,10 +9,12 @@ public class ThreadPoolTest {
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
         for (int i = 0; i < 5; i++) {
-            executorService.submit(new Work(i));
+            executorService.submit(new Task(i));
         }
 
-        //После выполнения всех переданных заданий, вырубает потоки
+        Thread.sleep(5000);
+        //Инициирует упорядоченное завершение работы,
+        // при котором ранее отправленные задачи выполняются, но новые задачи не принимаются.
         executorService.shutdown();
         System.out.println("All tasks submitted");
 
@@ -25,10 +27,10 @@ public class ThreadPoolTest {
     }
 }
 
-class Work implements Runnable {
+class Task implements Runnable {
     private int id;
 
-    public Work(int id) {
+    public Task(int id) {
         this.id = id;
     }
 
@@ -38,6 +40,6 @@ class Work implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Work " + id + "was completed");
+        System.out.println("Task " + id + " was completed");
     }
 }
