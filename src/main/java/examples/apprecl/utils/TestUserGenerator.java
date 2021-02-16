@@ -55,7 +55,7 @@ public class TestUserGenerator {
                 } else {
                     cn = String.format("s%sL", StringUtils.leftPad(String.valueOf(x), 6, '0'));
                 }
-                String sn = name.lastName();
+                String sn = name.lastName().toUpperCase();
                 String givenName = name.firstName();
                 String mail = (username(givenName, sn) + x + "@gmail.com");
                 String physicalDeliveryOfficeName = fakeValuesService.regexify("[A-Z]{3}");
