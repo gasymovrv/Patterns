@@ -1,9 +1,9 @@
 version: 1
 
 # Entry 0
-dn: ou=users,dc=testcompany,dc=com
-objectclass: organizationalUnit
-objectclass: top
-ou: users
+dn: ou=people,dc=testcompany,dc=com
+objectClass: organizationalUnit
+objectClass: top
+ou: people
 
 #-------------------------- generated data ---------------------------

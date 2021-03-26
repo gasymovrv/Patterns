@@ -80,7 +80,11 @@ public class TestUserGenerator {
                         "\n" +
                         String.format("sfAffectation: %s", sfAffectation) +
                         "\n" +
-                        "objectclass: appreclPerson" +
+                        String.format("telephoneNumber: %s", telephoneNumber) +
+                        "\n" +
+                        String.format("sfIdStatus: %s", "Active") +
+                        "\n" +
+                        "objectClass: sfPerson" +
                         "\n";
                 ldapUsers.append(ldapUser);
 
