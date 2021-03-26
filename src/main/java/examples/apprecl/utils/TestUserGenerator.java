@@ -49,32 +49,36 @@ public class TestUserGenerator {
                 Faker faker = new Faker();
                 Name name = faker.name();
 
-                String cn;
+                String uid;
                 if (0.1 <= Math.random()) {
-                    cn = String.format("s%s", StringUtils.leftPad(String.valueOf(x), 6, '0'));
+                    uid = String.format("s%s", StringUtils.leftPad(String.valueOf(x), 6, '0'));
                 } else {
-                    cn = String.format("s%sL", StringUtils.leftPad(String.valueOf(x), 6, '0'));
+                    uid = String.format("s%sL", StringUtils.leftPad(String.valueOf(x), 6, '0'));
                 }
+                String cn = uid.toUpperCase() + "@snm.snecma";
                 String sn = name.lastName().toUpperCase();
                 String givenName = name.firstName();
-                String sfMail = (username(givenName, sn) + x + "@gmail.com");
+                String sfMail = (username(givenName, sn) + x + "@safrangroup.com");
                 String sfEtabTrig = fakeValuesService.regexify("[A-Z]{3}");
-                String department = fakeValuesService.regexify("[A-Z]{3,7}");
+                String sfAffectation = fakeValuesService.regexify("[A-Z]{3,7}");
+                String telephoneNumber = "33" + fakeValuesService.regexify("[0-9]{9}");
 
                 String ldapUser = "\n" +
-                        String.format("dn: cn=%s,ou=users,dc=testcompany,dc=com", cn) +
+                        String.format("dn: uid=%s,ou=people,dc=testcompany,dc=com", uid) +
+                        "\n" +
+                        String.format("uid: %s", uid) +
                         "\n" +
                         String.format("cn: %s", cn) +
                         "\n" +
                         String.format("sn: %s", sn) +
                         "\n" +
-                        String.format("givenname: %s", givenName) +
+                        String.format("givenName: %s", givenName) +
                         "\n" +
                         String.format("sfMail: %s", sfMail) +
                         "\n" +
                         String.format("sfEtabTrig: %s", sfEtabTrig) +
                         "\n" +
-                        String.format("department: %s", department) +
+                        String.format("sfAffectation: %s", sfAffectation) +
                         "\n" +
                         "objectclass: appreclPerson" +
                         "\n";
