@@ -57,8 +57,8 @@ public class TestUserGenerator {
                 }
                 String sn = name.lastName().toUpperCase();
                 String givenName = name.firstName();
-                String mail = (username(givenName, sn) + x + "@gmail.com");
-                String physicalDeliveryOfficeName = fakeValuesService.regexify("[A-Z]{3}");
+                String sfMail = (username(givenName, sn) + x + "@gmail.com");
+                String sfEtabTrig = fakeValuesService.regexify("[A-Z]{3}");
                 String department = fakeValuesService.regexify("[A-Z]{3,7}");
 
                 String ldapUser = "\n" +
@@ -70,9 +70,9 @@ public class TestUserGenerator {
                         "\n" +
                         String.format("givenname: %s", givenName) +
                         "\n" +
-                        String.format("mail: %s", mail) +
+                        String.format("sfMail: %s", sfMail) +
                         "\n" +
-                        String.format("physicalDeliveryOfficeName: %s", physicalDeliveryOfficeName) +
+                        String.format("sfEtabTrig: %s", sfEtabTrig) +
                         "\n" +
                         String.format("department: %s", department) +
                         "\n" +
@@ -81,11 +81,9 @@ public class TestUserGenerator {
                 ldapUsers.append(ldapUser);
 
                 String samlUser = "\n" +
-                        String.format("        '%s:password' => array_merge($test_user_base, array(", cn) +
-                        "\n" +
-                        String.format("            'Cn' => '%s'", cn) +
-                        "\n" +
-                        "        )),";
+                        String.format("        '%s:password' => array(", cn) + "\n" +
+                        String.format("            'uid' => '%s'", cn) + "\n" +
+                        "        ),";
                 samlUsers.append(samlUser);
             });
         }
@@ -94,9 +92,9 @@ public class TestUserGenerator {
         executorService.awaitTermination(60, TimeUnit.SECONDS);
         System.out.println("All generate-users tasks completed");
 
-        samlUsers.append("\n        'userWrong:password' => array_merge($test_user_base, array(\n");
-        samlUsers.append("            'Cn' => 'userWrong'\n");
-        samlUsers.append("        ))\n");
+        samlUsers.append("\n        'userWrong:password' => array(\n");
+        samlUsers.append("            'uid' => 'userWrong'\n");
+        samlUsers.append("        )\n");
         samlUsers.append("    )\n");
         samlUsers.append(");\n");
         System.out.println("# ------------ Test users were successfully generated ---------------");
