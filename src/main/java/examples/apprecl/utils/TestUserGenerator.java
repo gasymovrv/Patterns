@@ -58,7 +58,7 @@ public class TestUserGenerator {
                 String cn = uid.toUpperCase() + "@snm.snecma";
                 String sn = name.lastName().toUpperCase();
                 String givenName = name.firstName();
-                String sfMail = (username(givenName, sn) + x + "@safrangroup.com");
+                String mail = (username(givenName, sn) + x + "@safrangroup.com");
                 String sfEtabTrig = fakeValuesService.regexify("[A-Z]{3}");
                 String sfAffectation = fakeValuesService.regexify("[A-Z]{3,7}");
                 String telephoneNumber = "33" + fakeValuesService.regexify("[0-9]{9}");
@@ -74,7 +74,9 @@ public class TestUserGenerator {
                         "\n" +
                         String.format("givenName: %s", givenName) +
                         "\n" +
-                        String.format("sfMail: %s", sfMail) +
+                        String.format("sfMail: %s", mail) +
+                        "\n" +
+                        String.format("mail: %s", mail) +
                         "\n" +
                         String.format("sfEtabTrig: %s", sfEtabTrig) +
                         "\n" +
@@ -89,8 +91,8 @@ public class TestUserGenerator {
                 ldapUsers.append(ldapUser);
 
                 String samlUser = "\n" +
-                        String.format("        '%s:password' => array(", cn) + "\n" +
-                        String.format("            'uid' => '%s'", cn) + "\n" +
+                        String.format("        '%s:password' => array(", uid) + "\n" +
+                        String.format("            'uid' => '%s'", uid) + "\n" +
                         "        ),";
                 samlUsers.append(samlUser);
             });
