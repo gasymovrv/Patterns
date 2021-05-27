@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>JS-dom</title>
     <script src="indexDOM.js"></script>
+    <script src="dom.js"></script>
     <link rel="stylesheet" type="text/css" href="indexStyles.css">
 </head>
 <body><!-- комментарий -->
@@ -145,9 +146,18 @@ testId19
         </div>
     </form>
 </div>
+
+<hr/>
+testId20
+Чтение из файла
+<div class="selectable" id="testId20">
+    <div>
+        <input id="id20_1" type="file"/>
+        <button id="id20_2" type="button">Handle file</button>
+        <button id="id20_3" type="button">Download file</button>
+    </div>
+</div>
 <!--end-->
-
-
 
 </body>
 </html>
@@ -155,8 +165,10 @@ testId19
 <script>
     // let accept = confirm("Включить тестовые скрипты?");
     // if(accept){
-        console.log("Тестовые скрипты включены по умолчанию. " +
-            "Чтобы запрашивать подтверждение, исправь скрипт в конце файла indexDOM.html")
-        run();
+    console.log(
+        'Тестовые скрипты включены по умолчанию. ' +
+        'Чтобы запрашивать подтверждение, исправь скрипт в конце файла indexDOM.html'
+    )
+    run();
     // }
 </script>

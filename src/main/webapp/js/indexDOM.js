@@ -1,10 +1,17 @@
+//---------- Скопируй сюда скрипт чтобы протестить, например из dom.js ----------------
+
+let buffer;
+let base64Portions = [];
+let file = null;
+
 function run() {
 
     //При движении мыши показываются координаты и инфа о  теге на котором мышь сейчас
-    document.body.addEventListener("mousemove", mouseMoveInfo);
+    document.body.addEventListener('mousemove', mouseMoveInfo);
+
     function mouseMoveInfo(event) {
         var div = document.getElementById('mouseCoord');
-        if(!div){
+        if (!div) {
             div = document.createElement('div');
         }
         div.setAttribute('id', 'mouseCoord');
@@ -29,6 +36,7 @@ function run() {
         div.style.top = `${event.pageY-div.offsetHeight-3}px`;
         document.body.appendChild(div);
     }
+
     //Определяем высоту страницы с учетом прокрутки
     var scrollHeight = Math.max(
         document.body.scrollHeight, document.documentElement.scrollHeight,
@@ -38,14 +46,80 @@ function run() {
     console.log('высота страницы : scrollHeight=' + scrollHeight);
     console.log('высота страницы : document.body.scrollHeight='+document.body.scrollHeight);
     console.log('высота страницы : document.body.offsetHeight='+document.body.offsetHeight);
-    console.log('положение верт скролла : window.pageYOffset='+window.pageYOffset);
-    console.log('document.documentElement.clientHeight='+document.documentElement.clientHeight);
-    console.log('scrollHeight - document.documentElement.clientHeight='+(scrollHeight-document.documentElement.clientHeight));
-    window.onscroll = function() {
+    console.log('положение верт скролла : window.pageYOffset=' + window.pageYOffset);
+    console.log('document.documentElement.clientHeight=' + document.documentElement.clientHeight);
+    console.log('scrollHeight - document.documentElement.clientHeight=' + (scrollHeight - document.documentElement.clientHeight));
+    window.onscroll = function () {
         //Когда прокрутили до самого низа
-        if(window.pageYOffset >= (scrollHeight-document.documentElement.clientHeight)){
-            alert("---------------------------end of page-----------------------------")
+        if (window.pageYOffset >= (scrollHeight - document.documentElement.clientHeight)) {
+            alert('---------------------------end of page-----------------------------')
         }
     }
 
+    document.getElementById('id20_1').addEventListener('change', onAddFiles);
+    document.getElementById('id20_2').addEventListener('click', onHandleFile);
+    document.getElementById('id20_3').addEventListener('click', onDownloadFile);
+}
+
+function onAddFiles(event) {
+    file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.addEventListener('loadend', () => {
+            buffer = reader.result;
+            console.log('buffer from id20_1: ', buffer);
+        });
+        reader.readAsArrayBuffer(file);
+    }
+}
+
+function onHandleFile() {
+    let byteOffset = 0;
+    let portionSize = 32768;
+    while (true) {
+        let length;
+        if (buffer.byteLength <= byteOffset + portionSize) {
+            length = buffer.byteLength - byteOffset;
+        } else {
+            length = portionSize;
+        }
+        if (length <= 0) {
+            break;
+        }
+        console.log('byteOffset: ', byteOffset);
+
+        let uint8Array = new Uint8Array(buffer, byteOffset, length);
+        byteOffset += portionSize;
+
+        base64Portions.push(window.btoa(String.fromCharCode.apply(null, uint8Array)));
+    }
+}
+
+function onDownloadFile() {
+    let t = base64Portions
+        .map((v) => window.atob(v))
+        .map((v) => toUi8Array(v))
+        .reduce(
+            (u, v) => {
+                u.push(v);
+                return u;
+            },
+            []
+        );
+    const blob = new Blob(t);
+    base64Portions = [];
+    const href = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = href;
+    link.setAttribute('download', file.name);
+    document.body.appendChild(link);
+    link.click();
+}
+
+function toUi8Array(slice) {
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+    }
+    return new Uint8Array(byteNumbers);
 }
