@@ -59,6 +59,12 @@ function run() {
     document.getElementById('id20_1').addEventListener('change', onAddFiles);
     document.getElementById('id20_2').addEventListener('click', onHandleFile);
     document.getElementById('id20_3').addEventListener('click', onDownloadFile);
+
+
+    const instanceOne = new SingletonClass('One');
+    const instanceTwo = new SingletonClass('Two');
+    console.log(`Name of instanceOne is "${instanceOne.getName()}"`);
+    console.log(`Name of instanceTwo is "${instanceTwo.getName()}"`);
 }
 
 function onAddFiles(event) {
@@ -122,4 +128,19 @@ function toUi8Array(slice) {
         byteNumbers[i] = slice.charCodeAt(i);
     }
     return new Uint8Array(byteNumbers);
+}
+
+class SingletonClass {
+    constructor(name = '', age = 0) {
+        if (!SingletonClass._instance) {
+            SingletonClass._instance = this;
+            this.name = name;
+            this.age = age;
+        }
+        return SingletonClass._instance;
+    }
+
+    getName() {
+        return this.name;
+    }
 }
